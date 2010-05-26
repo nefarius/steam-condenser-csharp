@@ -25,47 +25,18 @@ namespace SteamCondenser.Steam.Sockets
 			return (splitCheck == SteamPacket.PACKET_SPLIT_MARKER);
 		}
 
-		public void Send(SteamPacket dataPacket)
-		{
-			byte[] byteData = dataPacket.GetBytes();
-
-			this.client.Send(byteData, byteData.Length);
-		}
-
-		public abstract SteamPacket GetReply();
-
 		protected int ReceivePacket()
 		{
 			return this.ReceivePacket(0);
 		}
-
-		protected int ReceivePacket(int bufferLength)
+		
+		public void Send(SteamPacket dataPacket)
 		{
-			int bytesRead;
-
-			if(bufferLength == 0)
-			{
-				this.buffer.Initialize();  // clear
-			}
-			else
-			{
-				this.buffer = new byte[bufferLength];
-			}
-
-			// receive data
-			this.buffer = this.client.Receive(ref this.remoteHost);
-			bytesRead = this.buffer.Length;
-
-			MemoryStream memStream = new MemoryStream(this.buffer);
-			this.bufferReader = new BinaryReader(memStream);
-
-			this.bufferReader.BaseStream.Seek(0, System.IO.SeekOrigin.Begin);
-			this.bufferReader.BaseStream.SetLength(bytesRead);
-
-			return bytesRead;
-
+			byte[] byteData = dataPacket.GetBytes();
+			
+			this.client.Send(byteData, byteData.Length);
 		}
-
+		
 		public void Dispose()
 		{
 			this.client.Close();

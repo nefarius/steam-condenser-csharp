@@ -7,12 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamCondenser", "SteamCond
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamCondenserTestApplication", "SteamCondenserTestApplication\SteamCondenserTestApplication.csproj", "{F4FD01F2-EA52-4068-B1A5-BF03D2B30C26}"
-	ProjectSection(WebsiteProperties) = preProject
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.Debug = "False"
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamCondenserConsoleTestApplication", "SteamCondenserConsoleTestApplication\SteamCondenserConsoleTestApplication.csproj", "{472AC845-024D-4BE5-A09C-CEAD96B40A0C}"
 EndProject
 Global
@@ -29,13 +23,9 @@ Global
 		{472AC845-024D-4BE5-A09C-CEAD96B40A0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{472AC845-024D-4BE5-A09C-CEAD96B40A0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{472AC845-024D-4BE5-A09C-CEAD96B40A0C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F4FD01F2-EA52-4068-B1A5-BF03D2B30C26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F4FD01F2-EA52-4068-B1A5-BF03D2B30C26}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F4FD01F2-EA52-4068-B1A5-BF03D2B30C26}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F4FD01F2-EA52-4068-B1A5-BF03D2B30C26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = SteamCondenser\SteamCondenser.csproj
+		StartupItem = SteamCondenserConsoleTestApplication\SteamCondenserConsoleTestApplication.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

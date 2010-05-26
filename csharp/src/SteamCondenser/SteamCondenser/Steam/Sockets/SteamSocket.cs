@@ -34,13 +34,33 @@ namespace SteamCondenser.Steam.Sockets
 
 		protected SteamPacket CreatePacket()
 		{
-			byte[] packetData = new byte[SteamPacket.PACKET_SIZE];
-			this.buffer.CopyTo(packetData, 0);
-			packetData = this.bufferReader.ReadBytes(SteamPacket.PACKET_SIZE);
-			//this.bufferReader.Read(packetData, (int)this.bufferReader.BaseStream.Position, SteamPacket.PACKET_SIZE);
-
+			byte[] packetData = this.bufferReader.ReadBytes(buffer.Length - (int)bufferReader.BaseStream.Position);
+			
+			//byte[] packetData = this.bufferReader.ReadBytes(SteamPacket.PACKET_SIZE);
+			
 			return SteamPacket.CreatePacket(packetData);
 		}
+
+		public abstract SteamPacket GetReply();
+		
+		protected int ReceivePacket(int bufferLength)
+		{
+			int bytesRead;
+
+			// receive data
+			this.buffer = this.client.Receive(ref this.remoteHost);
+			bytesRead = this.buffer.Length;
+
+			MemoryStream memStream = new MemoryStream(this.buffer);
+			this.bufferReader = new BinaryReader(memStream);
+
+			this.bufferReader.BaseStream.Seek(0, System.IO.SeekOrigin.Begin);
+			this.bufferReader.BaseStream.SetLength(bytesRead);
+
+			return bytesRead;
+		}
+		
+
 
 	}
 }

@@ -29,11 +29,8 @@ namespace SteamCondenser.Steam.Packets
 			{
 				string cvar = ReadString();
 				string value = ReadString();
-
-				//if(cvar != "")
-				{
-					this.serverRules.Add(new ServerRule(cvar, value));
-				}
+				
+				this.serverRules.Add(new ServerRule(cvar, value));
 			}
 		}
 	}
