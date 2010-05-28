@@ -58,7 +58,10 @@ namespace SteamCondenser.Steam.Servers
 		
 		public ServerInfo ServerInfo
 		{
-			get { return serverInfo; }
+			get { 
+				if (this.serverInfo == null) this.UpdateServerInfo();
+				return serverInfo; 
+			}
 		}
 		
 		private void SendRequest(SteamPacket requestData)
@@ -101,6 +104,10 @@ namespace SteamCondenser.Steam.Servers
 		{
 			handleResponseForRequest(GameServer.REQUEST_RULES);
 		}
+		public void UpdateChallengeNumber()
+		{
+			this.handleResponseForRequest(GameServer.REQUEST_CHALLENGE);
+		}
 		
 		private void handleResponseForRequest(int requestType)
 		{
@@ -123,7 +130,7 @@ namespace SteamCondenser.Steam.Servers
 				break;
 			case GameServer.REQUEST_PLAYER:
 				expectedResponse = SteamPacketTypes.S2A_PLAYER;
-				requestPacket = new SteamPacket(SteamPacketTypes.A2S_PLAYER);
+				requestPacket = new SteamPacket(SteamPacketTypes.A2S_PLAYER, challengeNumber.ReverseBytes().GetBytes());
 				break;
 			case GameServer.REQUEST_RULES:
 				expectedResponse = SteamPacketTypes.S2A_RULES;
@@ -139,6 +146,7 @@ namespace SteamCondenser.Steam.Servers
 			do
 			{
 				SteamPacket responsePacket = this.GetReply();
+				Console.WriteLine ("Response: {0}", responsePacket.PacketType);
 				success = (responsePacket.PacketType == expectedResponse);
 				
 				if (responsePacket is SourceServerInfoResponsePacket)

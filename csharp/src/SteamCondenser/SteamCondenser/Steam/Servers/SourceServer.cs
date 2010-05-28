@@ -13,6 +13,21 @@ namespace SteamCondenser.Steam.Servers
 		protected RCONSocket rconSocket;
 		protected int rconRequestId;
 		
+		public SourceServer(string ipAddress)
+			: this(ipAddress, 27015)
+		{
+		}
+		
+		public SourceServer(string ipAddress, int portNumber)
+			: this(IPAddress.Parse(ipAddress), portNumber)
+		{
+		}
+		
+		public SourceServer(IPAddress ipAddress)
+			: this(ipAddress, 27015)
+		{
+		}
+		
 		public SourceServer(IPAddress ipAddress, int portNumber)
 			: base(portNumber)
 		{
