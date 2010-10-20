@@ -63,7 +63,7 @@ namespace SteamCondenser.Test
 		public void RandomSourceServeR()
 		{
 			Random randomizer = new Random();
-			MasterServer masterServer = new MasterServer(MasterServer.SourceMasterServer);
+			MasterServer masterServer = new MasterServer(MasterServer.SourceMasterServer);			
 			var servers = masterServer.GetServers();
 			var point   = servers[randomizer.Next(servers.Count)];
 			

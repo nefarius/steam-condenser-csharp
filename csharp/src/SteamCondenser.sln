@@ -34,7 +34,8 @@ Global
 		$1.inheritsScope = text/plain
 		$1.scope = text/plain
 		$0.StandardHeader = $2
-		$2.Text = @/**\n * This code is free software; you can redistribute it and/or modify it under\n * the terms of the new BSD License.\n *\n * Copyright (c) 2009-2010, Andrius Bentkus\n */\n
+		$2.Text = 
+		$2.IncludeInNewFiles = False
 		$2.inheritsSet = Apache2License
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution

@@ -109,28 +109,33 @@ namespace SteamCondenser.Steam.Packets
 
 namespace SteamCondenser.Steam.Servers
 {
-	public struct HostnamePortPair
+	public struct HostEndPoint
 	{
-		public HostnamePortPair(string hostname, int port)
+		public HostEndPoint(string hostname, int port)
 		{
 			this.hostname = hostname;
-			this.port = port;
+			this.port     = port;
 		}
+		
 		public string hostname;
 		public int port;
+		
+		public IPEndPoint Resolve()
+		{
+			return new IPEndPoint(Dns.GetHostAddresses(hostname)[0], port);
+		}
+		
 	}
 	
 	public class MasterServer
 	{
-		public static HostnamePortPair GoldSrcMasterServer = new HostnamePortPair("hl1master.steampowered.com", 27010);
-		public static HostnamePortPair SourceMasterServer = new HostnamePortPair("hl2master.steampowered.com", 27011);
+		public static HostEndPoint GoldSrcMasterServer = new HostEndPoint("hl1master.steampowered.com", 27010);
+		public static HostEndPoint SourceMasterServer = new HostEndPoint("hl2master.steampowered.com", 27011);
 		
-		private HostnamePortPair hostnamePortPair;
 		private MasterServerSocket socket;
-		public MasterServer(HostnamePortPair hostnamePortPair)
+		public MasterServer(HostEndPoint hostEndPoint)
 		{
-			this.hostnamePortPair = hostnamePortPair;
-			socket = new MasterServerSocket(Dns.GetHostAddresses(hostnamePortPair.hostname)[0], hostnamePortPair.port);
+			socket = new MasterServerSocket(hostEndPoint.Resolve());
 		}
 		
 		public List<IPEndPoint> GetServers()
@@ -168,6 +173,11 @@ namespace SteamCondenser.Steam.Sockets
 	{
 		public MasterServerSocket(IPAddress ipAddress, int port)
 			: base(ipAddress, port)
+		{
+		}
+		
+		public MasterServerSocket(IPEndPoint endpoint)
+			: base(endpoint.Address, endpoint.Port)
 		{
 		}
 		
