@@ -36,12 +36,18 @@ namespace SteamCondenser.Steam.Servers
 		{
 		}
 		
+		public SourceServer(IPEndPoint endpoint)
+			: this(endpoint.Address, endpoint.Port)
+		{
+		}
+		
 		public SourceServer(IPAddress ipAddress, int portNumber)
 			: base(portNumber)
 		{
 			this.querySocket = new SourceServerQuerySocket(ipAddress, portNumber);
 			this.rconSocket = new RCONSocket(ipAddress, portNumber);
 		}
+		
 		
 		public bool RconAuth(string password)
 		{

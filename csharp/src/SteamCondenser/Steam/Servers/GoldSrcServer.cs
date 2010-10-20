@@ -35,9 +35,21 @@ namespace SteamCondenser.Steam.Servers
 			: this(ipAddress, 27015)
 		{
 		}
+		
 		public GoldSrcServer(IPAddress ipAddress, int portNumber)
 			: this(ipAddress, portNumber, false)
 		{
+		}
+		
+		public GoldSrcServer(IPEndPoint endpoint)
+			: this(endpoint, false)
+		{
+		}
+		
+		public GoldSrcServer(IPEndPoint endpoint, bool isHLTV)
+			: this(endpoint.Address, endpoint.Port, isHLTV)
+		{
+			
 		}
 		
 		public GoldSrcServer(IPAddress ipAddress, int portNumber, bool isHLTV)
