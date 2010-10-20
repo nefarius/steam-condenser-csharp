@@ -14,6 +14,9 @@ namespace SteamCondenser.Test
 	[TestFixture]
 	public class QueryTests
 	{
+		
+		#region Invalid Server
+		
 		/// <summary>
 		/// This test tries to initialize an invalid GoldSrc server
 		/// </summary>
@@ -38,6 +41,9 @@ namespace SteamCondenser.Test
 			Assert.Fail("Exception should have been thrown");
 		}
 		
+		#endregion
+		
+		#region Random Server
 		/// <summary>
 		/// This test gets a random GoldSrc server from the master server and
 		/// does a full query on it
@@ -71,6 +77,8 @@ namespace SteamCondenser.Test
 			server.UpdatePlayerInfo();
 			server.UpdateRulesInfo();
 		}
+		
+		#endregion
 	}
 }
 
