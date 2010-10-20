@@ -17,12 +17,15 @@ namespace SteamCondenserConsoleTestApplication
 			} 
 			catch (System.Net.Sockets.SocketException) { Console.WriteLine ("."); }
 		}
+		
 		public static void TestInvalidSourceServer()
 		{
 		}
+		
 		public static void TestRandomGoldSrcServer()
 		{
 		}
+		
 		public static void TestRandomSourceServer()
 		{
 		}
@@ -30,14 +33,9 @@ namespace SteamCondenserConsoleTestApplication
 		public static void Main(string[] args)
 		{
 			GameServer gs = new GoldSrcServer(Dns.GetHostAddresses("cs.six.lt")[0]);
-			Console.WriteLine (gs.Ping);
-			Console.WriteLine (gs.ServerInfo);
-			Console.WriteLine (gs.PlayerList);
-			
-//			SourceServer ss = new SourceServer("127.0.0.1");
-//			ss.UpdateRulesInfo();
-//			Console.WriteLine(ss.Ping);
-//			Console.WriteLine(ss.ServerInfo == null);
+			Console.WriteLine(gs.Ping);
+			Console.WriteLine(gs.ServerInfo);
+			Console.WriteLine(gs.PlayerList);
 			
 		}
 	}
