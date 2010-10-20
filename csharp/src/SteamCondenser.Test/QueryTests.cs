@@ -42,6 +42,7 @@ namespace SteamCondenser.Test
 		#endregion
 		
 		#region Random Server
+		
 		/// <summary>
 		/// This test gets a random GoldSrc server from the master server and
 		/// does a full query on it
