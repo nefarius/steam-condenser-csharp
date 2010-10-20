@@ -109,20 +109,20 @@ namespace SteamCondenser.Steam.Packets
 
 namespace SteamCondenser.Steam.Servers
 {
-	public struct HostEndPoint
+	public class HostEndPoint
 	{
 		public HostEndPoint(string hostname, int port)
 		{
-			this.hostname = hostname;
-			this.port     = port;
+			this.Hostname = hostname;
+			this.Port     = port;
 		}
 		
-		public string hostname;
-		public int port;
+		public string Hostname { get; protected set; }
+		public int Port { get; protected set; }
 		
 		public IPEndPoint Resolve()
 		{
-			return new IPEndPoint(Dns.GetHostAddresses(hostname)[0], port);
+			return new IPEndPoint(Dns.GetHostAddresses(Hostname)[0], Port);
 		}
 		
 	}
@@ -133,10 +133,21 @@ namespace SteamCondenser.Steam.Servers
 		public static HostEndPoint SourceMasterServer  = new HostEndPoint("hl2master.steampowered.com", 27011);
 		
 		private MasterServerSocket socket;
-		public MasterServer(HostEndPoint hostEndPoint)
+		public MasterServer(IPAddress address, int port)
 		{
-			socket = new MasterServerSocket(hostEndPoint.Resolve());
+			socket = new MasterServerSocket(address, port);
 		}
+		
+		public MasterServer(HostEndPoint hostEndPoint)
+			: this(hostEndPoint.Resolve())
+		{
+		}
+		
+		public MasterServer(IPEndPoint endpoint)
+			: this(endpoint.Address, endpoint.Port)
+		{
+		}
+		
 		
 		public List<IPEndPoint> GetServers()
 		{
@@ -149,7 +160,12 @@ namespace SteamCondenser.Steam.Servers
 			
 			List<IPEndPoint> servers = new List<IPEndPoint>();
 			do {
-				MasterServerRequestBatchPacket requestPacket = new MasterServerRequestBatchPacket(regionCode, lastIP.Address.ToString() + ":" + lastIP.Port, filter);
+				
+				MasterServerRequestBatchPacket requestPacket = 
+					new MasterServerRequestBatchPacket(regionCode, 
+					                                   lastIP.Address.ToString() + ":" + lastIP.Port,
+					                                   filter);
+				
 				this.socket.Send(requestPacket);
 				
 				MasterServerResponseBatchPacket msrbp = (this.socket.GetReply() as MasterServerResponseBatchPacket);
@@ -177,7 +193,7 @@ namespace SteamCondenser.Steam.Sockets
 		}
 		
 		public MasterServerSocket(IPEndPoint endpoint)
-			: base(endpoint.Address, endpoint.Port)
+			: this(endpoint.Address, endpoint.Port)
 		{
 		}
 		
