@@ -94,6 +94,7 @@ namespace SteamCondenser.Steam.Servers
 		{
 			this.UpdatePlayerInfo(null);
 		}
+		
 		public void UpdatePlayerInfo(string rconPassword)
 		{
 			handleResponseForRequest(GameServer.REQUEST_PLAYER);
@@ -121,6 +122,7 @@ namespace SteamCondenser.Steam.Servers
 		{
 			handleResponseForRequest(requestType, true);
 		}
+		
 		private void handleResponseForRequest(int requestType, bool repeatOnFailure)
 		{
 			bool success = false;
@@ -176,10 +178,6 @@ namespace SteamCondenser.Steam.Servers
 				}
 				
 			} while (repeatOnFailure && !success);
-			
-			
 		}
-
-
 	}
 }

@@ -130,7 +130,7 @@ namespace SteamCondenser.Steam.Servers
 	public class MasterServer
 	{
 		public static HostEndPoint GoldSrcMasterServer = new HostEndPoint("hl1master.steampowered.com", 27010);
-		public static HostEndPoint SourceMasterServer = new HostEndPoint("hl2master.steampowered.com", 27011);
+		public static HostEndPoint SourceMasterServer  = new HostEndPoint("hl2master.steampowered.com", 27011);
 		
 		private MasterServerSocket socket;
 		public MasterServer(HostEndPoint hostEndPoint)
