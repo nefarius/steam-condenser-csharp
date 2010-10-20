@@ -11,6 +11,7 @@ using NUnit.Framework;
 
 namespace SteamCondenser.Test
 {
+	[TestFixture]
 	public class RCONTests
 	{
 		static string goldSrcServerAddress = "127.0.0.1";
