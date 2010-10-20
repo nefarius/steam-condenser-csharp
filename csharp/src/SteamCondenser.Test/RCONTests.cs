@@ -6,6 +6,7 @@
 */ 
 
 using System;
+using System.IO;
 using SteamCondenser.Steam.Servers;
 using NUnit.Framework;
 
@@ -14,19 +15,33 @@ namespace SteamCondenser.Test
 	[TestFixture]
 	public class RCONTests
 	{
-		static string goldSrcServerAddress = "127.0.0.1";
-		static int    goldSrcServerPort    = 27015;
-		static string goldSrcServerAuth    = "test";
+		string goldSrcServerAddress = "127.0.0.1";
+		int    goldSrcServerPort    = 27015;
+		string goldSrcServerAuth    = "test";
 		
-		static string sourceServerAddress  = "127.0.0.1";
-		static int    sourceServerPort     = 27015;
-		static string sourceServerAuth     = "test";
+		string sourceServerAddress  = "127.0.0.1";
+		int    sourceServerPort     = 27015;
+		string sourceServerAuth     = "test";
 		
 		/// <summary>
 		/// Setup method to load fixtures.
 		/// </summary>
-		static RCONTests()
+		
+		[TestFixtureSetUp]
+		public void Init()
 		{
+			Properties properties = new Properties();
+			properties.Load(new FileStream("test-fixtures.properties", FileMode.Open));
+			
+			if (properties.ContainsKey("goldSrcServerAddress")) goldSrcServerAddress =           properties["goldSrcServerAddress"];
+			if (properties.ContainsKey("goldSrcServerPort"))    goldSrcServerPort    = int.Parse(properties["goldSrcServerPort"]);
+			if (properties.ContainsKey("goldSrcServerAuth"))    goldSrcServerAuth    =           properties["goldSrcServerAuth"];
+			if (properties.ContainsKey("sourceServerAddress")) sourceServerAddress   =           properties["sourceServerAddress"];
+			if (properties.ContainsKey("sourceServerPort"))      sourceServerPort    = int.Parse(properties["sourceServerPort"]);
+			if (properties.ContainsKey("sourceServerAuth"))      sourceServerAuth    =           properties["sourceServerAuth"];
+			
+			Console.WriteLine("{0}:{1} {2}", goldSrcServerAddress, goldSrcServerPort, goldSrcServerAuth); 
+			
 		}
 		
 		#region Long
