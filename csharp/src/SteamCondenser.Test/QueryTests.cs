@@ -25,8 +25,7 @@ namespace SteamCondenser.Test
 		public void InvalidGoldSrcServer()
 		{
 			GoldSrcServer server = new GoldSrcServer("10.0.0.1");
-			int ping = server.Ping;
-			Assert.Fail("Exception should have been thrown");
+			Assert.AreEqual(server.Ping, -1, "Exception should have been thrown");
 		}
 		
 		/// <summary>
@@ -37,8 +36,7 @@ namespace SteamCondenser.Test
 		public void InvalidSourceServer()
 		{
 			SourceServer server = new SourceServer("10.0.0.1");
-			int ping = server.Ping;
-			Assert.Fail("Exception should have been thrown");
+			Assert.AreEqual(server.Ping, -1, "Exception should have been thrown");
 		}
 		
 		#endregion
