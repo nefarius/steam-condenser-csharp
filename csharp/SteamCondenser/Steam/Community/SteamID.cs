@@ -20,7 +20,7 @@ namespace SteamCondenser.Steam.Community
 	/// </summary>
 	public class SteamID
 	{
-		private static Dictionary<object, SteamID> cache = new Dictionary<object, SteamID>();
+		private static Dictionary<object, SteamID> cacheMemory = new Dictionary<object, SteamID>();
 		
 		public string    CustomUrl               { get; protected set; }
 		public string    FavoriteGame            { get; protected set; }
@@ -125,39 +125,39 @@ namespace SteamCondenser.Steam.Community
 		
 		public static SteamID Create(long id)
 		{
-			return SteamID.Create((object)id, true, false);
+			return SteamID.Create(id, true, true);
 		}
 		
 		public static SteamID Create(string id)
 		{
-			return SteamID.Create((object)id, true, false);
+			return SteamID.Create(id, true, true);
 		}
 		
 		public static SteamID Create(long id, bool fetch)
 		{
-			return SteamID.Create((object)id, fetch, false);
+			return SteamID.Create(id, fetch, true);
 		}
 		
 		public static SteamID Create(string id, bool fetch)
 		{
-			return SteamID.Create((object)id, fetch, false);
+			return SteamID.Create(id, fetch, true);
 		}
 		
-		public static SteamID Create(long id, bool fetch, bool bypassCache)
+		public static SteamID Create(long id, bool fetch, bool cache)
 		{
-			return SteamID.Create((object)id, fetch, bypassCache);
+			return SteamID.Create((object)id, fetch, cache);
 		}
 		
-		public static SteamID Create(string id, bool fetch, bool bypassCache)
+		public static SteamID Create(string id, bool fetch, bool cache)
 		{
-			return SteamID.Create((object)id, fetch, bypassCache);
+			return SteamID.Create((object)id.ToLower(), fetch, cache);
 		}		
 		
-		private static SteamID Create(Object id, bool fetch, bool bypassCache)
+		private static SteamID Create(Object id, bool fetch, bool cache)
 		{
-			if (IsCached(id) && !bypassCache)
+			if (IsCached(id) && cache)
 			{
-				SteamID steamid = cache[id];
+				SteamID steamid = cacheMemory[id];
 				if (fetch && !steamid.IsFetched)
 				{
 					steamid.FetchData();
@@ -170,7 +170,7 @@ namespace SteamCondenser.Steam.Community
 		
 		public static bool IsCached(Object id)
 		{
-			return cache.ContainsKey(id);
+			return cacheMemory.ContainsKey(id);
 		}
 		public bool Cached
 		{
