@@ -14,6 +14,8 @@ namespace SteamCondenser.Steam.Community
 {
 	public class SteamGroup
 	{
+		#region Fields
+		
 		private static Dictionary<object, SteamGroup> cacheMemory = new Dictionary<object, SteamGroup>();
 		
 		public string   CustomUrl { get; protected set; }
@@ -24,14 +26,6 @@ namespace SteamCondenser.Steam.Community
 		
 		public bool IsFetched { get { return FetchTime.Ticks != 0; } }
 		
-		public string BaseUrl { 
-			get {
-				if (CustomUrl == null)
-					return "http://steamcommunity.com/gid/" + GroupID64;
-				else
-					return "http://steamcommunity.com/groups/" + CustomUrl;
-			}
-		}
 		
 		private SteamID[] members = null;
 		public SteamID[] Members
@@ -41,6 +35,10 @@ namespace SteamCondenser.Steam.Community
 				return members;
 			}
 		}
+		
+		#endregion
+		
+		#region Constructors
 		
 		public static SteamGroup Create(long id)
 		{
@@ -92,6 +90,43 @@ namespace SteamCondenser.Steam.Community
 			
 		}
 		
+		private SteamGroup(object id)
+		{
+			if (id is string)
+				CustomUrl = (id as string).ToLower();
+			else
+				GroupID64 = (long)id;
+		}
+		
+		#endregion
+		
+		#region URL Handling
+		
+		public static string GroupPage   { get { return "http://steamcommunity.com/groups/"; } }
+		public static string GroupIDPage { get { return "http://steamcommunity.com/gid/"; } }
+
+		public static string GetPage(string id)
+		{
+			return SteamGroup.GroupPage + id;
+		}
+		
+		public static string GetPage(long id)
+		{
+			return SteamGroup.GroupIDPage + id;
+		}
+		
+		public string GroupUrl { get { return GetPage(CustomUrl); } }
+		public string GroupIDUrl { get { return GetPage(GroupID64); } }
+		
+		public string BaseUrl { 
+			get {
+				if (CustomUrl == null) return GroupIDUrl;
+				else return GroupUrl;
+			}
+		}
+		
+		#endregion
+		
 		public static bool IsCached(string id)
 		{
 			return cacheMemory.ContainsKey(id.ToLower());
@@ -118,14 +153,6 @@ namespace SteamCondenser.Steam.Community
 		public static void ClearCache()
 		{
 			cacheMemory = new Dictionary<object, SteamGroup>();
-		}
-		
-		private SteamGroup(object id)
-		{
-			if (id is string)
-				CustomUrl = (id as string).ToLower();
-			else
-				GroupID64 = (long)id;
 		}
 		
 		public bool FetchMembers()	
