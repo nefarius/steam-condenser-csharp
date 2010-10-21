@@ -29,7 +29,6 @@ namespace SteamCondenser.Steam.Community
 		//public SteamId[] Friends                 { get; protected set; }
 		// map
 		public string    Location                { get; protected set; }
-		// SteamGroup
 		public string    Headline                { get; protected set; }
 		public float     HoursPlayed             { get; protected set; }
 		public string    ImageUrl                { get; protected set; }
@@ -46,10 +45,11 @@ namespace SteamCondenser.Steam.Community
 		public bool      VacBanned               { get; protected set; }
 		public int       VisibilityState         { get; protected set; }
 		
+		public SteamGroup[] Groups { get; protected set; }
 		public Dictionary<string, string> Links { get; protected set; }
 		public Dictionary<string, float> MostPlayedGames { get; protected set; }
 		
-		public bool IsFetched { get { return FetchTime.Ticks == 0; } }
+		public bool IsFetched { get { return FetchTime.Ticks != 0; } }
 		
 		protected SteamID[] friends = null;
 		public SteamID[] Friends {
@@ -246,13 +246,14 @@ namespace SteamCondenser.Steam.Community
 			var groupsNode = profile.GetElementsByTagName("groups").Item(0);
 			if (groupsNode != null)
 			{
+				List<SteamGroup> grps = new List<SteamGroup>();
 				foreach (XmlElement node in groupsNode)
 				{
-					long groupid = long.Parse(node.GetInnerText("groupID64"));
-					// TODO: do something with the data
+					grps.Add(SteamGroup.Create(long.Parse(node.GetInnerText("groupID64")), false));
 				}
+				Groups = grps.ToArray();
 			}
-
+		
 			var weblinksNode = profile.GetElementsByTagName("weblinks").Item(0);
 			Links = new Dictionary<string, string>();
 			if (groupsNode != null)

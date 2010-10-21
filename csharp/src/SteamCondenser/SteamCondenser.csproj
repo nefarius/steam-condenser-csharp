@@ -64,6 +64,7 @@
     <Compile Include="Steam\Servers\SourceServer.cs" />
     <Compile Include="Steam\Community\Base.cs" />
     <Compile Include="Steam\Community\SteamID.cs" />
+    <Compile Include="Steam\Community\SteamGroup.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
