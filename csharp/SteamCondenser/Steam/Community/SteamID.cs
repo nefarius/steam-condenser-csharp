@@ -155,39 +155,60 @@ namespace SteamCondenser.Steam.Community
 		
 		private static SteamID Create(Object id, bool fetch, bool cache)
 		{
-			if (IsCached(id) && cache)
+			SteamID steamid;
+			
+			if (!cache)
+				steamid = new SteamID(id);
+			else if (!IsCached(id))
 			{
-				SteamID steamid = cacheMemory[id];
-				if (fetch && !steamid.IsFetched)
-				{
-					steamid.FetchData();
-				}
-				return steamid;
-			} 
+				steamid = new SteamID(id);
+				cacheMemory[id] = steamid;
+			}
 			else 
-				return new SteamID(id, fetch);
+				steamid = cacheMemory[id];
+			
+			if (fetch && !steamid.IsFetched) steamid.FetchData(cache);
+			
+			return steamid;
+			
 		}
 		
 		public static bool IsCached(Object id)
 		{
 			return cacheMemory.ContainsKey(id);
 		}
-		public bool Cached
+		
+		public void Cache()
 		{
-			get { return IsCached(SteamID64); }
+			if (!cacheMemory.ContainsKey(this.SteamID64))
+			{
+				cacheMemory[SteamID64] = this;
+			}
+			if ((CustomUrl != null) && !cacheMemory.ContainsKey(CustomUrl))
+			{
+				cacheMemory[CustomUrl] = this;
+			}
 		}
 		
-		private SteamID(Object id, bool fetch)
+		public static void ClearCache()
+		{
+			cacheMemory = new Dictionary<object, SteamID>();
+		}
+		
+		private SteamID(Object id)
 		{
 			if (id is string)
 				this.CustomUrl = (string)id;
 			else
 				this.SteamID64 = (long)id;
-			
-			if (fetch) FetchData();
 		}
 		
 		public void FetchData()
+		{
+			FetchData(true);
+		}
+		
+		public void FetchData(bool cache)
 		{
 			string url = BaseUrl + "?xml=1";
 			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
@@ -222,6 +243,7 @@ namespace SteamCondenser.Steam.Community
 			{
 				CustomUrl = profile.GetInnerText("customURL");
 				if (CustomUrl.Length == 0) CustomUrl = null;
+				else Cache();
 			}
 			
 			

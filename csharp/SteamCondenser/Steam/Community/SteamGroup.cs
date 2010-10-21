@@ -78,7 +78,7 @@ namespace SteamCondenser.Steam.Community
 			
 			if (!cache)
 				grp = new SteamGroup(id);
-			else if (!SteamGroup.IsCached(id))
+			else if (!IsCached(id))
 			{
 				grp = new SteamGroup(id);
 				cacheMemory[id] = grp;
