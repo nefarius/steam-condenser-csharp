@@ -20,6 +20,8 @@ namespace SteamCondenser.Steam.Community
 	/// </summary>
 	public class SteamID
 	{
+		#region Main Fields
+		
 		private static Dictionary<object, SteamID> cacheMemory = new Dictionary<object, SteamID>();
 		
 		public string    CustomUrl               { get; protected set; }
@@ -66,14 +68,9 @@ namespace SteamCondenser.Steam.Community
 		public bool IsOnline { get { return (OnlineState.Equals("online") || InGame); } }
 		public bool InGame { get { return OnlineState.Equals("in-game"); } }
 		
-		public string BaseUrl {
-			get {
-				if (CustomUrl == null)
-					return "http://steamcommunity.com/profiles/" + SteamID64;
-				else
-					return "http://steamcommunity.com/id/" + CustomUrl;
-			}
-		}
+		#endregion
+		
+		#region CommunityID and SteamID
 		
 		/// <summary>
 		/// Converts the 64bit SteamID as used and reported by the Steam Community to a SteamID 
@@ -122,6 +119,10 @@ namespace SteamCondenser.Steam.Community
 			string[] tmpId = steamId.Substring(6).Split(new char [] { ':' });
 			return long.Parse(tmpId[1]) + long.Parse(tmpId[2]) * 2 + 76561197960265728L;
 		}
+		
+		#endregion
+		
+		#region Constructors
 		
 		public static SteamID Create(long id)
 		{
@@ -173,6 +174,43 @@ namespace SteamCondenser.Steam.Community
 			
 		}
 		
+		private SteamID(Object id)
+		{
+			if (id is string)
+				this.CustomUrl = (string)id;
+			else
+				this.SteamID64 = (long)id;
+		}
+		
+		#endregion
+		
+		#region URL handling
+		
+		public static string ProfilePage  { get { return "http://steamcommunity.com/profiles/"; } }
+		public static string ProfileIDPage { get { return "http://steamcommunity.com/id/"; } }
+		
+		public static string GetPage(object id)
+		{
+			if (id is string)
+				return ProfilePage + id;
+			else
+				return ProfileIDPage + id;
+		}
+		
+		public string ProfileUrl   { get { return SteamID.GetPage(CustomUrl); } }
+		public string ProfileIDUrl { get { return SteamID.GetPage(SteamID64); } }
+		
+		public string BaseUrl {
+			get {
+				if (CustomUrl == null) return ProfileUrl;
+				else return ProfileIDUrl;
+			}
+		}
+		
+		#endregion
+		
+		#region Caching
+		
 		public static bool IsCached(Object id)
 		{
 			return cacheMemory.ContainsKey(id);
@@ -195,13 +233,7 @@ namespace SteamCondenser.Steam.Community
 			cacheMemory = new Dictionary<object, SteamID>();
 		}
 		
-		private SteamID(Object id)
-		{
-			if (id is string)
-				this.CustomUrl = (string)id;
-			else
-				this.SteamID64 = (long)id;
-		}
+		#endregion
 		
 		public void FetchData()
 		{
@@ -287,8 +319,6 @@ namespace SteamCondenser.Steam.Community
 					Links.Add(title, link);
 				}
 			}
-			
-			
 			FetchTime = DateTime.Now;
 		}
 		

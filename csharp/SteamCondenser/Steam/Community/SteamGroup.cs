@@ -163,7 +163,9 @@ namespace SteamCondenser.Steam.Community
 					}
 			
 				} while (page < totalPages);
-			} catch { return false; }
+			}
+			catch (XmlException) { return false; }
+			catch (Exception e) { throw e; }
 			
 			this.members = members.ToArray();
 			
