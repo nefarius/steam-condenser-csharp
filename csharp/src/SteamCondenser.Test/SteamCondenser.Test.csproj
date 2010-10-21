@@ -45,7 +45,7 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="RCONTests.cs" />
     <Compile Include="Properties.cs" />
-    <Compile Include="Community.cs" />
+    <Compile Include="Community\Groups.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SteamCondenser\SteamCondenser.csproj">
@@ -59,4 +59,7 @@
       <Properties InternalTargetFrameworkVersion="3.5" />
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup>
+    <Folder Include="Community\" />
+  </ItemGroup>
 </Project>
