@@ -169,11 +169,9 @@ namespace SteamCondenser.Steam.Community
 			try {
 				do {
 					page++;
-					string url = BaseUrl + "/memberslistxml?p=" + page;
 					
-					HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
 					XmlDocument doc = new XmlDocument();
-					doc.Load(request.GetResponse().GetResponseStream());
+					doc.LoadUrl(BaseUrl + "/memberslistxml?p=" + page);
 					
 					totalPages = int.Parse(doc.GetInnerText("totalPages"));
 
@@ -181,8 +179,7 @@ namespace SteamCondenser.Steam.Community
 					{
 						GroupID64 = long.Parse(doc.GetInnerText("groupID64"));
 						if (cache) Cache();
-					}
-				
+					}				
 				
 					foreach (XmlElement bla in doc.GetElementsByTagName("members").Item(0))
 					{
