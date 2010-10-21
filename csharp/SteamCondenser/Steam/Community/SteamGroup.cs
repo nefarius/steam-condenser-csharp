@@ -175,10 +175,8 @@ namespace SteamCondenser.Steam.Community
 			get {
 				if (members == null)
 				{
-					string url = BaseUrl + "/memberslistxml";
-					HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
 					XmlDocument doc = new XmlDocument();
-					doc.Load(request.GetResponse().GetResponseStream());
+					doc.LoadUrl(BaseUrl + "/memberslistxml");
 					return int.Parse(doc.GetInnerText("memberCount"));
 				}
 				else 

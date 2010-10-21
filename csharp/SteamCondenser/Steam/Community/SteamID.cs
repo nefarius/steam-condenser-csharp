@@ -294,10 +294,8 @@ namespace SteamCondenser.Steam.Community
 		
 		public long[] GetFriendsIDs()
 		{
-			string url = BaseUrl + "/friends?xml=1";
-			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
 			XmlDocument page = new XmlDocument();
-			page.Load(request.GetResponse().GetResponseStream());
+			page.LoadUrl(BaseUrl + "/friends?xml=1");
 			
 			var friends = page.GetElementsByTagName("friends").Item(0);
 			

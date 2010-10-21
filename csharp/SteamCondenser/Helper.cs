@@ -6,6 +6,7 @@
  */
 
 using System;
+using System.Net;
 using System.Xml;
 using System.Collections.Generic;
 
@@ -79,6 +80,12 @@ namespace SteamCondenser
 		public static string GetInnerText(this XmlElement element, string tag)
 		{
 			return element.GetElementsByTagName(tag).Item(0).InnerText;
+		}
+		
+		public static void LoadUrl(this XmlDocument xmldoc, string url)
+		{
+			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+			xmldoc.Load(request.GetResponse().GetResponseStream());
 		}
 	}
 }
