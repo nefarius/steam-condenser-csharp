@@ -186,15 +186,17 @@ namespace SteamCondenser.Steam.Community
 		
 		#region URL handling
 		
-		public static string ProfilePage  { get { return "http://steamcommunity.com/profiles/"; } }
-		public static string ProfileIDPage { get { return "http://steamcommunity.com/id/"; } }
+		public static string ProfileIDPage   { get { return "http://steamcommunity.com/profiles/"; } }
+		public static string ProfilePage { get { return "http://steamcommunity.com/id/"; } }
 		
-		public static string GetPage(object id)
+		public static string GetPage(long id)
 		{
-			if (id is string)
-				return ProfilePage + id;
-			else
-				return ProfileIDPage + id;
+			return ProfileIDPage + id;
+		}
+		
+		public static string GetPage(string id)
+		{
+			return ProfilePage + id;
 		}
 		
 		public string ProfileUrl   { get { return SteamID.GetPage(CustomUrl); } }
@@ -202,8 +204,8 @@ namespace SteamCondenser.Steam.Community
 		
 		public string BaseUrl {
 			get {
-				if (CustomUrl == null) return ProfileUrl;
-				else return ProfileIDUrl;
+				if (CustomUrl == null) return ProfileIDUrl;
+				else return ProfileUrl;
 			}
 		}
 		
@@ -243,10 +245,8 @@ namespace SteamCondenser.Steam.Community
 		public void FetchData(bool cache)
 		{
 			try {
-				string url = BaseUrl + "?xml=1";
-				HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
 				XmlDocument profile = new XmlDocument();
-				profile.Load(request.GetResponse().GetResponseStream());
+				profile.LoadUrl(BaseUrl + "?xml=1");
 				
 				// TODO: check for error, throw exception
 				

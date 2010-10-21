@@ -65,6 +65,7 @@
     <Compile Include="Steam\Community\Base.cs" />
     <Compile Include="Steam\Community\SteamID.cs" />
     <Compile Include="Steam\Community\SteamGroup.cs" />
+    <Compile Include="Steam\Community\GameStats\TeamFortress2.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -81,5 +82,6 @@
   </ProjectExtensions>
   <ItemGroup>
     <Folder Include="Steam\Community\" />
+    <Folder Include="Steam\Community\GameStats\" />
   </ItemGroup>
 </Project>
