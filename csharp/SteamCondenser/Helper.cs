@@ -87,5 +87,15 @@ namespace SteamCondenser
 			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
 			xmldoc.Load(request.GetResponse().GetResponseStream());
 		}
+		
+		public static XmlElement GetXmlElement(this XmlDocument xmldoc, string name) 
+		{
+			return xmldoc.GetElementsByTagName(name).Item(0) as XmlElement;
+		}
+		
+		public static XmlElement GetXmlElement(this XmlNode xmlnode, string name) 
+		{
+			return (xmlnode as XmlElement).GetElementsByTagName(name).Item(0) as XmlElement;
+		}
 	}
 }
