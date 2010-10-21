@@ -14,7 +14,7 @@ namespace SteamCondenser.Steam.Community
 {
 	public class SteamGroup
 	{
-		private static Dictionary<object, SteamGroup> cache = new Dictionary<object, SteamGroup>();
+		private static Dictionary<object, SteamGroup> cacheMemory = new Dictionary<object, SteamGroup>();
 		
 		public string   CustomUrl { get; protected set; }
 		public long     GroupID64 { get; protected set; }
@@ -37,79 +37,102 @@ namespace SteamCondenser.Steam.Community
 		public SteamID[] Members
 		{
 			get {
-				if (members == null) FetchMembers();
+				if (members == null) FetchMembers(true);
 				return members;
 			}
 		}
 		
 		public static SteamGroup Create(long id)
 		{
-			return SteamGroup.Create((object)id, true, false);
+			return SteamGroup.Create(id, true, true);
 		}
 		
 		public static SteamGroup Create(string id)
 		{
-			return SteamGroup.Create((object)id, true, false);
+			return SteamGroup.Create(id, true, true);
 		}
 		
 		public static SteamGroup Create(long id, bool fetch)
 		{
-			return SteamGroup.Create((object)id, fetch, false);
+			return SteamGroup.Create(id, fetch, true);
 		}
 		
 		public static SteamGroup Create(string id, bool fetch)
 		{
-			return SteamGroup.Create((object)id, fetch, false);
+			return SteamGroup.Create(id, fetch, true);
 		}
 		
-		public static SteamGroup Create(long id, bool fetch, bool bypassCache)
+		public static SteamGroup Create(long id, bool fetch, bool cache)
 		{
-			return SteamGroup.Create((object)id, fetch, bypassCache);
+			return SteamGroup.Create((object)id, fetch, cache);
 		}
 		
-		public static SteamGroup Create(string id, bool fetch, bool bypassCache)
+		public static SteamGroup Create(string id, bool fetch, bool cache)
 		{
-			return SteamGroup.Create((object)id, fetch, bypassCache);
+			return SteamGroup.Create((object)id.ToLower(), fetch, cache);
 		}
 		
-		private static SteamGroup Create(object id, bool fetch, bool bypassCache)
+		private static SteamGroup Create(object id, bool fetch, bool cache)
 		{
-			if (SteamGroup.IsCached(id) && !bypassCache)
+			SteamGroup grp;
+			
+			if (!cache)
+				grp = new SteamGroup(id);
+			else if (!SteamGroup.IsCached(id))
 			{
-				SteamGroup grp = cache[id];
-				if (fetch && !grp.IsFetched) grp.FetchMembers();
-				return grp;
+				grp = new SteamGroup(id);
+				cacheMemory[id] = grp;
 			}
-			else
-				return new SteamGroup(id, fetch);
+			else 
+				grp = cacheMemory[id];
+			
+			if (fetch && !grp.IsFetched) grp.FetchMembers(cache);
+			
+			return grp;
+			
+		}
+		
+		public static bool IsCached(string id)
+		{
+			return cacheMemory.ContainsKey(id.ToLower());
 		}
 		
 		public static bool IsCached(object id)	
 		{
-			return cache.ContainsKey(id);
+			if (id is string) return IsCached(id as string);
+			return cacheMemory.ContainsKey(id);
 		}
 		
-		public bool Cache()
+		public void Cache()
 		{
-			if (!cache.ContainsKey(this.GroupID64))
+			if (!cacheMemory.ContainsKey(this.GroupID64))
 			{
-				cache[GroupID64] = this;
-				if ((CustomUrl != null) && !cache.ContainsKey(CustomUrl))
-					cache[CustomUrl] = this;
-				return true;
+				cacheMemory[GroupID64] = this;
 			}
-			return false;
+			if ((CustomUrl != null) && !cacheMemory.ContainsKey(CustomUrl))
+			{
+				cacheMemory[CustomUrl] = this;
+			}
 		}
 		
-		private SteamGroup(object id, bool fetch)
+		public static void ClearCache()
+		{
+			cacheMemory = new Dictionary<object, SteamGroup>();
+		}
+		
+		private SteamGroup(object id)
 		{
 			if (id is string)
-				CustomUrl = (string)id;
+				CustomUrl = (id as string).ToLower();
 			else
 				GroupID64 = (long)id;
 		}
 		
-		public bool FetchMembers()
+		public bool FetchMembers()	
+		{
+			return FetchMembers(false);
+		}
+		public bool FetchMembers(bool cache)
 		{
 			
 			int page = 0;
@@ -119,20 +142,26 @@ namespace SteamCondenser.Steam.Community
 			try {
 				do {
 					page++;
-					string url = BaseUrl + "/memberlistxml?p=" + page;
+					string url = BaseUrl + "/memberslistxml?p=" + page;
 					
 					HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
 					XmlDocument doc = new XmlDocument();
 					doc.Load(request.GetResponse().GetResponseStream());
 					
 					totalPages = int.Parse(doc.GetInnerText("totalPages"));
-					
-					var memberList = (doc.GetElementsByTagName("members").Item(0) as XmlElement).GetElementsByTagName("steamID64");
-					
-					foreach (XmlElement member in memberList)
+
+					if (page == 1)
 					{
-						members.Add(SteamID.Create(long.Parse(member.InnerText)));
+						GroupID64 = long.Parse(doc.GetInnerText("groupID64"));
+						if (cache) Cache();
 					}
+				
+				
+					foreach (XmlElement bla in doc.GetElementsByTagName("members").Item(0))
+					{
+						members.Add(SteamID.Create(long.Parse(bla.InnerText), false));
+					}
+			
 				} while (page < totalPages);
 			} catch { return false; }
 			
@@ -146,7 +175,7 @@ namespace SteamCondenser.Steam.Community
 			get {
 				if (members == null)
 				{
-					string url = BaseUrl + "/memberlistxml";
+					string url = BaseUrl + "/memberslistxml";
 					HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
 					XmlDocument doc = new XmlDocument();
 					doc.Load(request.GetResponse().GetResponseStream());
