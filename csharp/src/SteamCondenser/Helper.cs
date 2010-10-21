@@ -6,6 +6,7 @@
  */
 
 using System;
+using System.Xml;
 using System.Collections.Generic;
 
 namespace SteamCondenser
@@ -16,6 +17,8 @@ namespace SteamCondenser
 		{
 			return System.Text.Encoding.ASCII.GetString(value);
 		}
+		
+		#region GetBytes
 		
 		public static byte[] GetBytes(this string value)
 		{
@@ -32,6 +35,10 @@ namespace SteamCondenser
 			return System.BitConverter.GetBytes(value);
 		}
 		
+		#endregion
+		
+		#region RevereseBytes
+		
 		public static uint ReverseBytes(this uint value)
 		{
 			byte[] bytes = BitConverter.GetBytes(value);
@@ -41,6 +48,7 @@ namespace SteamCondenser
 			}
 			return BitConverter.ToUInt32(bytes, 0);
 		}
+		
 		public static int ReverseBytes(this int value)
 		{
 			byte[] bytes = BitConverter.GetBytes(value);
@@ -50,6 +58,7 @@ namespace SteamCondenser
 			}
 			return BitConverter.ToInt32(bytes, 0);
 		}
+		
 		public static ushort ReverseBytes(this ushort value)
 		{
 			byte[] bytes = BitConverter.GetBytes(value);
@@ -58,6 +67,18 @@ namespace SteamCondenser
 				Array.Reverse(bytes);
 			}
 			return BitConverter.ToUInt16(bytes, 0);
+		}
+		
+		#endregion
+		
+		public static string GetInnerText(this XmlDocument doc, string tag)
+		{
+			return doc.GetElementsByTagName(tag).Item(0).InnerText;
+		}
+		
+		public static string GetInnerText(this XmlElement element, string tag)
+		{
+			return element.GetElementsByTagName(tag).Item(0).InnerText;
 		}
 	}
 }
