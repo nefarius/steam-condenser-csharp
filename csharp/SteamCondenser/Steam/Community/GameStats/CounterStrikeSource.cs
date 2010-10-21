@@ -6,6 +6,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Xml;
 	
 namespace SteamCondenser.Steam.Community
@@ -149,6 +150,9 @@ namespace SteamCondenser.Steam.Community
 		public float  KDRatio          { get; protected set; }
 		public int    RoundsLost       { get; protected set; }
 		
+		public CSSMap[]    MapStats    { get; protected set; }
+		public CSSWeapon[] WeaponStats { get; protected set; }
+		
 		public CSSStats(string steamid)
 			: base(steamid, "cs:s")
 		{
@@ -201,6 +205,23 @@ namespace SteamCondenser.Steam.Community
 				KDRatio = (float)Kills/Deaths;
 			
 			RoundsLost = RoundsPlayed - RoundsWon;
+			
+			List<CSSMap> mapList = new List<CSSMap>();
+			var mapData = doc.GetXmlElement("stats").GetXmlElement("maps");
+			foreach (string map in maps)
+			{
+				mapList.Add(new CSSMap(map, mapData));
+			}
+			MapStats = mapList.ToArray();
+			
+			List<CSSWeapon> weaponList = new List<CSSWeapon>();
+			var weaponData = doc.GetXmlElement("stats").GetXmlElement("weapons");
+			foreach (string weapon in weapons)
+			{
+				weaponList.Add(new CSSWeapon(weapon, weaponData));
+			}
+			
+			WeaponStats = weaponList.ToArray();
 		}
 	}
 }
