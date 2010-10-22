@@ -46,6 +46,7 @@
     <Compile Include="RCONTests.cs" />
     <Compile Include="Properties.cs" />
     <Compile Include="Community\Groups.cs" />
+    <Compile Include="Community\TeamFortress2.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SteamCondenser\SteamCondenser.csproj">
