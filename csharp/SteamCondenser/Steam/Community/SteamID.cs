@@ -378,6 +378,15 @@ namespace SteamCondenser.Steam.Community
 					return new Steam.Community.CSSStats(SteamID64);
 			}
 		}
+		
+		public L4DStats L4DStats {
+			get {
+				if (CustomUrl != null)
+					return new Steam.Community.L4DStats(CustomUrl);
+				else
+					return new Steam.Community.L4DStats(SteamID64);
+			}
+		}
 			
 		#endregion
 		
