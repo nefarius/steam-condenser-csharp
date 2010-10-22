@@ -156,6 +156,7 @@ namespace SteamCondenser.Steam.Community
 		public CSSStats(string steamid)
 			: base(steamid, "cs:s")
 		{
+			FetchData();
 		}
 		
 		public CSSStats(long steamid)
