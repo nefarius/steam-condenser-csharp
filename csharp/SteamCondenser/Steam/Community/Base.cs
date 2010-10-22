@@ -53,20 +53,20 @@ namespace SteamCondenser.Steam.Community
 	
 	public abstract class GameWeapon 
 	{
-		public int    Kills { get; protected set; }
 		public string ID    { get; protected set; }
+		public int    Kills { get; protected set; }
 		public int    Shots { get; protected set; }
 		
-		public float ShotsPerKill {
+		public float AverageShotsPerKill {
 			get { 
 				if (Kills == 0) return 0.0f;
 				return (float)Shots / Kills;
 			}
 		}
 		
-		internal GameWeapon(XmlElement data)
+		public GameWeapon(XmlElement data)
 		{
-			// TODO: use data
+			Kills = int.Parse(data.GetInnerText("kills"));
 		}
 	}
 	
@@ -100,6 +100,10 @@ namespace SteamCondenser.Steam.Community
 		{
 			switch (gamename)
 			{
+			case TF2Stats.AppName:
+				return new TF2Stats(steamid);
+			case CSSStats.AppName:
+				return new CSSStats(steamid);
 			default:
 				return new GameStats(steamid, gamename);
 			}
@@ -109,9 +113,21 @@ namespace SteamCondenser.Steam.Community
 		{
 			switch (gamename)
 			{
+			case TF2Stats.AppName:
+				return new TF2Stats(steamid);
+			case CSSStats.AppName:
+				return new CSSStats(steamid);
 			default:
 				return new GameStats(steamid, gamename);
 			}
+		}
+		
+		public static GameStats Create(SteamID steamid, string gamename)
+		{
+			if (steamid.CustomUrl != null)
+				return Create(steamid.CustomUrl, gamename);
+			else
+				return Create(steamid.SteamID64, gamename);
 		}
 		
 		protected XmlDocument doc;
@@ -161,6 +177,7 @@ namespace SteamCondenser.Steam.Community
 				
 			}
 		}
+		
 	}
 	
 }
