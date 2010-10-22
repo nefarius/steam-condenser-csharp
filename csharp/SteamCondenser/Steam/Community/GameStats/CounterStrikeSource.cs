@@ -46,20 +46,23 @@ namespace SteamCondenser.Steam.Community
 		public CSSWeapon(string weaponname, XmlElement data)
 		{
 			Name = weaponname;
-			
-			Favorite = data.GetInnerText("favorite").Equals(Name);
-			Kills = int.Parse(data.GetInnerText(Name + "_kills"));
-			Shots = int.Parse(data.GetInnerText(Name + "_shots"));
-			
-			if (Shots != 0)
+
+			if ((Name != "grenade") && (Name != "knife"))
 			{
-				Accuracy = Hits / Shots;
-				KSRatio = Kills / Shots;
-			}
-			else
-			{
-				Accuracy = 0;
-				KSRatio = 0;
+				Favorite = data.GetInnerText("favorite").Equals(Name);
+				Kills = int.Parse(data.GetInnerText(Name + "_kills"));
+				Shots = int.Parse(data.GetInnerText(Name + "_shots"));
+				
+				if (Shots != 0)
+				{
+					Accuracy = Hits / Shots;
+					KSRatio = Kills / Shots;
+				}
+				else
+				{
+					Accuracy = 0;
+					KSRatio = 0;
+				}
 			}
 		}
 	}
