@@ -351,5 +351,35 @@ namespace SteamCondenser.Steam.Community
 			}
 		}
 		
+		#region GameStats
+		
+		public GameStats GameStats(string gamename)
+		{
+			if (CustomUrl != null)
+				return Steam.Community.GameStats.Create(CustomUrl, gamename);
+			else
+				return Steam.Community.GameStats.Create(SteamID64, gamename);
+		}
+		
+		public TF2Stats TF2Stats {
+			get {
+				if (CustomUrl != null)
+					return new Steam.Community.TF2Stats(CustomUrl);
+				else
+					return new Steam.Community.TF2Stats(SteamID64);
+			}
+		}
+			
+		public CSSStats CSSStats {
+			get {
+				if (CustomUrl != null)
+					return new Steam.Community.CSSStats(CustomUrl);
+				else
+					return new Steam.Community.CSSStats(SteamID64);
+			}
+		}
+			
+		#endregion
+		
 	}
 }

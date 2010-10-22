@@ -119,16 +119,18 @@ namespace SteamCondenser.Steam.Community
 	
 	public class TF2Stats : GameStats
 	{
+		public const string AppName = "tf2";
+		
 		public TF2Class[] ClassStats { get; protected set; }
 		
 		public TF2Stats(string steamid)
-			: base(steamid, "tf2")
+			: base(steamid, AppName)
 		{
 			FetchData();
 		}
 		
 		public TF2Stats(long steamid)
-			: base(steamid, "tf2")
+			: base(steamid, AppName)
 		{
 			FetchData();
 		}

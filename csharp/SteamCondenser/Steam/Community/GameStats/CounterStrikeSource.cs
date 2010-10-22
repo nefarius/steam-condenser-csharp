@@ -111,7 +111,9 @@ namespace SteamCondenser.Steam.Community
 	
 	public class CSSStats : GameStats
 	{
-	   private static string[] maps = new string[] { 
+		public const string AppName = "cs:s";
+		
+		private static string[] maps = new string[] { 
 			"cs_assault", "cs_compound", "cs_havana", "cs_italy", "cs_militia", "cs_office",
 			"de_aztec", "de_cbble", "de_chateau", "de_dust", "de_dust2", "de_inferno", "de_nuke",
 			"de_piranesi", "de_port", "de_prodigy", "de_tides", "de_train" };
@@ -157,13 +159,13 @@ namespace SteamCondenser.Steam.Community
 		public CSSWeapon[] WeaponStats { get; protected set; }
 		
 		public CSSStats(string steamid)
-			: base(steamid, "cs:s")
+			: base(steamid, AppName)
 		{
 			FetchData();
 		}
 		
 		public CSSStats(long steamid)
-			: base(steamid, "cs:s")
+			: base(steamid, AppName)
 		{
 			FetchData();
 		}

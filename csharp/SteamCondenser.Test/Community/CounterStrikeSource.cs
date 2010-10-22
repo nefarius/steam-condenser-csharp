@@ -21,11 +21,15 @@ namespace SteamCondenser.Test
 			
 			Assert.AreNotEqual(stats.AppID, 0);
 			Assert.Greater(stats.AppID, 0);
-						
-//			Assert.Greater(stats.ClassStats.Length, 0);
-//			Assert.AreEqual(stats.ClassStats.Length, 9);
-			
 			Assert.Greater(stats.Achievments.Length, 0);
+			
+			stats = SteamID.Create("koraktor").CSSStats;
+			
+			Assert.AreNotEqual(stats.AppID, 0);
+			Assert.Greater(stats.AppID, 0);
+			Assert.Greater(stats.Achievments.Length, 0);
+			
+			
 		}
 		
 		[Test]
@@ -35,10 +39,12 @@ namespace SteamCondenser.Test
 			
 			Assert.AreNotEqual(stats.AppID, 0);
 			Assert.Greater(stats.AppID, 0);
-						
-//			Assert.Greater(stats.ClassStats.Length, 0);
-//			Assert.AreEqual(stats.ClassStats.Length, 9);
+			Assert.Greater(stats.Achievments.Length, 0);
 			
+			stats = SteamID.Create(76561197961384956).CSSStats;
+			
+			Assert.AreNotEqual(stats.AppID, 0);
+			Assert.Greater(stats.AppID, 0);
 			Assert.Greater(stats.Achievments.Length, 0);
 		}		
 	}
