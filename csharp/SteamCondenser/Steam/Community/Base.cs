@@ -72,11 +72,24 @@ namespace SteamCondenser.Steam.Community
 	
 	public class GameStats
 	{
+		#region Game Names
+		/// <summary>
+		/// Short game name retrieved from the web
+		/// </summary>
+		public string GameFriendlyName { get; protected set; }
+		/// <summary>
+		/// Long game name retrieved from the web
+		/// </summary>
+		public string GameName         { get; protected set; }
+		/// <summary>
+		/// game name specified by the user in the constructors
+		/// </summary>
+		public string ShortGameName    { get; protected set; }
+		
+		#endregion
 		public int    AchievmentsDone  { get; protected set; }
 		public int    AppID            { get; protected set; }
 		public string CustomUrl        { get; protected set; }
-		public string GameFriendlyName { get; protected set; }
-		public string GameName         { get; protected set; }
 		public string HoursPlayed      { get; protected set; }
 		public string PrivacyState     { get; protected set; }
 		public long   SteamID64        { get; protected set; }
@@ -89,10 +102,9 @@ namespace SteamCondenser.Steam.Community
 		public string BaseUrl {
 			get {
 				if (CustomUrl == null)
-					
-					return SteamID.GetPage(SteamID64) + "/stats/" + GameName + "?xml=1";
+					return SteamID.GetPage(SteamID64) + "/stats/" + ShortGameName + "?xml=1";
 				else
-					return SteamID.GetPage(CustomUrl) + "/stats/" + GameName + "?xml=1";
+					return SteamID.GetPage(CustomUrl) + "/stats/" + ShortGameName + "?xml=1";
 			}
 		}
 		
@@ -134,7 +146,7 @@ namespace SteamCondenser.Steam.Community
 		protected GameStats(string steamid, string gamename)
 		{
 			CustomUrl = steamid;
-			GameName = gamename;
+			ShortGameName = gamename;
 			
 			doc = new XmlDocument();
 			doc.LoadUrl(BaseUrl);
@@ -145,7 +157,7 @@ namespace SteamCondenser.Steam.Community
 		{
 			SteamID64 = steamid;
 			
-			GameName = gamename;
+			ShortGameName = gamename;
 			
 			doc = new XmlDocument();
 			doc.LoadUrl(BaseUrl);
