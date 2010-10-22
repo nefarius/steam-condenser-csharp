@@ -17,4 +17,7 @@ languages:
     id = SteamId.new('demomenz')
     stats = id.game_stats('tf2')
     achievements = stats.achievements
+  csharp: |
+    var steamid = SteamID.Create("demomenz");
+    var achievmenets = steamid.TF2Stats.Achievmenets;
 ---

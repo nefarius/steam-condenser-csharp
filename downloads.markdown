@@ -37,6 +37,15 @@ installed using one simple command.
   MD5:  7f8e648672bb98388db3d2f1408f9c3c</pre>
 </div>
 
+<div class="download">
+  <h3>C#</h3>
+  <a href="http://cloud.github.com/downloads/koraktor/steam-condenser/steam-condenser-{{page.version}}-csharp.tar.bz2">steam-condenser-{{page.version}}.tar.bz2</a>
+  <br />
+  <pre>
+  SHA1: VALUE
+  MD5:  VALUE</pre>
+</div>
+
 ## Git repository
 If you want to contribute, cloning the Git repository is the best way to get
 started:

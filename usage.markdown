@@ -3,7 +3,7 @@ layout:      default
 title:       Usage
 ---
 <script type="text/javascript">
-  var languages = ['java', 'php', 'ruby'];
+  var languages = ['java', 'php', 'ruby', 'csharp'];
 
   function displayCode(codeBlock, codeLanguage) {
     $.each(languages, function f(i, language) {

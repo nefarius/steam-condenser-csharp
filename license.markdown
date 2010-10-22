@@ -7,6 +7,9 @@ License
 
 <code>
 Copyright (c) 2008-2010, Sebastian Staudt
+
+Copyright (c)      2010, Andrius Bentkus
+
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,

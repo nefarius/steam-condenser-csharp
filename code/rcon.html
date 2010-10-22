@@ -34,4 +34,12 @@ languages:
     rescue RCONNoAuthException
       warn 'Could not authenticate with the game server.'
     end
+  csharp: |
+    var server = new SourceServer("127.0.0.1")
+    try {
+      server.RconAuth('passw0rd');
+      Console.WriteLine(server.RconExec('status'));
+    } catch (RCONNoAuthException) { 
+      Console.Error.WriteLine("Could not authenticate with the game server.");
+    }
 ---

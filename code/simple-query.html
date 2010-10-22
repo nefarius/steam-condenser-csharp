@@ -19,4 +19,9 @@ languages:
     server = GoldSrcServer.new(server_ip, 27016)
     server.init
     puts server.get_players
+  csharp: |
+    var server = new GoldSrcServer("192.168.0.114");
+    server.UpdatePlayerInfo();
+    Console.WriteLine(server.PlayerList);
+
 ---

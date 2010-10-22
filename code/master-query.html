@@ -25,4 +25,10 @@ languages:
     servers = master.get_servers
     random_server = servers[rand(servers.length)]
     server = GoldSrcServer.new(*random_server)
+  csharp: |
+    var randomizer = new Random();
+    var masterServer = new MasterServer(MasterServer.SourceMasterServer);      
+    var servers = masterServer.GetServers();
+    var point = servers[randomizer.Next(servers.Count)];
+    var server = new GoldSrcServer(point);
 ---
