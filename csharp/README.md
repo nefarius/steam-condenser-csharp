@@ -23,7 +23,7 @@ Currently it is implemented in Java, C#, PHP and Ruby.
 
 ## Credits
   * Sebastian Staudt -- koraktor(at)gmail.com
-  * Andrius Bentkus -- andrius.bentkus@rwth-aachen.de
+  * Andrius Bentkus -- andrius.bentkus(at)rwth-aachen.de
 
 ## See Also
 
