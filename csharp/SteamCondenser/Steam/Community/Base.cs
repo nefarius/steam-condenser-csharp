@@ -72,6 +72,8 @@ namespace SteamCondenser.Steam.Community
 	
 	public class GameStats
 	{
+		public const string AppUrl = "http://store.steampowered.com/app/";
+			
 		#region Game Names
 		/// <summary>
 		/// Short game name retrieved from the web
@@ -173,7 +175,7 @@ namespace SteamCondenser.Steam.Community
 			{
 				var gameNode = doc.GetElementsByTagName("game").Item(0) as XmlElement;
 				
-				AppID =  int.Parse(gameNode.GetInnerText("gameLink").Replace("http://store.steampowered.com/app/", ""));
+				AppID =  int.Parse(gameNode.GetInnerText("gameLink").Replace(AppUrl, ""));
 				GameFriendlyName = gameNode.GetInnerText("gameFriendlyName");
 				GameName = 		   gameNode.GetInnerText("gameName");
 				
