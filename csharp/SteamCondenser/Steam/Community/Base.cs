@@ -17,6 +17,8 @@ namespace SteamCondenser.Steam.Community
 		public string Name     { get; protected set; }
 		public int    PlayTime { get; protected set; }
 		
+		protected GameClass() { }
+		
 		public GameClass(XmlElement data)
 		{
 			Name     =           data.GetInnerText("className");
