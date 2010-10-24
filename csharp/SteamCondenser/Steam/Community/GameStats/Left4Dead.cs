@@ -177,7 +177,12 @@ namespace SteamCondenser.Steam.Community
 				var stats = doc.GetXmlElement("stats");
 				
 				// TODO: check if node is empty (== null)
-				MostRecentGame   = new L4DMostRecentGame(stats.GetXmlElement("mostrecentgame"));
+				var mostRecentGame = stats.GetXmlElement("mostrecentgame");
+				if (mostRecentGame.InnerText != string.Empty)
+					MostRecentGame = new L4DMostRecentGame(mostRecentGame);
+				else 
+					mostRecentGame = null;
+				
 				Favourite        = new      L4DFavourite(stats.GetXmlElement("favorites"));
 				SurvivalStats    = new  L4DSurvivalStats(stats.GetXmlElement("survival"));
 				TeamPlayStats    = new  L4DTeamPlayStats(stats.GetXmlElement("teamplay"));
@@ -219,8 +224,7 @@ namespace SteamCondenser.Steam.Community
 			Accuracy           =           data.GetInnerText("accuracy");
 		}
 	}
-	
-	
+
 	# region Left4Dead
 	
 	public class L4DMap
@@ -253,6 +257,8 @@ namespace SteamCondenser.Steam.Community
 		public int    TimesPlayed { get; protected set; }
 		public string Name        { get; protected set; }
 		
+		protected L4DMap() { }
+		
 		public L4DMap(XmlElement data)
 		{
 			ID = data.Name;
@@ -268,6 +274,7 @@ namespace SteamCondenser.Steam.Community
 		{
 			return ((weaponname == "molotov") || (weaponname == "pipes"));
 		}
+		
 		public L4DExplosive(XmlElement data)
 			: base(data)
 		{
@@ -326,6 +333,250 @@ namespace SteamCondenser.Steam.Community
 						weaponList.Add(new L4DExplosive(weapon));
 					else
 						weaponList.Add(new L4DWeapon(weapon));
+				}
+				WeaponStats = weaponList.ToArray();
+			}
+		}
+	}
+	
+	#endregion
+	
+	#region Left4Dead2
+	
+	public class L4D2ScavengeMapStats
+	{
+		public int    AverageRoundScore { get; protected set; }
+		public int    HighestGameScore  { get; protected set; }
+		public int    HighestRoundScore { get; protected set; }
+		public string Name              { get; protected set; }
+		public int    RoundsPlayed      { get; protected set; }
+		public int    RoundsWon         { get; protected set; }
+		
+		public L4D2ScavengeMapStats(XmlElement data)
+		{
+			AverageRoundScore = int.Parse(data.GetInnerText("avgscoreperround"));
+			HighestGameScore  = int.Parse(data.GetInnerText("highgamescore"));
+			HighestRoundScore = int.Parse(data.GetInnerText("highroundscore"));
+			Name              =           data.GetInnerText("fullname");
+			RoundsPlayed      = int.Parse(data.GetInnerText("roundsplayed"));
+			RoundsWon         = int.Parse(data.GetInnerText("roundswon"));
+		}
+	}
+	
+	public class L4D2ScavengeStats
+	{
+		public float AverageCansPerRound { get; protected set; }
+		public int   PerfectRounds       { get; protected set; }
+		public int   RoundsLost          { get; protected set; }
+		public int   RoundsPlayed        { get; protected set; }
+		public int   RoundsWon           { get; protected set; }
+		public int   TotalCans           { get; protected set; }
+		
+		public L4D2ScavengeMapStats[] MapStats { get; protected set; }
+		
+		public L4D2ScavengeStats(XmlElement data)
+		{
+			AverageCansPerRound = float.Parse(data.GetInnerText("avgcansperround"));
+			PerfectRounds       = int.Parse(data.GetInnerText("perfect16canrounds"));
+			RoundsLost          = int.Parse(data.GetInnerText("roundslost"));
+			RoundsPlayed        = int.Parse(data.GetInnerText("roundsplayed"));
+			RoundsWon           = int.Parse(data.GetInnerText("roundswon"));
+			TotalCans           = int.Parse(data.GetInnerText("totalcans"));
+			
+			List<L4D2ScavengeMapStats> mapList = new List<L4D2ScavengeMapStats>();
+			foreach (XmlElement map in data.GetXmlElement("mapstats"))
+			{
+				mapList.Add(new L4D2ScavengeMapStats(map));
+			}
+			MapStats = mapList.ToArray();
+		}
+	}
+	
+	public class L4D2Items
+	{
+		private static string[] items = { "adrenaline", "defibs", "medkits", "pills"};
+		
+		public static string[] Items { get { return items; } }
+		
+		public static bool IsItem(string name)
+		{
+			foreach (string itemname in Items)
+			{
+				if (itemname == name) return true;
+			}
+			return false;
+		}
+		
+		public int Adrenaline    { get; protected set; }
+		public int Defibrilators { get; protected set; }
+		public int MedKits       { get; protected set; }
+		public int Pills         { get; protected set; }
+		
+		public L4D2Items(XmlElement data)
+		{
+			Adrenaline    = int.Parse(data.GetInnerText("items_adrenaline"));
+			Defibrilators = int.Parse(data.GetInnerText("items_defibs"));
+			MedKits       = int.Parse(data.GetInnerText("items_medkits"));
+			Pills         = int.Parse(data.GetInnerText("items_pills"));
+		}
+		
+	}
+	
+	public class L4D2Infected
+	{
+		private static string[] infected = { "boomer", "charger", "common", "hunter", "jockey", "smoker", "spitter", "tank" };
+		
+		public static string[] Infected { get { return infected; } }
+		
+		public static bool IsInfected(string name)
+		{
+			foreach (string infectedname in Infected)
+			{
+				if (infectedname == name) return true;
+			}
+			return false;
+		}
+		
+		public int Boomer  { get; protected set; }
+		public int Charger { get; protected set; }
+		public int Common  { get; protected set; }
+		public int Hunter  { get; protected set; }
+		public int Jockey  { get; protected set; }
+		public int Smoker  { get; protected set; }
+		public int Spitter { get; protected set; }
+		public int Tank    { get; protected set; }
+		
+		public L4D2Infected(XmlElement data)
+		{
+			Boomer  = int.Parse(data.GetInnerText("kills_boomer"));
+			Charger = int.Parse(data.GetInnerText("kills_charger"));
+			Common  = int.Parse(data.GetInnerText("kills_common"));
+			Hunter  = int.Parse(data.GetInnerText("kills_hunter"));
+			Jockey  = int.Parse(data.GetInnerText("kills_jockey"));
+			Smoker  = int.Parse(data.GetInnerText("kills_smoker"));
+			Spitter = int.Parse(data.GetInnerText("kills_spitter"));
+			Tank    = int.Parse(data.GetInnerText("kills_tank"));
+			
+		}
+		
+	}
+	
+	public class L4D2Map : L4DMap
+	{
+		public bool      Played    { get; protected set; }
+		public L4D2Items ItemsUsed { get; protected set; }
+		public SteamID[] Teammates { get; protected set; }
+		
+		public L4D2Infected InfectedKilled { get; protected set; }
+		
+		public L4D2Map(XmlElement data)
+		{
+			string imgurl = data.GetInnerText("img");
+			ID = imgurl.Substring(0, imgurl.LastIndexOf('/') -4);
+			Name = data.GetInnerText("name");
+			Played = data.GetInnerText("hasPlayed").Equals("1");
+			
+			if (Played)
+			{
+				BestTime = float.Parse(data.GetInnerText("besttimemilliseconds")) / 1000;
+				
+				ItemsUsed = new L4D2Items(data);
+				
+				InfectedKilled = new L4D2Infected(data);
+				
+				List<SteamID> teammateList = new List<SteamID>();
+				foreach (XmlElement teammate in data.GetXmlElement("teammates"))
+				{
+					teammateList.Add(SteamID.Create(long.Parse(teammate.InnerText), false));
+				}
+				Teammates = teammateList.ToArray();
+				
+				Medal = MedalFrom(data.GetInnerText("medal"));
+			}
+
+		}
+	}
+	
+	public class L4D2Explosive : L4DExplosive
+	{
+		public new static bool IsExplosive(string weaponname)
+		{
+			return ((weaponname == "molotov") || (weaponname == "pipes") || (weaponname == "bilejars"));
+		}
+		
+		public L4D2Explosive(XmlElement data)
+			: base(data)
+		{
+		}
+	}
+	
+	public class L4D2Weapon : AbstractL4DWeapon
+	{ 
+		public int    Damage      { get; protected set; }
+		public string WeaponGroup { get; protected set; }
+		
+		public L4D2Weapon(XmlElement data)
+			: base(data)
+		{
+			Damage = int.Parse(data.GetInnerText("pctkills"));
+			WeaponGroup = data.GetInnerText("group");
+			
+			KillPercentage = data.GetInnerText("pctkills");
+		}
+	}
+	
+	public class L4D2Stats : AbstractL4DStats
+	{
+		
+		public L4D2ScavengeStats ScavengeStats { get; protected set; }
+		public GameWeapon[] WeaponStats { get; protected set; }
+		public L4D2Map[] Maps { get; protected set; }
+		
+		public float AverageAdrenalineShared  { get; protected set; }
+		public float AverageAdrenalineUsed    { get; protected set; }
+		public float AverageDefibrillatorUsed { get; protected set; }
+		
+		public L4D2Stats(string steamid)
+			: base(steamid, "l4d2")
+		{
+			FetchData();
+		}
+		
+		public L4D2Stats(long steamid)
+			: base(steamid, "l4d2")
+		{
+			FetchData();
+		}	
+		
+		protected new void FetchData()
+		{
+			if (IsPublic)
+			{
+				var stats = doc.GetXmlElement("stats");
+				
+				var lifetime = stats.GetXmlElement("lifetime");
+				AverageAdrenalineShared  = float.Parse(lifetime.GetInnerText("adrenalineshared"));
+				AverageAdrenalineUsed    = float.Parse(lifetime.GetInnerText("adrenalineused"));
+				AverageDefibrillatorUsed = float.Parse(lifetime.GetInnerText("defibrillatorsused"));
+				
+				var survival = stats.GetXmlElement("survival");
+				List <L4D2Map> maps = new List<L4D2Map>();
+				foreach (XmlElement map in survival.GetXmlElement("maps"))
+				{
+					maps.Add(new L4D2Map(map));
+				}
+				Maps = maps.ToArray();
+			
+				ScavengeStats = new L4D2ScavengeStats(stats.GetXmlElement("scavenge"));
+				
+				var weaponsStats = stats.GetXmlElement("weapons");
+				List<GameWeapon> weaponList = new List<GameWeapon>();
+				foreach (XmlElement weapon in weaponsStats)
+				{
+					if (L4D2Explosive.IsExplosive(weapon.Name))
+						weaponList.Add(new L4D2Explosive(weapon));
+					else
+						weaponList.Add(new L4D2Weapon(weapon));
 				}
 				WeaponStats = weaponList.ToArray();
 			}

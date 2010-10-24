@@ -309,20 +309,23 @@ namespace SteamCondenser.Steam.Community
 					Groups = grps.ToArray();
 				}
 			
-				var weblinksNode = profile.GetElementsByTagName("weblinks").Item(0);
-				Links = new Dictionary<string, string>();
-				if (groupsNode != null)
+				var weblinksNode = profile.GetXmlElement("weblinks");
+				if (weblinksNode != null)
 				{
-					foreach (XmlElement node in weblinksNode)
+					Links = new Dictionary<string, string>();
+					if (groupsNode != null)
 					{
-						string title = node.GetInnerText("title");
-						string link  = node.GetInnerText("link");
-						Links.Add(title, link);
+						foreach (XmlElement node in weblinksNode)
+						{
+							string title = node.GetInnerText("title");
+							string link  = node.GetInnerText("link");
+							Links.Add(title, link);
+						}
 					}
-				}
+				} else { }
 			}
 			catch (XmlException) { throw new SteamCondenserException("XML data could not be parsed."); }
-			catch (Exception e) { throw e; }
+//			catch (Exception e) { throw e; }
 			FetchTime = DateTime.Now;
 		}
 		
@@ -385,6 +388,15 @@ namespace SteamCondenser.Steam.Community
 					return new Steam.Community.L4DStats(CustomUrl);
 				else
 					return new Steam.Community.L4DStats(SteamID64);
+			}
+		}
+		
+		public L4D2Stats L4D2Stats { 
+			get { 
+				if (CustomUrl != null)
+					return new Steam.Community.L4D2Stats(CustomUrl);
+				else
+					return new Steam.Community.L4D2Stats(SteamID64);
 			}
 		}
 			
