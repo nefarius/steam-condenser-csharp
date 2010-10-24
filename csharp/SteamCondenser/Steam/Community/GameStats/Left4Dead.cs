@@ -178,6 +178,7 @@ namespace SteamCondenser.Steam.Community
 				
 				// TODO: check if node is empty (== null)
 				var mostRecentGame = stats.GetXmlElement("mostrecentgame");
+				
 				if (mostRecentGame.InnerText != string.Empty)
 					MostRecentGame = new L4DMostRecentGame(mostRecentGame);
 				else 
@@ -188,16 +189,17 @@ namespace SteamCondenser.Steam.Community
 				TeamPlayStats    = new  L4DTeamPlayStats(stats.GetXmlElement("teamplay"));
 				VersusStats      = new    L4DVersusStats(stats.GetXmlElement("versus"));
 				
-				// lifetime stats, O RLY?
 				var lifeTime = stats.GetXmlElement("lifetime");
-				FinalesSurvived = int.Parse(lifeTime.GetInnerText("finales"));
-				GamesPlayed = int.Parse(lifeTime.GetInnerText("gamesplayed"));
-				InfectedKilled = int.Parse(lifeTime.GetInnerText("infectedkilled"));
-				KillsPerHour = float.Parse(lifeTime.GetInnerText("killsperhour"));
-				AverageKitsShared = float.Parse(lifeTime.GetInnerText("kitsshared"));
-				AverageKitsUsed = float.Parse(lifeTime.GetInnerText("kitsused"));
+				
+				FinalesSurvived    =   int.Parse(lifeTime.GetInnerText("finales"));
+				GamesPlayed        =   int.Parse(lifeTime.GetInnerText("gamesplayed"));
+				InfectedKilled     =   int.Parse(lifeTime.GetInnerText("infectedkilled"));
+				KillsPerHour       = float.Parse(lifeTime.GetInnerText("killsperhour"));
+				AverageKitsShared  = float.Parse(lifeTime.GetInnerText("kitsshared"));
+				AverageKitsUsed    = float.Parse(lifeTime.GetInnerText("kitsused"));
 				AveragePillsShared = float.Parse(lifeTime.GetInnerText("pillsshared"));
-				AveragePillsUsed = float.Parse(lifeTime.GetInnerText("pillsused"));
+				AveragePillsUsed   = float.Parse(lifeTime.GetInnerText("pillsused"));
+				
 				TimePlayed = lifeTime.GetInnerText("timeplayed");
 				
 				FinalesSurvivedPercentage = (float)FinalesSurvived/GamesPlayed;	
@@ -208,20 +210,24 @@ namespace SteamCondenser.Steam.Community
 
 	public abstract class AbstractL4DWeapon : GameWeapon
 	{
-		// TODO: check the strings ows
-		public string Accuracy           { get; protected set; }
-		public string HeadShotPercentage { get; protected set; }
-		public string KillPercentage     { get; protected set; }
+		public static float ParsePercentage(string pct)
+		{
+			return float.Parse(pct.Substring(0, pct.Length - 1)) / 100;
+		}
+		
 		public string Name               { get; protected set; }
+		public float  Accuracy           { get; protected set; }
+		public float  HeadShotPercentage { get; protected set; }
+		public float  KillPercentage     { get; protected set; }
 			
 		public AbstractL4DWeapon(XmlElement data)
 			: base(data)
 		{
 			Name  = data.Name;
 
-			Shots              = int.Parse(data.GetInnerText("shots"));
-			HeadShotPercentage =           data.GetInnerText("headshots");
-			Accuracy           =           data.GetInnerText("accuracy");
+			Shots              =       int.Parse(data.GetInnerText("shots"));
+			HeadShotPercentage = ParsePercentage(data.GetInnerText("headshots"));
+			Accuracy           = ParsePercentage(data.GetInnerText("accuracy"));
 		}
 	}
 
@@ -290,7 +296,7 @@ namespace SteamCondenser.Steam.Community
 		public L4DWeapon(XmlElement data)
 			: base(data)
 		{
-			KillPercentage = data.GetInnerText("killpct");
+			KillPercentage = ParsePercentage(data.GetInnerText("killpct"));
 		}
 	}
 	
@@ -522,7 +528,7 @@ namespace SteamCondenser.Steam.Community
 			
 			WeaponGroup = data.Attributes["group"].InnerText;
 			
-			KillPercentage = data.GetInnerText("pctkills");
+			KillPercentage = ParsePercentage(data.GetInnerText("pctkills"));
 		}
 	}
 	
