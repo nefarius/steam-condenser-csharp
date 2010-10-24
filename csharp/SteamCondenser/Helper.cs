@@ -97,5 +97,10 @@ namespace SteamCondenser
 		{
 			return (xmlnode as XmlElement).GetElementsByTagName(name).Item(0) as XmlElement;
 		}
+		
+		public static string GetValueText(this XmlElement element, string name)
+		{
+			return element.GetXmlElement(name).GetInnerText("value");
+		}
 	}
 }

@@ -69,6 +69,7 @@
     <Compile Include="Steam\Community\GameStats\TeamFortress2.cs" />
     <Compile Include="Steam\Community\GameStats\CounterStrikeSource.cs" />
     <Compile Include="Steam\Community\GameStats\Left4Dead.cs" />
+    <Compile Include="Steam\Community\GameStats\DefenseGrid.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
