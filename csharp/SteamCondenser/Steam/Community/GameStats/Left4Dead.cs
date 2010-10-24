@@ -512,14 +512,15 @@ namespace SteamCondenser.Steam.Community
 	
 	public class L4D2Weapon : AbstractL4DWeapon
 	{ 
-		public int    Damage      { get; protected set; }
+		public string Damage      { get; protected set; }
 		public string WeaponGroup { get; protected set; }
 		
 		public L4D2Weapon(XmlElement data)
 			: base(data)
 		{
-			Damage = int.Parse(data.GetInnerText("pctkills"));
-			WeaponGroup = data.GetInnerText("group");
+			Damage = data.GetInnerText("pctkills");
+			
+			WeaponGroup = data.Attributes["group"].InnerText;
 			
 			KillPercentage = data.GetInnerText("pctkills");
 		}
@@ -573,6 +574,9 @@ namespace SteamCondenser.Steam.Community
 				List<GameWeapon> weaponList = new List<GameWeapon>();
 				foreach (XmlElement weapon in weaponsStats)
 				{
+					// TODO: track this statistics
+					if (weapon.Name.EndsWith("PctDmg")) continue;
+					
 					if (L4D2Explosive.IsExplosive(weapon.Name))
 						weaponList.Add(new L4D2Explosive(weapon));
 					else
