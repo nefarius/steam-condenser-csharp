@@ -9,11 +9,7 @@ Currently it is implemented in Java, C#, PHP and Ruby.
 
 * Linux, MacOS X or Windows
 
-  Mono 2.0 or newer
-
-* Windows
-
-  Microsoft.NET Framework 2.0 or newer.
+  Microsoft.NET Framework 3.5 compatible runtime or newer.
 
 
 ## License
