@@ -48,33 +48,28 @@ namespace SteamCondenser.Test
 		/// does a full query on it
 		/// </summary>
 		[Test]
-		public void RandomGoldSrcServer()
+		public void GoldSrcServerList()
 		{
-			Random randomizer = new Random();
 			MasterServer masterServer = new MasterServer(MasterServer.GoldSrcMasterServer);
-			var servers = masterServer.GetServers();
-			var point   = servers[randomizer.Next(servers.Count)];
+			masterServer.Timeout = 30000;
+			var servers = masterServer.GetServers(Regions.All, "\\type\\d\\empty\\1\\full\\1\\gamedir\\valve");
 			
-			GoldSrcServer server = new GoldSrcServer(point);
-			server.UpdatePlayerInfo();
-			server.UpdateRulesInfo();
+			Assert.Greater(servers.Count, 0);
 		}
+		
 		
 		/// <summary>
 		/// This test gets a random Source server from the master server and 
 		/// does a full query on it.
 		/// </summary>
 		[Test]
-		public void RandomSourceServeR()
+		public void SourceServerList()
 		{
-			Random randomizer = new Random();
 			MasterServer masterServer = new MasterServer(MasterServer.SourceMasterServer);			
-			var servers = masterServer.GetServers();
-			var point   = servers[randomizer.Next(servers.Count)];
+			masterServer.Timeout = 30000;
+			var servers = masterServer.GetServers(Regions.All,"\\type\\d\\empty\\1\\full\\1\\gamedir\\tf");
 			
-			GoldSrcServer server = new GoldSrcServer(point);
-			server.UpdatePlayerInfo();
-			server.UpdateRulesInfo();
+			Assert.Greater(servers.Count, 0);
 		}
 		
 		#endregion

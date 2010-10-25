@@ -134,8 +134,8 @@ namespace SteamCondenser.Steam.Servers
 		
 		private MasterServerSocket socket;
 		public MasterServer(IPAddress address, int port)
+			: this(new IPEndPoint(address, port))
 		{
-			socket = new MasterServerSocket(address, port);
 		}
 		
 		public MasterServer(HostEndPoint hostEndPoint)
@@ -144,19 +144,27 @@ namespace SteamCondenser.Steam.Servers
 		}
 		
 		public MasterServer(IPEndPoint endpoint)
-			: this(endpoint.Address, endpoint.Port)
 		{
+			socket = new MasterServerSocket(endpoint);
+		}
+		
+		public int Timeout { 
+			get { return socket.Timeout; }
+			set { socket.Timeout = value; }
 		}
 		
 		
 		public List<IPEndPoint> GetServers()
 		{
-			return GetServers(Regions.All, "");
+			List<IPEndPoint> list = GetServers(Regions.All, "");
+			
+			return list;
 		}
 		
 		public List<IPEndPoint> GetServers(Regions regionCode, string filter)
 		{
-			IPEndPoint lastIP = new IPEndPoint(IPAddress.Parse("0.0.0.0"), 0);
+			IPEndPoint lastIP = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 0);
+			IPEndPoint zeroIP = new IPEndPoint(IPAddress.Parse("0.0.0.0"), 0);
 			
 			List<IPEndPoint> servers = new List<IPEndPoint>();
 			do {
@@ -176,8 +184,7 @@ namespace SteamCondenser.Steam.Servers
 					lastIP = server;
 				}
 				
-			} while (!(lastIP.Address.ToString() == "0.0.0.0" && lastIP.Port == 0));
-			
+			} while (!(zeroIP.Equals(lastIP)));
 			return servers;
 		}
 	}
@@ -188,12 +195,12 @@ namespace SteamCondenser.Steam.Sockets
 	public class MasterServerSocket : ServerQuerySocket
 	{
 		public MasterServerSocket(IPAddress ipAddress, int port)
-			: base(ipAddress, port)
+			: this(new IPEndPoint(ipAddress, port))
 		{
 		}
 		
 		public MasterServerSocket(IPEndPoint endpoint)
-			: this(endpoint.Address, endpoint.Port)
+			: base(endpoint)
 		{
 		}
 		

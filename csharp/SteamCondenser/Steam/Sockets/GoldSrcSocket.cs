@@ -28,7 +28,6 @@ namespace SteamCondenser.Steam.Sockets
 			: base(ipAddress, portNumber)
 		{
 			this.isHLTV = isHLTV;
-			this.client.Client.ReceiveTimeout = 1000;
 		}
 		
 		public override SteamPacket GetReply()

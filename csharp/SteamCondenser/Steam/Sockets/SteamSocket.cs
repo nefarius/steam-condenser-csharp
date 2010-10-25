@@ -17,21 +17,30 @@ namespace SteamCondenser.Steam.Sockets
 		protected BinaryReader bufferReader;
 
 		protected SteamSocket(IPAddress ipAddress, int port)
+			: this(new IPEndPoint(ipAddress, port))
+		{
+		}
+		
+		protected SteamSocket(IPEndPoint endpoint)
 		{
 			// UDP client
 			this.client = new UdpClient();
 
 			// IP end point for server
-			this.remoteHost = new IPEndPoint(ipAddress, port);
+			this.remoteHost = endpoint;
 
 			// initialize buffer
 			this.buffer = new byte[SteamPacket.PACKET_SIZE];
 
 			// initialize reader
 			this.bufferReader = new BinaryReader(new MemoryStream(this.buffer));
-
 		}
 
+		public int Timeout { 
+			get { return client.Client.ReceiveTimeout; }
+			set { client.Client.ReceiveTimeout = value; }
+		}
+		
 		protected SteamPacket CreatePacket()
 		{
 			byte[] packetData = this.bufferReader.ReadBytes(buffer.Length - (int)bufferReader.BaseStream.Position);

@@ -11,12 +11,16 @@ namespace SteamCondenser.Steam.Sockets
 	public abstract class ServerQuerySocket : SteamSocket
 	{
 		public ServerQuerySocket(IPAddress ipAddress, int port)
-			: base(ipAddress, port)
+			: this(new IPEndPoint(ipAddress, port))
+		{
+		}
+			
+		public ServerQuerySocket(IPEndPoint endpoint)
+			: base(endpoint)
 		{
 			this.client.Connect(this.remoteHost);
 
 			this.client.DontFragment = true;
-			this.client.Client.ReceiveTimeout = 10000;
 		}
 
 		protected bool PacketIsSplit()

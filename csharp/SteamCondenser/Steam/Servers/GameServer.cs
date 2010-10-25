@@ -156,7 +156,6 @@ namespace SteamCondenser.Steam.Servers
 			do
 			{
 				SteamPacket responsePacket = this.GetReply();
-				Console.WriteLine ("Response: {0}", responsePacket.PacketType);
 				success = (responsePacket.PacketType == expectedResponse);
 				
 				if (responsePacket is SourceServerInfoResponsePacket)

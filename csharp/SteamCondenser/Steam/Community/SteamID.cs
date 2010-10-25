@@ -325,7 +325,6 @@ namespace SteamCondenser.Steam.Community
 				} else { }
 			}
 			catch (XmlException) { throw new SteamCondenserException("XML data could not be parsed."); }
-//			catch (Exception e) { throw e; }
 			FetchTime = DateTime.Now;
 		}
 		
