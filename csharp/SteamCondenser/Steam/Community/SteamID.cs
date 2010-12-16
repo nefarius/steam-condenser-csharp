@@ -398,6 +398,15 @@ namespace SteamCondenser.Steam.Community
 					return new Steam.Community.L4D2Stats(SteamID64);
 			}
 		}
+		
+		public AlienSwarmStats AlienSwarmStats {
+			get {
+				if (CustomUrl != null)
+					return new Steam.Community.AlienSwarmStats(CustomUrl);
+				else
+					return new Steam.Community.AlienSwarmStats(SteamID64);
+			}
+		}
 			
 		#endregion
 		

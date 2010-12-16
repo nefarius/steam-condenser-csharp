@@ -120,6 +120,8 @@ namespace SteamCondenser.Steam.Community
 				return new TF2Stats(steamid);
 			case CSSStats.AppName:
 				return new CSSStats(steamid);
+			case AlienSwarmStats.AppName:
+				return new AlienSwarmStats(steamid);
 			default:
 				return new GameStats(steamid, gamename);
 			}
@@ -133,6 +135,8 @@ namespace SteamCondenser.Steam.Community
 				return new TF2Stats(steamid);
 			case CSSStats.AppName:
 				return new CSSStats(steamid);
+			case AlienSwarmStats.AppName:
+				return new AlienSwarmStats(steamid);
 			default:
 				return new GameStats(steamid, gamename);
 			}
