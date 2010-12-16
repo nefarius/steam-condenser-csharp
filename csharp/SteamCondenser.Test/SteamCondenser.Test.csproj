@@ -50,6 +50,7 @@
     <Compile Include="Community\CounterStrikeSource.cs" />
     <Compile Include="Community\Left4Dead.cs" />
     <Compile Include="Community\ID.cs" />
+    <Compile Include="Community\AlienSwarm.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SteamCondenser\SteamCondenser.csproj">
