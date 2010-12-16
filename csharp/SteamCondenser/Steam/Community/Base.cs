@@ -106,9 +106,9 @@ namespace SteamCondenser.Steam.Community
 		public string BaseUrl {
 			get {
 				if (CustomUrl == null)
-					return SteamID.GetPage(SteamID64) + "/stats/" + ShortGameName + "?xml=1";
+					return SteamID.GetPage(SteamID64) + "/stats/" + ShortGameName + "?xml=all";
 				else
-					return SteamID.GetPage(CustomUrl) + "/stats/" + ShortGameName + "?xml=1";
+					return SteamID.GetPage(CustomUrl) + "/stats/" + ShortGameName + "?xml=all";
 			}
 		}
 		
