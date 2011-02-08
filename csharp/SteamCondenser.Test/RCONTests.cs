@@ -101,7 +101,7 @@ namespace SteamCondenser.Test
 		/// This test tries to run the "version" command over RCON on a Source server
 		/// </summary>
 		[Test]
-		public void RRCONShortSourceServer()
+		public void RCONShortSourceServer()
 		{
 			GoldSrcServer server = new GoldSrcServer(sourceServerAddress, sourceServerPort);
 			server.RconAuth(sourceServerAuth);
