@@ -139,7 +139,7 @@ namespace SteamCondenser.Steam.Packets
 			ServerInfo.SpectatorServerName = "";
 			ServerInfo.Tags = new string[] { };
 
-			if(byteReader.BaseStream.Position < byteReader.BaseStream.Length)
+			if (byteReader.BaseStream.Position < byteReader.BaseStream.Length)
 			{
 				byte edf = byteReader.ReadByte();
 

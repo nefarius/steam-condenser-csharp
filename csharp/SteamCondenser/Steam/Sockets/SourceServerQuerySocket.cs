@@ -49,7 +49,7 @@ namespace SteamCondenser.Steam.Sockets
 						}
 					}
 
-					if(isCompressed) {
+					if (isCompressed) {
 						uncompressedSize = ReverseBytes(this.bufferReader.ReadInt16()); // int32 ??
 						packetChecksum = ReverseBytes(this.bufferReader.ReadInt32());
 					}

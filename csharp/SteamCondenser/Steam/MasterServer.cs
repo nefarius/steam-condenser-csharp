@@ -81,8 +81,7 @@ namespace SteamCondenser.Steam.Packets
 			byte[] octets = new byte[4];
 			int portNumber;
 	
-			try
-			{
+			try {
 				do {
 					octets[0] = this.byteReader.ReadByte();
 					octets[1] = this.byteReader.ReadByte();

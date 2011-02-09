@@ -100,7 +100,7 @@ namespace SteamCondenser.Steam.Packets
 			MemoryStream byteStream = new MemoryStream(rawData.Length - 1);
 			byteStream.Write(rawData, 1, rawData.Length - 1);
 
-			switch(packetType)
+			switch (packetType)
 			{
 			case SteamPacketTypes.S2C_CHALLENGE:
 				packet = new ChallengeResponsePacket(byteStream.ToArray());
