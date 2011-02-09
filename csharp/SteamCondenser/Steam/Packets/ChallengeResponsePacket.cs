@@ -15,18 +15,12 @@ namespace SteamCondenser.Steam.Packets
 {
 	public class ChallengeResponsePacket : SteamPacket
 	{
-		private int challengeID;
-
-		public int ChallengeID
-		{
-			get { return challengeID; }
-			set { challengeID = value; }
-		}
+		public int ChallengeID { get; set; }
 
 		public ChallengeResponsePacket(byte[] data)
 			: base(SteamPacketTypes.S2C_CHALLENGE, data)
 		{
-			this.challengeID = this.byteReader.ReadInt32();
+			ChallengeID = this.byteReader.ReadInt32();
 		}
 	}
 }

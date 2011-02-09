@@ -14,11 +14,7 @@ namespace SteamCondenser.Steam.Packets
 {
 	public class PlayersResponsePacket : SteamPacket
 	{
-		private List<SteamPlayer> playerList;
-
-		public List<SteamPlayer> PlayerList {
-			get { return playerList; }
-		}
+		public List<SteamPlayer> PlayerList { get; protected set; }
 
 		public PlayersResponsePacket(byte[] data)
 			: base(SteamPacketTypes.S2A_PLAYER, data)
@@ -28,7 +24,7 @@ namespace SteamCondenser.Steam.Packets
 
 			byte numPlayers = this.byteReader.ReadByte();
 
-			this.playerList = new List<SteamPlayer>((int)numPlayers);
+			PlayerList = new List<SteamPlayer>((int)numPlayers);
 
 			for (byte i = 0; i < numPlayers && this.byteReader.BaseStream.Position < this.byteReader.BaseStream.Length; i++) {
 				int id = (int)this.byteReader.ReadByte();
@@ -36,7 +32,7 @@ namespace SteamCondenser.Steam.Packets
 				int score = this.byteReader.ReadInt32();
 				float connectTime = this.byteReader.ReadSingle();
 
-				this.playerList.Add(new SteamPlayer(id, name, score, connectTime));
+				PlayerList.Add(new SteamPlayer(id, name, score, connectTime));
 			}
 
 		}
