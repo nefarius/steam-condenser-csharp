@@ -137,7 +137,14 @@ namespace SteamCondenser.Steam.Sockets
 			{
 				throw new RCONNoAuthException(response);
 			}
-			this.rconChallenge = Convert.ToInt64(response.Substring(14));
+			
+			int startIndex = 14;
+			int i = startIndex;
+			while (i < response.Length && response[i] >= '0' && response[i] <= '9') {
+				i++;
+			}
+			
+			this.rconChallenge = Convert.ToInt64(response.Substring(startIndex, i - startIndex));
 		}
 		
 		private void RconSend(string command, params object[] obj)
