@@ -127,8 +127,11 @@ namespace SteamCondenser.Steam.Sockets
 			if (responsePacket == null)
 				throw new PacketFormatException();
 			string response = responsePacket.Response;
+
 			if (response.Equals("You have been banned from this server.")) {
 				throw new RCONNoAuthException(response);
+			} else if (response.Equals("You have been banned from this server")) {
+				throw new RCONBanException(response);
 			}
 			
 			int startIndex = 14;
