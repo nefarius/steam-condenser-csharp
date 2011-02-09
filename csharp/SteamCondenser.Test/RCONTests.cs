@@ -30,18 +30,17 @@ namespace SteamCondenser.Test
 		[TestFixtureSetUp]
 		public void Init()
 		{
-			Properties properties = new Properties();
-			properties.Load(new FileStream("test-fixtures.properties", FileMode.Open));
-			
-			if (properties.ContainsKey("goldSrcServerAddress")) goldSrcServerAddress =           properties["goldSrcServerAddress"];
-			if (properties.ContainsKey("goldSrcServerPort"))    goldSrcServerPort    = int.Parse(properties["goldSrcServerPort"]);
-			if (properties.ContainsKey("goldSrcServerAuth"))    goldSrcServerAuth    =           properties["goldSrcServerAuth"];
-			if (properties.ContainsKey("sourceServerAddress")) sourceServerAddress   =           properties["sourceServerAddress"];
-			if (properties.ContainsKey("sourceServerPort"))      sourceServerPort    = int.Parse(properties["sourceServerPort"]);
-			if (properties.ContainsKey("sourceServerAuth"))      sourceServerAuth    =           properties["sourceServerAuth"];
-			
-			Console.WriteLine("{0}:{1} {2}", goldSrcServerAddress, goldSrcServerPort, goldSrcServerAuth); 
-			
+			try {
+				Properties properties = new Properties();
+				properties.Load(new FileStream("test-fixtures.properties", FileMode.Open));
+				
+				if (properties.ContainsKey("goldSrcServerAddress")) goldSrcServerAddress =           properties["goldSrcServerAddress"];
+				if (properties.ContainsKey("goldSrcServerPort"))    goldSrcServerPort    = int.Parse(properties["goldSrcServerPort"]);
+				if (properties.ContainsKey("goldSrcServerAuth"))    goldSrcServerAuth    =           properties["goldSrcServerAuth"];
+				if (properties.ContainsKey("sourceServerAddress")) sourceServerAddress   =           properties["sourceServerAddress"];
+				if (properties.ContainsKey("sourceServerPort"))      sourceServerPort    = int.Parse(properties["sourceServerPort"]);
+				if (properties.ContainsKey("sourceServerAuth"))      sourceServerAuth    =           properties["sourceServerAuth"];
+			} catch { }
 		}
 		
 		#region Long
