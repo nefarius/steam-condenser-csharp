@@ -18,6 +18,18 @@ namespace SteamCondenser.Steam.Servers
 {
 	public class SourceServer : GameServer
 	{
+		public ServerQuerySocket Socket {
+			get {
+				return this.querySocket;
+			}
+		}
+		
+		public RCONSocket RconSocket {
+			get {
+				return this.rconSocket;
+			}
+		}
+		
 		protected RCONSocket rconSocket;
 		protected int rconRequestId;
 		

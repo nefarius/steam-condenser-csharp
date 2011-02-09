@@ -16,6 +16,12 @@ namespace SteamCondenser.Steam.Servers
 	{
 		private string rconPassword;
 		
+		public GoldSrcSocket Socket { 
+			get {
+				return this.querySocket as GoldSrcSocket;
+			}
+		}
+		
 		public GoldSrcServer(string ipAddress)
 			: this(ipAddress, 27015)
 		{

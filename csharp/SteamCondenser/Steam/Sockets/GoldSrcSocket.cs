@@ -110,6 +110,18 @@ namespace SteamCondenser.Steam.Sockets
 				throw new RCONNoAuthException(response);
 			}
 			
+			try { 
+				do { 
+					RCONGoldSrcResponsePacket packet = this.GetReply() as RCONGoldSrcResponsePacket;
+					if (packet == null) 
+					{
+						throw new PacketFormatException();
+					}
+					response += packet.Response;
+				} while (true);
+			}
+			catch { }
+
 			return response;
 		}
 		

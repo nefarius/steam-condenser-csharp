@@ -18,10 +18,12 @@ namespace SteamCondenser.Test
 		string goldSrcServerAddress = "127.0.0.1";
 		int    goldSrcServerPort    = 27015;
 		string goldSrcServerAuth    = "test";
+		int    goldSrcServerTimeout = 1000;
 		
 		string sourceServerAddress  = "127.0.0.1";
 		int    sourceServerPort     = 27015;
 		string sourceServerAuth     = "test";
+		int    sourceServerTimeout  = 1000;
 		
 		/// <summary>
 		/// Setup method to load fixtures.
@@ -37,9 +39,12 @@ namespace SteamCondenser.Test
 				if (properties.ContainsKey("goldSrcServerAddress")) goldSrcServerAddress =           properties["goldSrcServerAddress"];
 				if (properties.ContainsKey("goldSrcServerPort"))    goldSrcServerPort    = int.Parse(properties["goldSrcServerPort"]);
 				if (properties.ContainsKey("goldSrcServerAuth"))    goldSrcServerAuth    =           properties["goldSrcServerAuth"];
-				if (properties.ContainsKey("sourceServerAddress")) sourceServerAddress   =           properties["sourceServerAddress"];
-				if (properties.ContainsKey("sourceServerPort"))      sourceServerPort    = int.Parse(properties["sourceServerPort"]);
-				if (properties.ContainsKey("sourceServerAuth"))      sourceServerAuth    =           properties["sourceServerAuth"];
+				if (properties.ContainsKey("goldSrcServerTimeout")) goldSrcServerTimeout = int.Parse(properties["goldSrcServerTimeout"]);
+				                                                                                     
+				if (properties.ContainsKey("sourceServerAddress")) sourceServerAddress =           properties["sourceServerAddress"];
+				if (properties.ContainsKey("sourceServerPort"))    sourceServerPort    = int.Parse(properties["sourceServerPort"]);
+				if (properties.ContainsKey("sourceServerAuth"))    sourceServerAuth    =           properties["sourceServerAuth"];
+				if (properties.ContainsKey("sourceServerTimeout")) sourceServerTimeout = int.Parse(properties["goldSrcServerTimeout"]);
 			} catch { }
 		}
 		
@@ -52,6 +57,7 @@ namespace SteamCondenser.Test
 		public void RCONLongGoldSrcServer()
 		{
 			GoldSrcServer server = new GoldSrcServer(goldSrcServerAddress, goldSrcServerPort);
+			server.Socket.Timeout = goldSrcServerTimeout;
 			server.RconAuth(goldSrcServerAuth);
 			
 			string rconReply = server.RconExec("cvarlist");
@@ -66,7 +72,8 @@ namespace SteamCondenser.Test
 		[Test]
 		public void RCONLongSourceServer()
 		{
-			GoldSrcServer server = new GoldSrcServer(sourceServerAddress, sourceServerPort);
+			SourceServer server = new SourceServer(sourceServerAddress, sourceServerPort);
+			server.RconSocket.Timeout = sourceServerTimeout;
 			server.RconAuth(goldSrcServerAuth);
 			
 			string rconReply = server.RconExec("cvarlist");
@@ -86,6 +93,7 @@ namespace SteamCondenser.Test
 		public void RCONShortGoldSrcServer()
 		{
 			GoldSrcServer server = new GoldSrcServer(goldSrcServerAddress, goldSrcServerPort);
+			server.Socket.Timeout = goldSrcServerTimeout;
 			server.RconAuth(sourceServerAuth);
 			
 			string rconReply = server.RconExec("version");
@@ -102,7 +110,8 @@ namespace SteamCondenser.Test
 		[Test]
 		public void RCONShortSourceServer()
 		{
-			GoldSrcServer server = new GoldSrcServer(sourceServerAddress, sourceServerPort);
+			SourceServer server = new SourceServer(sourceServerAddress, sourceServerPort);
+			server.RconSocket.Timeout = sourceServerTimeout;
 			server.RconAuth(sourceServerAuth);
 			
 			string rconReply = server.RconExec("version");
