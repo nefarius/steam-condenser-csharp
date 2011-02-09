@@ -46,16 +46,9 @@ namespace SteamCondenser.Steam.Packets
 	
 	public class ServerInfoBasePacket : SteamPacket
 	{
-		protected int bla;
-		public int bla2;
 		public ServerInfoBasePacket(SteamPacketTypes packetType, byte[] dataBytes)
 			: base(packetType, dataBytes)
 		{
-			Type t = this.GetType();
-			foreach (var bla in t.GetFields(BindingFlags.Instance)) {
-				Console.WriteLine(bla.Name);
-			}
-			
 		}
 	}
 	
