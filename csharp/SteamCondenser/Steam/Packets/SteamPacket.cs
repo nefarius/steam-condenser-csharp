@@ -49,18 +49,14 @@ namespace SteamCondenser.Steam.Packets
 			return byteStream.ToArray();
 		}
 
-		public SteamPacketTypes PacketType
-		{
-			get
-			{
+		public SteamPacketTypes PacketType {
+			get {
 				return this.packetType;
 			}
 		}
 
-		public byte[] Data
-		{
-			get
-			{
+		public byte[] Data {
+			get {
 				return this.data;
 			}
 		}
@@ -76,21 +72,18 @@ namespace SteamCondenser.Steam.Packets
 			packetData = new byte[0];
 			MemoryStream memStream = new MemoryStream();
 			
-			foreach(byte[] splitPacket in splitPackets)
-			{
+			foreach (byte[] splitPacket in splitPackets) {
 				memStream.Write(splitPacket, 0, splitPacket.Length);
 			}
 
-			if(isCompressed)
-			{
+			if (isCompressed) {
 				BZip2InputStream bzip2 = new BZip2InputStream(new MemoryStream(packetData));
 				bzip2.Read(packetData, 0, uncompressedSize);
 
 				Crc32 crc32 = new Crc32();
 				crc32.Update(packetData);
 
-				if(crc32.Value != packetChecksum)
-				{
+				if (crc32.Value != packetChecksum) {
 					throw new Exception("CRC32 checksum mismatch of uncompressed packet data.");
 				}
 			}
@@ -109,44 +102,44 @@ namespace SteamCondenser.Steam.Packets
 
 			switch(packetType)
 			{
-				case SteamPacketTypes.S2C_CHALLENGE:
-					packet = new ChallengeResponsePacket(byteStream.ToArray());
-					break;
+			case SteamPacketTypes.S2C_CHALLENGE:
+				packet = new ChallengeResponsePacket(byteStream.ToArray());
+				break;
 
-				case SteamPacketTypes.S2A_INFO:
-					packet = new S2A_INFO_Packet(byteStream.ToArray());
-					break;
+			case SteamPacketTypes.S2A_INFO:
+				packet = new S2A_INFO_Packet(byteStream.ToArray());
+				break;
 
-				case SteamPacketTypes.S2A_INFO2:
-					packet = new SourceServerInfoResponsePacket(byteStream.ToArray());
-					//packet = new S2A_INFO2_Packet(byteStream.ToArray());
-					break;
+			case SteamPacketTypes.S2A_INFO2:
+				packet = new SourceServerInfoResponsePacket(byteStream.ToArray());
+				//packet = new S2A_INFO2_Packet(byteStream.ToArray());
+				break;
 
-				case SteamPacketTypes.S2A_INFO_DETAILED:
-					packet = new S2A_INFO_DETAILED_Packet(byteStream.ToArray());
-					break;
-				
-				case SteamPacketTypes.S2A_RULES:
-					packet = new ServerRulesResponsePacket(byteStream.ToArray());
-					break;
+			case SteamPacketTypes.S2A_INFO_DETAILED:
+				packet = new S2A_INFO_DETAILED_Packet(byteStream.ToArray());
+				break;
+			
+			case SteamPacketTypes.S2A_RULES:
+				packet = new ServerRulesResponsePacket(byteStream.ToArray());
+				break;
 
-				case SteamPacketTypes.S2A_PLAYER:
-					packet = new PlayersResponsePacket(byteStream.ToArray());
-					break;
-				
-				case SteamPacketTypes.RCON_GOLDSRC_CHALLENGE_HEADER:
-				case SteamPacketTypes.RCON_GOLDSRC_NO_CHALLENGE_HEADER:
-				case SteamPacketTypes.RCON_GOLDSRC_RESPONSE_HEADER:
-					packet = new RCONGoldSrcResponsePacket(byteStream.ToArray());
-					break;
-				
-				case SteamPacketTypes.M2A_SERVER_BATCH:
-				 	packet = new MasterServerResponseBatchPacket(byteStream.ToArray());
-					break;
-				
-				default:
-					packet = new SteamPacket(packetType, byteStream.ToArray());
-					break;
+			case SteamPacketTypes.S2A_PLAYER:
+				packet = new PlayersResponsePacket(byteStream.ToArray());
+				break;
+			
+			case SteamPacketTypes.RCON_GOLDSRC_CHALLENGE_HEADER:
+			case SteamPacketTypes.RCON_GOLDSRC_NO_CHALLENGE_HEADER:
+			case SteamPacketTypes.RCON_GOLDSRC_RESPONSE_HEADER:
+				packet = new RCONGoldSrcResponsePacket(byteStream.ToArray());
+				break;
+			
+			case SteamPacketTypes.M2A_SERVER_BATCH:
+			 	packet = new MasterServerResponseBatchPacket(byteStream.ToArray());
+				break;
+			
+			default:
+				packet = new SteamPacket(packetType, byteStream.ToArray());
+				break;
 			}
 
 			return packet;
@@ -157,8 +150,7 @@ namespace SteamCondenser.Steam.Packets
 			char currentChar = byteReader.ReadChar();
 			StringBuilder str = new StringBuilder();
 
-			while(currentChar != '\0')
-			{
+			while (currentChar != '\0') {
 				str.Append(currentChar);
 				currentChar = byteReader.ReadChar();
 			}

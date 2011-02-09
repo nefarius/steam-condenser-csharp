@@ -106,15 +106,13 @@ namespace SteamCondenser.Steam.Community
 			if (IsPublic)
 			{
 				List<DoDSClass> classList = new List<DoDSClass>();
-				foreach (XmlElement klass in doc.GetXmlElement("classes").GetElementsByTagName("class"))
-				{
+				foreach (XmlElement klass in doc.GetXmlElement("classes").GetElementsByTagName("class")) {
 					classList.Add(new DoDSClass(klass));
 				}
 				ClassStats = classList.ToArray();
 				
 				List<DoDSWeapon> weaponList = new List<DoDSWeapon>();
-				foreach (XmlElement weapon in doc.GetXmlElement("weapons"))
-				{
+				foreach (XmlElement weapon in doc.GetXmlElement("weapons")) {
 					weaponList.Add(new DoDSWeapon(weapon));
 				}
 				WeaponStats = weaponList.ToArray();

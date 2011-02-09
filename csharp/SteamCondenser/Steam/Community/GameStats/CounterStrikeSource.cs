@@ -214,16 +214,14 @@ namespace SteamCondenser.Steam.Community
 			
 			List<CSSMap> mapList = new List<CSSMap>();
 			var mapData = doc.GetXmlElement("stats").GetXmlElement("maps");
-			foreach (string map in maps)
-			{
+			foreach (string map in maps) {
 				mapList.Add(new CSSMap(map, mapData));
 			}
 			MapStats = mapList.ToArray();
 			
 			List<CSSWeapon> weaponList = new List<CSSWeapon>();
 			var weaponData = doc.GetXmlElement("stats").GetXmlElement("weapons");
-			foreach (string weapon in weapons)
-			{
+			foreach (string weapon in weapons) {
 				weaponList.Add(new CSSWeapon(weapon, weaponData));
 			}
 			

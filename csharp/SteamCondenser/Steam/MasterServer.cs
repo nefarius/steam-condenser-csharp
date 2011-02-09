@@ -73,8 +73,7 @@ namespace SteamCondenser.Steam.Packets
 		public MasterServerResponseBatchPacket(byte[] data)
 			: base(SteamPacketTypes.M2A_SERVER_BATCH, data)
 		{
-			if (this.byteReader.ReadByte() != 0x0A)
-			{
+			if (this.byteReader.ReadByte() != 0x0A) {
 				throw new PacketFormatException("Master query response is missing additional 0x0A byte.");
 			}
 			
@@ -178,8 +177,7 @@ namespace SteamCondenser.Steam.Servers
 				
 				MasterServerResponseBatchPacket msrbp = (this.socket.GetReply() as MasterServerResponseBatchPacket);
 				
-				foreach (var server in msrbp.GetServers())
-				{
+				foreach (var server in msrbp.GetServers()) {
 					servers.Add(server);
 					lastIP = server;
 				}

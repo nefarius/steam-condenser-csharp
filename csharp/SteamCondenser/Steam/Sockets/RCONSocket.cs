@@ -25,8 +25,7 @@ namespace SteamCondenser.Steam.Sockets
 		
 		public override SteamPacket GetReply()
 		{
-			if (this.ReceivePacket(1440) <= 0) 
-			{
+			if (this.ReceivePacket(1440) <= 0) {
 				throw new RconBanException();
 			}
 			

@@ -28,8 +28,7 @@ namespace SteamCondenser.Steam.Community
 		
 		
 		private SteamID[] members = null;
-		public SteamID[] Members
-		{
+		public SteamID[] Members {
 			get {
 				if (members == null) FetchMembers(true);
 				return members;
@@ -74,15 +73,14 @@ namespace SteamCondenser.Steam.Community
 		{
 			SteamGroup grp;
 			
-			if (!cache)
+			if (!cache) {
 				grp = new SteamGroup(id);
-			else if (!IsCached(id))
-			{
+			} else if (!IsCached(id)) {
 				grp = new SteamGroup(id);
 				cacheMemory[id] = grp;
-			}
-			else 
+			} else {
 				grp = cacheMemory[id];
+			}
 			
 			if (fetch && !grp.IsFetched) grp.FetchMembers(cache);
 			
@@ -140,12 +138,10 @@ namespace SteamCondenser.Steam.Community
 		
 		public void Cache()
 		{
-			if (!cacheMemory.ContainsKey(this.GroupID64))
-			{
+			if (!cacheMemory.ContainsKey(this.GroupID64)) {
 				cacheMemory[GroupID64] = this;
 			}
-			if ((CustomUrl != null) && !cacheMemory.ContainsKey(CustomUrl))
-			{
+			if ((CustomUrl != null) && !cacheMemory.ContainsKey(CustomUrl)) {
 				cacheMemory[CustomUrl] = this;
 			}
 		}
@@ -159,6 +155,7 @@ namespace SteamCondenser.Steam.Community
 		{
 			return FetchMembers(false);
 		}
+		
 		public bool FetchMembers(bool cache)
 		{
 			
@@ -187,9 +184,11 @@ namespace SteamCondenser.Steam.Community
 					}
 			
 				} while (page < totalPages);
+			} catch (XmlException) { 
+				return false;
+			} catch (Exception e) {
+				throw e;
 			}
-			catch (XmlException) { return false; }
-			catch (Exception e) { throw e; }
 			
 			this.members = members.ToArray();
 			

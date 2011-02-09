@@ -53,9 +53,9 @@ namespace SteamCondenser.Steam.Community
 		
 		public static bool IsTowerClass(string name)
 		{
-			foreach (string towername in TowerClasses)
-			{
-				if (towername == name) return true;
+			foreach (string towername in TowerClasses) {
+				if (towername == name)
+					return true;
 			}
 			return false;
 		}
@@ -72,8 +72,7 @@ namespace SteamCondenser.Steam.Community
 			Level = int.Parse(data.GetAttribute("level"));
 			
 			Built  =   int.Parse(data.GetValueText("built"));
-			if (data.GetXmlElement("damage") != null)
-			{
+			if (data.GetXmlElement("damage") != null) {
 				HasDamage = true;
 				Damage = float.Parse(data.GetValueText("damage"));
 			}
@@ -141,10 +140,8 @@ namespace SteamCondenser.Steam.Community
 		
 		protected new void FetchData()
 		{
-			if (IsPublic)
-			{
-				try 
-				{
+			if (IsPublic) {
+				try {
 					var stats = doc.GetXmlElement("stats");
 					var general = stats.GetXmlElement("general");
 					
@@ -179,8 +176,7 @@ namespace SteamCondenser.Steam.Community
 					
 					var aliens = stats.GetXmlElement("aliens");
 					List<DefenseGridAlien> alienList = new List<DefenseGridAlien>();
-					foreach (XmlElement alien in aliens)
-					{
+					foreach (XmlElement alien in aliens) {
 						alienList.Add(new DefenseGridAlien(alien));
 					}
 					Aliens = alienList.ToArray();
@@ -188,18 +184,18 @@ namespace SteamCondenser.Steam.Community
 					var towers = stats.GetXmlElement("towers");
 					List<DefenseGridTower> towerList = new List<DefenseGridTower>();
 					List<DefenseGridCommand> commandList = new List<DefenseGridCommand>();
-					foreach (XmlElement tower in towers)
-					{
-						if (tower.Name == "command") 
-						{
+					foreach (XmlElement tower in towers) {
+						if (tower.Name == "command")
 							commandList.Add(new DefenseGridCommand(tower));
-						}
-					    else towerList.Add(new DefenseGridTower(tower));
+					    else
+							towerList.Add(new DefenseGridTower(tower));
 					}
 					Towers = towerList.ToArray();
 					Commands = commandList.ToArray();
+				
+				} catch (XmlException) {
+					throw new SteamCondenserException("Stats could not be parsed.");
 				}
-				catch (XmlException) { throw new SteamCondenserException("Stats could not be parsed."); }
 			}
 		}
 	}

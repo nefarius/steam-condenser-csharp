@@ -20,8 +20,7 @@ namespace SteamCondenser.Steam.Sockets
 
 			bytesRead = this.ReceivePacket(SteamPacket.PACKET_SIZE);
 
-			if(this.PacketIsSplit())
-			{
+			if (this.PacketIsSplit()) {
 				bool isCompressed = false;
 				byte[] splitData;
 				int packetCount, packetNumber, requestId;
@@ -44,23 +43,19 @@ namespace SteamCondenser.Steam.Sockets
 					splitSize = (this.bufferReader.ReadInt16());
 					splitSize -= 4; // FIXME: do we get incorrect split sizes????
 
-					if(packetsReceived == 1)
-					{
-						for(int i = 0; i < packetCount; i++)
-						{
+					if (packetsReceived == 1) {
+						for (int i = 0; i < packetCount; i++) {
 							splitPackets.Add(new byte[] { });
 						}
 					}
 
-					if(isCompressed)
-					{
+					if(isCompressed) {
 						uncompressedSize = ReverseBytes(this.bufferReader.ReadInt16()); // int32 ??
 						packetChecksum = ReverseBytes(this.bufferReader.ReadInt32());
 					}
 
 					// Omit additional header on the first packet 
-					if(packetNumber == 1)
-					{
+					if (packetNumber == 1) {
 						this.bufferReader.ReadInt32();
 					}
 
@@ -72,32 +67,22 @@ namespace SteamCondenser.Steam.Sockets
 					splitPackets[packetNumber - 1] = splitData;
 
 					// Receiving the next packet
-					if(packetsReceived < packetCount)
-					{
+					if (packetsReceived < packetCount) {
 						bytesRead = this.ReceivePacket();
 
 						packetSplit = this.bufferReader.ReadInt32();
 
 						packetsReceived++;
-					}
-					else
-					{
+					} else {
 						bytesRead = 0;
 					}
-				}
-				while(packetsReceived <= packetCount && bytesRead > 0 && packetSplit == SteamPacket.PACKET_SPLIT_MARKER);
+				} while (packetsReceived <= packetCount && bytesRead > 0 && packetSplit == SteamPacket.PACKET_SPLIT_MARKER);
 
-				if(isCompressed)
-				{
+				if (isCompressed)
 					packet = SteamPacket.ReassemblePacket(splitPackets, true, uncompressedSize, packetChecksum);
-				}
 				else
-				{
 					packet = SteamPacket.ReassemblePacket(splitPackets);
-				}
-			}
-			else
-			{
+			} else {
 				packet = this.CreatePacket();
 			}
 
@@ -113,7 +98,7 @@ namespace SteamCondenser.Steam.Sockets
 		{
 			byte[] bytes = BitConverter.GetBytes(value);
 
-			if(BitConverter.IsLittleEndian)
+			if (BitConverter.IsLittleEndian)
 			{
 				Array.Reverse(bytes);
 			}
@@ -125,7 +110,7 @@ namespace SteamCondenser.Steam.Sockets
 		{
 			byte[] bytes = BitConverter.GetBytes(value);
 
-			if(BitConverter.IsLittleEndian)
+			if (BitConverter.IsLittleEndian)
 			{
 				Array.Reverse(bytes);
 			}

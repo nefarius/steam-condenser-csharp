@@ -36,8 +36,7 @@ namespace SteamCondenser.Steam.Sockets
 			SteamPacket packet;
 			bytesRead = this.ReceivePacket(SteamPacket.PACKET_SIZE);
 			
-			if (this.PacketIsSplit())
-			{
+			if (this.PacketIsSplit()) {
 				byte[] splitData;
 				int packetCount, packetNumber;
 				int requestId;
@@ -81,15 +80,13 @@ namespace SteamCondenser.Steam.Sockets
 		
 		public string RconExec(string password, string command)
 		{
-			if (this.rconChallenge == -1 || this.isHLTV)
-			{
+			if (this.rconChallenge == -1 || this.isHLTV) {
 				this.RconGetChallenge();
 			}
 			
 			RconSend("rcon " + rconChallenge +  " " + password + " " + command);
 			string response;
-			if (this.isHLTV)
-			{
+			if (this.isHLTV) {
 				try { 
 					SteamPacket packet = this.GetReply();
 					if (packet == null)
@@ -99,28 +96,23 @@ namespace SteamCondenser.Steam.Sockets
 					response = (packet as RCONGoldSrcResponsePacket).Response;
 				}
 				catch { response = ""; }
-			}
-			else
-			{
+			} else {
 				response = ((RCONGoldSrcResponsePacket)this.GetReply()).Response;
 			}
 			
-			if (response.StartsWith("Bad rcon_password.") || response.StartsWith("You have been banned from this server"))
-			{
+			if (response.StartsWith("Bad rcon_password.") || response.StartsWith("You have been banned from this server")) {
 				throw new RCONNoAuthException(response);
 			}
 			
 			try { 
 				do { 
 					RCONGoldSrcResponsePacket packet = this.GetReply() as RCONGoldSrcResponsePacket;
-					if (packet == null) 
-					{
+					if (packet == null) {
 						throw new PacketFormatException();
 					}
 					response += packet.Response;
 				} while (true);
-			}
-			catch { }
+			} catch { }
 
 			return response;
 		}
@@ -131,10 +123,10 @@ namespace SteamCondenser.Steam.Sockets
 			SteamPacket steamPacket = this.GetReply();
 			RCONGoldSrcResponsePacket responsePacket = steamPacket as RCONGoldSrcResponsePacket;
 			
-			if (responsePacket == null) throw new PacketFormatException();
+			if (responsePacket == null)
+				throw new PacketFormatException();
 			string response = responsePacket.Response;
-			if (response.Equals("You have been banned from this server."))
-			{
+			if (response.Equals("You have been banned from this server.")) {
 				throw new RCONNoAuthException(response);
 			}
 			

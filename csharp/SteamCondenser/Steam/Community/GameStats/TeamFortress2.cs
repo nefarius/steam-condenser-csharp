@@ -140,8 +140,7 @@ namespace SteamCondenser.Steam.Community
 			var classes = (doc.GetElementsByTagName("stats").Item(0) as XmlElement).GetElementsByTagName("classData");
 		
 			List<TF2Class> list = new List<TF2Class>();
-			foreach (XmlElement klass in classes)
-			{
+			foreach (XmlElement klass in classes) {
 				list.Add(TF2Class.Create(klass));
 			}
 			ClassStats = list.ToArray();

@@ -87,8 +87,7 @@ namespace SteamCondenser.Steam.Community
 			long steamId1 = communityId % 2;
 			long steamId2 = communityId - 76561197960265728L;
 			
-			if (steamId2 <= 0) 
-			{
+			if (steamId2 <= 0) {
 				throw new SteamCondenserException("SteamID " + communityId + " is too small.");
 			}
 			steamId2 = (steamId2 - steamId1) / 2;
@@ -107,14 +106,11 @@ namespace SteamCondenser.Steam.Community
 		/// </returns>
 		public static long ConvertSteamIDToCommunityID(string steamId)
 		{
-			if (steamId.Equals("STEAM_ID_LAN") || steamId.Equals("BOT")) 
-			{
+			if (steamId.Equals("STEAM_ID_LAN") || steamId.Equals("BOT"))
 				throw new Exception("Cannot convert SteamID \"" + steamId + "\" to a community ID.");
-			}
+			
 			if (!steamIdRegex.Match(steamId).Success)
-			{
 				throw new SteamCondenserException("SteamID \"" + steamId + "\" doesn't have the correct format.");
-			}
 			
 			string[] tmpId = steamId.Substring(6).Split(new char [] { ':' });
 			return long.Parse(tmpId[1]) + long.Parse(tmpId[2]) * 2 + 76561197960265728L;
@@ -158,15 +154,14 @@ namespace SteamCondenser.Steam.Community
 		{
 			SteamID steamid;
 			
-			if (!cache)
+			if (!cache) {
 				steamid = new SteamID(id);
-			else if (!IsCached(id))
-			{
+			} else if (!IsCached(id)) {
 				steamid = new SteamID(id);
 				cacheMemory[id] = steamid;
-			}
-			else 
+			} else {
 				steamid = cacheMemory[id];
+			}
 			
 			if (fetch && !steamid.IsFetched) steamid.FetchData(cache);
 			
@@ -221,13 +216,10 @@ namespace SteamCondenser.Steam.Community
 		public void Cache()
 		{
 			if (!cacheMemory.ContainsKey(this.SteamID64))
-			{
 				cacheMemory[SteamID64] = this;
-			}
+			
 			if ((CustomUrl != null) && !cacheMemory.ContainsKey(CustomUrl))
-			{
 				cacheMemory[CustomUrl] = this;
-			}
 		}
 		
 		public static void ClearCache()
@@ -268,12 +260,9 @@ namespace SteamCondenser.Steam.Community
 				Summary         =                profile.GetInnerText("summary");
 	
 				if (profile.GetElementsByTagName("privacyMessage").Count > 0)
-				{
 					throw new SteamCondenserException(profile.GetInnerText("privacyMessage"));
-				}
 				
-				if (PrivacyState == "public")
-				{
+				if (PrivacyState == "public") {
 					CustomUrl = profile.GetInnerText("customURL");
 					if (CustomUrl.Length == 0) CustomUrl = null;
 					else Cache();
@@ -288,10 +277,8 @@ namespace SteamCondenser.Steam.Community
 				
 				var mostPlayedGamesNode = profile.GetElementsByTagName("mostPlayedGames").Item(0);
 				MostPlayedGames = new Dictionary<string, float>();
-				if (mostPlayedGamesNode != null)
-				{
-					foreach (XmlElement node in mostPlayedGamesNode)
-					{
+				if (mostPlayedGamesNode != null) {
+					foreach (XmlElement node in mostPlayedGamesNode) {
 						string gameName   =             node.GetInnerText("gameName");
 						float hoursPlayed = float.Parse(node.GetInnerText("hoursPlayed"));
 						MostPlayedGames.Add(gameName, hoursPlayed);
@@ -299,32 +286,28 @@ namespace SteamCondenser.Steam.Community
 				}
 				
 				var groupsNode = profile.GetElementsByTagName("groups").Item(0);
-				if (groupsNode != null)
-				{
+				if (groupsNode != null) {
 					List<SteamGroup> grps = new List<SteamGroup>();
-					foreach (XmlElement node in groupsNode)
-					{
+					foreach (XmlElement node in groupsNode) {
 						grps.Add(SteamGroup.Create(long.Parse(node.GetInnerText("groupID64")), false));
 					}
 					Groups = grps.ToArray();
 				}
 			
 				var weblinksNode = profile.GetXmlElement("weblinks");
-				if (weblinksNode != null)
-				{
+				if (weblinksNode != null) {
 					Links = new Dictionary<string, string>();
-					if (groupsNode != null)
-					{
-						foreach (XmlElement node in weblinksNode)
-						{
+					if (groupsNode != null) {
+						foreach (XmlElement node in weblinksNode) {
 							string title = node.GetInnerText("title");
 							string link  = node.GetInnerText("link");
 							Links.Add(title, link);
 						}
 					}
 				} else { }
+			} catch (XmlException) {
+				throw new SteamCondenserException("XML data could not be parsed.");
 			}
-			catch (XmlException) { throw new SteamCondenserException("XML data could not be parsed."); }
 			FetchTime = DateTime.Now;
 		}
 		
@@ -336,8 +319,7 @@ namespace SteamCondenser.Steam.Community
 			var friends = page.GetElementsByTagName("friends").Item(0);
 			
 			long[] friendids = new long[friends.ChildNodes.Count];
-			for (int i = 0; i < friends.ChildNodes.Count; i++)
-			{
+			for (int i = 0; i < friends.ChildNodes.Count; i++) {
 				friendids[i] = long.Parse(friends.ChildNodes[i].InnerText);
 			}
 			return friendids;
@@ -347,8 +329,7 @@ namespace SteamCondenser.Steam.Community
 		{
 			var friendsids = GetFriendsIDs();
 			friends = new SteamID[friendsids.Length];
-			for (int i = 0; i < friendsids.Length; i++)
-			{
+			for (int i = 0; i < friendsids.Length; i++) {
 				friends[i] = SteamID.Create(friendsids[i], false);
 			}
 		}

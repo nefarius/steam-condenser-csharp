@@ -319,22 +319,19 @@ namespace SteamCondenser.Steam.Community
 		
 		protected new void FetchData()
 		{
-			if (IsPublic)
-			{
+			if (IsPublic) {
 				var stats = doc.GetXmlElement("stats");
 				
 				var survivalStats = stats.GetXmlElement("survival");
 				List<L4DMap> mapList = new List<L4DMap>();
-				foreach (XmlElement map in survivalStats.GetXmlElement("maps"))
-				{
+				foreach (XmlElement map in survivalStats.GetXmlElement("maps")) {
 					mapList.Add(new L4DMap(map));
 				}
 				MapStats = mapList.ToArray();
 				
 				var weaponsStats = stats.GetXmlElement("weapons");
 				List<GameWeapon> weaponList = new List<GameWeapon>();
-				foreach (XmlElement weapon in weaponsStats)
-				{
+				foreach (XmlElement weapon in weaponsStats) {
 					if (L4DExplosive.IsExplosive(weapon.Name))
 						weaponList.Add(new L4DExplosive(weapon));
 					else
@@ -390,8 +387,7 @@ namespace SteamCondenser.Steam.Community
 			TotalCans           = int.Parse(data.GetInnerText("totalcans"));
 			
 			List<L4D2ScavengeMapStats> mapList = new List<L4D2ScavengeMapStats>();
-			foreach (XmlElement map in data.GetXmlElement("mapstats"))
-			{
+			foreach (XmlElement map in data.GetXmlElement("mapstats")) {
 				mapList.Add(new L4D2ScavengeMapStats(map));
 			}
 			MapStats = mapList.ToArray();
@@ -406,9 +402,9 @@ namespace SteamCondenser.Steam.Community
 		
 		public static bool IsItem(string name)
 		{
-			foreach (string itemname in Items)
-			{
-				if (itemname == name) return true;
+			foreach (string itemname in Items) {
+				if (itemname == name)
+					return true;
 			}
 			return false;
 		}
@@ -436,9 +432,9 @@ namespace SteamCondenser.Steam.Community
 		
 		public static bool IsInfected(string name)
 		{
-			foreach (string infectedname in Infected)
-			{
-				if (infectedname == name) return true;
+			foreach (string infectedname in Infected) {
+				if (infectedname == name)
+					return true;
 			}
 			return false;
 		}
@@ -482,8 +478,7 @@ namespace SteamCondenser.Steam.Community
 			Name = data.GetInnerText("name");
 			Played = data.GetInnerText("hasPlayed").Equals("1");
 			
-			if (Played)
-			{
+			if (Played) {
 				BestTime = float.Parse(data.GetInnerText("besttimemilliseconds")) / 1000;
 				
 				ItemsUsed = new L4D2Items(data);
@@ -491,8 +486,7 @@ namespace SteamCondenser.Steam.Community
 				InfectedKilled = new L4D2Infected(data);
 				
 				List<SteamID> teammateList = new List<SteamID>();
-				foreach (XmlElement teammate in data.GetXmlElement("teammates"))
-				{
+				foreach (XmlElement teammate in data.GetXmlElement("teammates")) {
 					teammateList.Add(SteamID.Create(long.Parse(teammate.InnerText), false));
 				}
 				Teammates = teammateList.ToArray();
@@ -557,8 +551,7 @@ namespace SteamCondenser.Steam.Community
 		
 		protected new void FetchData()
 		{
-			if (IsPublic)
-			{
+			if (IsPublic) {
 				var stats = doc.GetXmlElement("stats");
 				
 				var lifetime = stats.GetXmlElement("lifetime");
@@ -568,8 +561,7 @@ namespace SteamCondenser.Steam.Community
 				
 				var survival = stats.GetXmlElement("survival");
 				List <L4D2Map> maps = new List<L4D2Map>();
-				foreach (XmlElement map in survival.GetXmlElement("maps"))
-				{
+				foreach (XmlElement map in survival.GetXmlElement("maps")) {
 					maps.Add(new L4D2Map(map));
 				}
 				Maps = maps.ToArray();
@@ -578,10 +570,10 @@ namespace SteamCondenser.Steam.Community
 				
 				var weaponsStats = stats.GetXmlElement("weapons");
 				List<GameWeapon> weaponList = new List<GameWeapon>();
-				foreach (XmlElement weapon in weaponsStats)
-				{
+				foreach (XmlElement weapon in weaponsStats) {
 					// TODO: track this statistics
-					if (weapon.Name.EndsWith("PctDmg")) continue;
+					if (weapon.Name.EndsWith("PctDmg"))
+						continue;
 					
 					if (L4D2Explosive.IsExplosive(weapon.Name))
 						weaponList.Add(new L4D2Explosive(weapon));

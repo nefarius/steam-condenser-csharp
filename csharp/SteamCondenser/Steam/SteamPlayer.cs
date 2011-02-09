@@ -16,29 +16,25 @@ namespace SteamCondenser.Steam
 	{
 		private TimeSpan connectTime;
 
-		public TimeSpan ConnectTime
-		{
+		public TimeSpan ConnectTime {
 			get { return connectTime; }
 		}
 
 		private int id;
 
-		public int ID
-		{
+		public int ID {
 			get { return id; }
 		}
 
 		private String name;
 
-		public String Name
-		{
+		public String Name {
 			get { return name; }
 		}
 
 		private int score;
 
-		public int Score
-		{
+		public int Score {
 			get { return score; }
 		}
 		private bool isBot;
@@ -54,13 +50,10 @@ namespace SteamCondenser.Steam
 			this.name = name;
 			this.score = score;
 
-			if(connectTime == -1)
-			{
+			if (connectTime == -1) {
 				this.isBot = true;
 				this.connectTime = TimeSpan.FromSeconds(0);
-			}
-			else
-			{
+			} else {
 				this.isBot = false;
 				this.connectTime = TimeSpan.FromSeconds((double)Math.Round((double)connectTime));
 			}

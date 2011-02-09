@@ -31,8 +31,7 @@ namespace SteamCondenser.Test
 				if ((stream == null) || !stream.CanRead) return false;
 				StreamReader sr = new StreamReader(stream);
 				
-				while (!sr.EndOfStream)
-				{
+				while (!sr.EndOfStream) {
 					Match match = optionRegex.Match(sr.ReadLine());
 					this.Add(match.Groups[1].Value, match.Groups[2].Value);
 				}

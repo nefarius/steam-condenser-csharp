@@ -141,7 +141,7 @@ namespace SteamCondenser.Steam.Packets
 			set { serverName = value; }
 		}
 		
-		public override string ToString ()
+		public override string ToString()
 		{
 			return string.Format("[ServerInfo: Port={0}, SpectatorPort={1}, SpectatorServerName={2}, Tags={3}, ServerType={4}, OSType={5}, PasswordRequired={6}, IsSecure={7}, GameVersion={8}, BotsCount={9}, Players={10}, MaxPlayers={11}, ApplicationID={12}, ProtocolVersion={13}, GameDirectory={14}, GameDescription={15}, MapName={16}, ServerName={17}]", Port, SpectatorPort, SpectatorServerName, Tags, ServerType, OSType, PasswordRequired, IsSecure, GameVersion, BotsCount, Players, MaxPlayers, ApplicationID, ProtocolVersion, GameDirectory, GameDescription, MapName, ServerName);
 		}
@@ -156,9 +156,8 @@ namespace SteamCondenser.Steam.Packets
 			: base(packetType, dataBytes)
 		{
 			Type t = this.GetType();
-			foreach (var bla in t.GetFields(BindingFlags.Instance))
-			{
-				Console.WriteLine (bla.Name);
+			foreach (var bla in t.GetFields(BindingFlags.Instance)) {
+				Console.WriteLine(bla.Name);
 			}
 			
 		}
@@ -219,38 +218,36 @@ namespace SteamCondenser.Steam.Packets
 			this.serverInfo.IsSecure = byteReader.ReadBoolean();
 			this.serverInfo.GameVersion = ReadString();
 
-			switch(serverType)
-			{
-				case 'l':
-					this.serverInfo.ServerType = ServerTypes.Listen;
-					break;
+			switch(serverType) {
+			case 'l':
+				this.serverInfo.ServerType = ServerTypes.Listen;
+				break;
 
-				case 'd':
-					this.serverInfo.ServerType = ServerTypes.Dedicated;
-					break;
+			case 'd':
+				this.serverInfo.ServerType = ServerTypes.Dedicated;
+				break;
 
-				case 'p':
-					this.serverInfo.ServerType = ServerTypes.Proxy;
-					break;
+			case 'p':
+				this.serverInfo.ServerType = ServerTypes.Proxy;
+				break;
 
-				default:
-					this.serverInfo.ServerType = ServerTypes.Unknown;
-					break;
+			default:
+				this.serverInfo.ServerType = ServerTypes.Unknown;
+				break;
 			}
 
-			switch(osType)
-			{
-				case 'l':
-					this.serverInfo.OSType = OSTypes.Linux;
-					break;
+			switch(osType) {
+			case 'l':
+				this.serverInfo.OSType = OSTypes.Linux;
+				break;
 
-				case 'w':
-					this.serverInfo.OSType = OSTypes.Windows;
-					break;
+			case 'w':
+				this.serverInfo.OSType = OSTypes.Windows;
+				break;
 
-				default:
-					this.serverInfo.OSType = OSTypes.Unknown;
-					break;
+			default:
+				this.serverInfo.OSType = OSTypes.Unknown;
+				break;
 			}
 
 			this.serverInfo.Port = 0;
@@ -262,19 +259,16 @@ namespace SteamCondenser.Steam.Packets
 			{
 				byte edf = byteReader.ReadByte();
 
-				if((edf & 0x80) == 0x80)
-				{
+				if ((edf & 0x80) == 0x80) {
 					this.serverInfo.Port = byteReader.ReadInt16();
 				}
 
-				if((edf & 0x40) == 0x40)
-				{
+				if ((edf & 0x40) == 0x40) {
 					this.serverInfo.SpectatorPort = byteReader.ReadInt16();
 					this.serverInfo.SpectatorServerName = ReadString();
 				}
 
-				if((edf & 0x20) == 0x20)
-				{
+				if ((edf & 0x20) == 0x20) {
 					this.serverInfo.Tags = ReadString().Split(',');
 				}
 			}

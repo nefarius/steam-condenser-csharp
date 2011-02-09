@@ -47,9 +47,7 @@ namespace SteamCondenser.Steam.Community
 			Unlocked  = data.Attributes["closed"] != null;
 			
 			if (data.GetElementsByTagName("unlockTimestamp").Count > 0)
-			{
 				Timestamp = new DateTime(Convert.ToInt32(data.GetInnerText("unlockTimestamp")));
-			}
 		}
 	}
 	
@@ -177,8 +175,7 @@ namespace SteamCondenser.Steam.Community
 			
 			PrivacyState = doc.GetInnerText("privacyState");
 				
-			if (IsPublic)
-			{
+			if (IsPublic) {
 				var gameNode = doc.GetElementsByTagName("game").Item(0) as XmlElement;
 				
 				AppID =  int.Parse(gameNode.GetInnerText("gameLink").Replace(AppUrl, ""));
@@ -188,8 +185,7 @@ namespace SteamCondenser.Steam.Community
 				var achievments = (doc.GetElementsByTagName("achievements").Item(0) as XmlElement).GetElementsByTagName("achievement");
 				
 				List<GameAchievement> list = new List<GameAchievement>();
-				foreach (XmlElement achievment in achievments)
-				{
+				foreach (XmlElement achievment in achievments) {
 					list.Add(new GameAchievement(SteamID64, AppID, achievment));
 				}
 				

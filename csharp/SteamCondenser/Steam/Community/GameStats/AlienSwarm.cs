@@ -300,8 +300,7 @@ namespace SteamCondenser.Steam.Community
 				
 				var xmlweapons = stats.GetXmlElement("weapons");
 				List<AlienSwarmWeapon> weaponlist = new List<AlienSwarmWeapon>();
-				foreach (string weapon in weapons)
-				{
+				foreach (string weapon in weapons) {
 					weaponlist.Add(new AlienSwarmWeapon(xmlweapons.GetXmlElement(weapon)));
 				}
 				Weapons = weaponlist.ToArray();
@@ -309,8 +308,7 @@ namespace SteamCondenser.Steam.Community
 				Favorites = new AlienSwarmFavorites(stats.GetXmlElement("favorites"));
 				
 				List<AlienSwarmMission> missionlist = new List<AlienSwarmMission>();
-				foreach (XmlElement mission in stats.GetXmlElement("missions"))
-				{
+				foreach (XmlElement mission in stats.GetXmlElement("missions")) {
 					if (mission.NodeType == XmlNodeType.Text)
 						continue;
 					missionlist.Add(new AlienSwarmMission(mission));

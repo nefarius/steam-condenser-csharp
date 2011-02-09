@@ -32,14 +32,12 @@ namespace SteamCondenser.Steam.Servers
 		
 		protected GameServer(int portNumber)
 		{
-			if(portNumber < 0 || portNumber > 65535)
-			{
+			if (portNumber < 0 || portNumber > 65535) {
 				throw new ArgumentException("The listening port of the server has to be a number greater than 0 and less than 65535.");
 			}
 		}
 		
-		public int Ping 
-		{ 
+		public int Ping  { 
 			get {
 				if (ping == 0) UpdatePing();
 				return ping;
@@ -48,24 +46,21 @@ namespace SteamCondenser.Steam.Servers
 		}
 		
 
-		public IList<SteamPlayer> PlayerList
-		{
+		public IList<SteamPlayer> PlayerList {
 			get {
 				if (playerList == null) UpdatePlayerInfo();
 				return playerList.AsReadOnly(); 
 			}
 		}
 		
-		public IList<ServerRule> ServerRules
-		{
+		public IList<ServerRule> ServerRules {
 			get {
 				if (this.serverRules == null) UpdateRulesInfo();
 				return serverRules.AsReadOnly();
 			}
 		}
 		
-		public ServerInfo ServerInfo
-		{
+		public ServerInfo ServerInfo {
 			get { 
 				if (this.serverInfo == null) this.UpdateServerInfo();
 				return serverInfo; 
@@ -158,21 +153,14 @@ namespace SteamCondenser.Steam.Servers
 				SteamPacket responsePacket = this.GetReply();
 				success = (responsePacket.PacketType == expectedResponse);
 				
-				if (responsePacket is SourceServerInfoResponsePacket)
-				{
+				if (responsePacket is SourceServerInfoResponsePacket) {
 					success = true;
 					this.serverInfo = (responsePacket as SourceServerInfoResponsePacket).ServerInfo;
-				}
-				else if (responsePacket is PlayersResponsePacket)
-				{
+				} else if (responsePacket is PlayersResponsePacket) {
 					playerList = (responsePacket as PlayersResponsePacket).PlayerList;
-				}
-				else if (responsePacket is ChallengeResponsePacket)
-				{
+				} else if (responsePacket is ChallengeResponsePacket) {
 					this.challengeNumber = (uint)(responsePacket as ChallengeResponsePacket).ChallengeID;
-				}
-				else if (responsePacket is ServerRulesResponsePacket)
-				{
+				} else if (responsePacket is ServerRulesResponsePacket) {
 					this.serverRules = (responsePacket as ServerRulesResponsePacket).ServerRules;
 				}
 				

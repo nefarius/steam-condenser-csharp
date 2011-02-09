@@ -66,7 +66,6 @@ namespace SteamCondenser.Steam.Packets.RCON
 	#region GoldSrc
 	public class RCONGoldSrcRequestPacket : SteamPacket
 	{
-
 		public RCONGoldSrcRequestPacket(string request)
 			: base((SteamPacketTypes)0, System.Text.Encoding.ASCII.GetBytes(request))
 		{
@@ -83,21 +82,21 @@ namespace SteamCondenser.Steam.Packets.RCON
 	
 	public class RCONGoldSrcResponsePacket : SteamPacket
 	{
-
 		public RCONGoldSrcResponsePacket(byte[] commandResponse)
 			: base(SteamPacketTypes.RCON_GOLDSRC_CHALLENGE_HEADER, commandResponse)
 		{
 		}
+		
 		public string Response	
 		{
 			get { return System.Text.Encoding.ASCII.GetString(this.data); }
 		}	
-	}	#endregion
+	}
+	#endregion
 	
 	#region Exec
 	public class RCONExecRequestPacket : RCONPacket
 	{
-
 		public RCONExecRequestPacket(int requestId, string rconCommand)
 			: base(requestId, RCONPacket.SERVERDATA_EXECCOMMANDO, rconCommand)
 		{
