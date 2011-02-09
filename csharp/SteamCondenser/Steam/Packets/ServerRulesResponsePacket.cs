@@ -13,13 +13,7 @@ namespace SteamCondenser.Steam.Packets
 {
 	public class ServerRulesResponsePacket : SteamPacket
 	{
-		private List<ServerRule> serverRules;
-
-		public List<ServerRule> ServerRules
-		{
-			get { return serverRules; }
-			set { serverRules = value; }
-		}
+		public List<ServerRule> ServerRules { get; set; }
 
 		public ServerRulesResponsePacket(byte[] data)
 			: base(SteamPacketTypes.S2A_RULES, data)
@@ -29,13 +23,13 @@ namespace SteamCondenser.Steam.Packets
 			}
 
 			short numRules = this.byteReader.ReadInt16();
-			this.serverRules = new List<ServerRule>((int)numRules);
+			ServerRules = new List<ServerRule>((int)numRules);
 
 			for (short i = 0; i < numRules; i++) {
 				string cvar = ReadString();
 				string value = ReadString();
 				
-				this.serverRules.Add(new ServerRule(cvar, value));
+				ServerRules.Add(new ServerRule(cvar, value));
 			}
 		}
 	}

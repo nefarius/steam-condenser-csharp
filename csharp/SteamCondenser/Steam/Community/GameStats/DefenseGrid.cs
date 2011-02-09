@@ -23,8 +23,7 @@ namespace SteamCondenser.Steam.Community
 		
 		public static bool IsAlienClass(string name)
 		{
-			foreach (string alienname in AlienClasses)
-			{
+			foreach (string alienname in AlienClasses) {
 				if (alienname == name) return true;
 			}
 			return false;

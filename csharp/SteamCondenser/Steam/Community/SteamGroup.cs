@@ -172,14 +172,12 @@ namespace SteamCondenser.Steam.Community
 					
 					totalPages = int.Parse(doc.GetInnerText("totalPages"));
 
-					if (page == 1)
-					{
+					if (page == 1) {
 						GroupID64 = long.Parse(doc.GetInnerText("groupID64"));
 						if (cache) Cache();
-					}				
+					}
 				
-					foreach (XmlElement bla in doc.GetElementsByTagName("members").Item(0))
-					{
+					foreach (XmlElement bla in doc.GetElementsByTagName("members").Item(0)) {
 						members.Add(SteamID.Create(long.Parse(bla.InnerText), false));
 					}
 			
@@ -198,14 +196,13 @@ namespace SteamCondenser.Steam.Community
 		
 		public int MemberCount {
 			get {
-				if (members == null)
-				{
+				if (members == null) {
 					XmlDocument doc = new XmlDocument();
 					doc.LoadUrl(BaseUrl + "/memberslistxml");
 					return int.Parse(doc.GetInnerText("memberCount"));
-				}
-				else 
+				} else { 
 					return members.Length;
+				}
 			}
 		}
 		
