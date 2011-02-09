@@ -204,8 +204,7 @@ namespace SteamCondenser.Steam.Sockets
 		public override SteamPacket GetReply()
 		{
 			this.ReceivePacket(1500);
-			if (this.bufferReader.ReadUInt32() != 0xFFFFFFFF)
-			{
+			if (this.bufferReader.ReadUInt32() != 0xFFFFFFFF) {
 				throw new Exception("Master query response has wrong packet header.");
 			}
 			return this.CreatePacket();

@@ -24,6 +24,7 @@ namespace SteamCondenser.Steam.Sockets
 			: this(ipAddress, portNumber, false)
 		{
 		}
+
 		public GoldSrcSocket(IPAddress ipAddress, int portNumber, bool isHLTV)
 			: base(ipAddress, portNumber)
 		{

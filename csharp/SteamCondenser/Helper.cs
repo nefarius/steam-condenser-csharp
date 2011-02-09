@@ -43,8 +43,7 @@ namespace SteamCondenser
 		public static uint ReverseBytes(this uint value)
 		{
 			byte[] bytes = BitConverter.GetBytes(value);
-			if (BitConverter.IsLittleEndian)
-			{
+			if (BitConverter.IsLittleEndian) {
 				Array.Reverse(bytes);
 			}
 			return BitConverter.ToUInt32(bytes, 0);
@@ -53,8 +52,7 @@ namespace SteamCondenser
 		public static int ReverseBytes(this int value)
 		{
 			byte[] bytes = BitConverter.GetBytes(value);
-			if (BitConverter.IsLittleEndian)
-			{
+			if (BitConverter.IsLittleEndian) {
 				Array.Reverse(bytes);
 			}
 			return BitConverter.ToInt32(bytes, 0);
@@ -63,8 +61,7 @@ namespace SteamCondenser
 		public static ushort ReverseBytes(this ushort value)
 		{
 			byte[] bytes = BitConverter.GetBytes(value);
-			if (BitConverter.IsLittleEndian)
-			{
+			if (BitConverter.IsLittleEndian) {
 				Array.Reverse(bytes);
 			}
 			return BitConverter.ToUInt16(bytes, 0);
