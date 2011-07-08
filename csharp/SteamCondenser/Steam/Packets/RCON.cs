@@ -33,7 +33,7 @@ namespace SteamCondenser.Steam.Packets.RCON
 		public new byte[] GetBytes()
 		{
 			MemoryStream byteStream = new MemoryStream(12 + this.data.Length);
-			StreamWriter sw = new StreamWriter(byteStream);
+			BinaryWriter sw = new BinaryWriter(byteStream);
 			sw.Write(byteStream.Length - 4);
 			sw.Write(RequestId);
 			sw.Write(Header);
@@ -87,9 +87,10 @@ namespace SteamCondenser.Steam.Packets.RCON
 		{
 		}
 		
-		public string Response	
-		{
-			get { return System.Text.Encoding.ASCII.GetString(this.data); }
+		public string Response	{
+			get {
+				return System.Text.Encoding.ASCII.GetString(data, 0, data.Length - 2);
+			}
 		}	
 	}
 	#endregion
@@ -111,7 +112,7 @@ namespace SteamCondenser.Steam.Packets.RCON
 		
 		public string GetResponse()
 		{
-			return System.Text.Encoding.ASCII.GetString(this.data, 0, this.data.Length -2);
+			return System.Text.Encoding.ASCII.GetString(data, 0, data.Length - 2);
 		}
 	}
 	#endregion
