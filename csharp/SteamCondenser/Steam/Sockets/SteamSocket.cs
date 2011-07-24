@@ -4,6 +4,7 @@ using System.Text;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
+
 using SteamCondenser.Steam.Packets;
 
 namespace SteamCondenser.Steam.Sockets
@@ -24,21 +25,25 @@ namespace SteamCondenser.Steam.Sockets
 		protected SteamSocket(IPEndPoint endpoint)
 		{
 			// UDP client
-			this.client = new UdpClient();
+			client = new UdpClient();
 
 			// IP end point for server
-			this.remoteHost = endpoint;
+			remoteHost = endpoint;
 
 			// initialize buffer
-			this.buffer = new byte[SteamPacket.PACKET_SIZE];
+			buffer = new byte[SteamPacket.PACKET_SIZE];
 
 			// initialize reader
-			this.bufferReader = new BinaryReader(new MemoryStream(this.buffer));
+			bufferReader = new BinaryReader(new MemoryStream(this.buffer));
 		}
 
 		public int Timeout { 
-			get { return client.Client.ReceiveTimeout; }
-			set { client.Client.ReceiveTimeout = value; }
+			get {
+				return client.Client.ReceiveTimeout;
+			}
+			set {
+				client.Client.ReceiveTimeout = value;
+			}
 		}
 		
 		protected SteamPacket CreatePacket()
@@ -57,19 +62,16 @@ namespace SteamCondenser.Steam.Sockets
 			int bytesRead;
 
 			// receive data
-			this.buffer = this.client.Receive(ref this.remoteHost);
-			bytesRead = this.buffer.Length;
+			buffer = client.Receive(ref remoteHost);
+			bytesRead = buffer.Length;
 
-			MemoryStream memStream = new MemoryStream(this.buffer);
-			this.bufferReader = new BinaryReader(memStream);
+			MemoryStream memStream = new MemoryStream(buffer);
+			bufferReader = new BinaryReader(memStream);
 
-			this.bufferReader.BaseStream.Seek(0, System.IO.SeekOrigin.Begin);
-			this.bufferReader.BaseStream.SetLength(bytesRead);
+			bufferReader.BaseStream.Seek(0, SeekOrigin.Begin);
+			bufferReader.BaseStream.SetLength(bytesRead);
 
 			return bytesRead;
 		}
-		
-
-
 	}
 }
