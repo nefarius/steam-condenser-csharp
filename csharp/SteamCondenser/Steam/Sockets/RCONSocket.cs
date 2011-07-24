@@ -28,7 +28,9 @@ namespace SteamCondenser.Steam.Sockets
 			}
 			
 			int packetSize = this.bufferReader.ReadInt32() + 4;
-			if (packetSize > 1440) throw new Exception("Gaidys");
+			if (packetSize > 1440) {
+				throw new Exception("Invalid packet size");
+			}
 			
 			return RCONPacket.CreatePacket(buffer);
 		}
