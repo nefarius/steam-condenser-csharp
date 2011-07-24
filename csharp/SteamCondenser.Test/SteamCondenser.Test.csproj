@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -9,6 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>SteamCondenser.Test</RootNamespace>
     <AssemblyName>SteamCondenser.Test</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,15 +31,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="nunit.core, Version=2.4.7.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
-      <Package>nunit</Package>
-    </Reference>
-    <Reference Include="nunit.core.interfaces, Version=2.4.7.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
-      <Package>nunit</Package>
-    </Reference>
-    <Reference Include="nunit.framework, Version=2.4.7.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
-      <Package>nunit</Package>
-    </Reference>
+    <Reference Include="nunit.core, Version=2.4.7.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
+    <Reference Include="nunit.core.interfaces, Version=2.4.7.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
+    <Reference Include="nunit.framework, Version=2.4.7.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="QueryTests.cs" />
@@ -52,18 +47,7 @@
     <Compile Include="Community\ID.cs" />
     <Compile Include="Community\AlienSwarm.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SteamCondenser\SteamCondenser.csproj">
-      <Project>{450045CE-EA08-49BA-AAA2-416E98E89EDC}</Project>
-      <Name>SteamCondenser</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ProjectExtensions>
-    <MonoDevelop>
-      <Properties InternalTargetFrameworkVersion="3.5" />
-    </MonoDevelop>
-  </ProjectExtensions>
   <ItemGroup>
     <Folder Include="Community\" />
   </ItemGroup>
