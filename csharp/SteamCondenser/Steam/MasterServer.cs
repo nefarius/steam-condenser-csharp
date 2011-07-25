@@ -27,10 +27,6 @@ namespace SteamCondenser.Steam.Packets
 {
 	public class MasterServerRequestBatchPacket : SteamPacket
 	{
-		private string filter;
-		private Regions regionCode;
-		private string startIp;
-		
 		public MasterServerRequestBatchPacket()
 			: this(Regions.All, "0.0.0.0:0", "")
 		{
@@ -39,22 +35,27 @@ namespace SteamCondenser.Steam.Packets
 		public MasterServerRequestBatchPacket(Regions regionCode, string startIp, string filter)
 			: base(SteamPacketTypes.A2M_GET_SERVERS_BATCH2)
 		{
-			this.startIp = startIp;
-			this.regionCode = regionCode;
-			this.filter = filter;
+			Region = regionCode;
+			StartIP = startIp;
+			Filter = filter;
 		}
+
+		public string Filter { get; protected set; }
+
+		public Regions Region { get; protected set; }
+
+		public string StartIP { get; protected set; }
 		
 		public override byte[] GetBytes()
 		{
-			MemoryStream byteStream = new MemoryStream();
-			BinaryWriter bw = new BinaryWriter(byteStream);
-			
-			bw.Write((byte)this.packetType);
-			bw.Write((byte)regionCode);
-			bw.Write((this.startIp + "\0").GetBytes());
-			bw.Write((this.filter + "\0").GetBytes());
-			
-			return byteStream.ToArray();
+			PacketWriter pw = new PacketWriter();
+
+			pw.WriteByte((byte)PacketType);
+			pw.WriteByte((byte)Region);
+			pw.WriteString(StartIP);
+			pw.WriteString(Filter);
+
+			return pw.Data;
 		}
 	}
 	
