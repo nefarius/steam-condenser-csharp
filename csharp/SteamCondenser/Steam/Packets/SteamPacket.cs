@@ -14,7 +14,6 @@ namespace SteamCondenser.Steam.Packets
 		public const int PACKET_SIZE = 1400;
 		public const int PACKET_SPLIT_MARKER = -2;
 
-		protected SteamPacketTypes packetType;
 		protected PacketReader reader;
 
 		public SteamPacket(SteamPacketTypes packetType)
@@ -29,7 +28,7 @@ namespace SteamCondenser.Steam.Packets
 
 		public SteamPacket(SteamPacketTypes packetType, byte[] data, int offset)
 		{
-			this.packetType = packetType;
+			PacketType = packetType;
 			reader = new PacketReader(data, offset);
 		}
 
@@ -49,7 +48,7 @@ namespace SteamCondenser.Steam.Packets
 		{
 			PacketWriter pw = new PacketWriter(buffer, offset);
 			pw.BlockCopy(SteamPacket.Prefix);
-			pw.WriteByte((byte)packetType);
+			pw.WriteByte((byte)PacketType);
 			pw.BlockCopy(reader.Data);
 		}
 
@@ -59,11 +58,7 @@ namespace SteamCondenser.Steam.Packets
 			}
 		}
 
-		public SteamPacketTypes PacketType {
-			get {
-				return this.packetType;
-			}
-		}
+		public SteamPacketTypes PacketType { get; private set; }
 
 		public byte[] Data {
 			get {
