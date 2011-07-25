@@ -39,6 +39,7 @@ namespace SteamCondenser.Steam.Packets.RCON
 		{
 			MemoryStream byteStream = new MemoryStream(rawData);
 			StreamReader sr = new StreamReader(byteStream);
+
 			int    requestId = sr.Read();
 			int    header    = sr.Read();
 			string data      = sr.ReadToEnd();
@@ -65,10 +66,10 @@ namespace SteamCondenser.Steam.Packets.RCON
 		
 		public override byte[] GetBytes()
 		{
-			MemoryStream byteStream = new MemoryStream(reader.Length + 4);
-			byteStream.Write(new byte[] { 0xFF, 0xFF, 0xFF, 0xFF }, 0, 4);
-			byteStream.Write(reader.Data, 0, reader.Length);
-			return byteStream.ToArray();
+			PacketWriter wr = new PacketWriter();
+			wr.WriteBytes(SteamPacket.Prefix);
+			wr.WriteBytes(reader.Data);
+			return wr.Data;
 		}
 	}
 	

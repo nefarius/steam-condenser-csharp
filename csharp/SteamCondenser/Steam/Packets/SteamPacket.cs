@@ -42,10 +42,15 @@ namespace SteamCondenser.Steam.Packets
 
 		public virtual void CopyTo(byte[] buffer)
 		{
-			int length = SteamPacket.Prefix.Length;
-			Buffer.BlockCopy(SteamPacket.Prefix, 0, buffer, 0, length);
-			buffer[length] = (byte)packetType;
-			Buffer.BlockCopy(reader.Data, 0, buffer, length + 1, reader.Data.Length);
+			CopyTo(buffer, 0);
+		}
+
+		public virtual void CopyTo(byte[] buffer, int offset)
+		{
+			PacketWriter pw = new PacketWriter(buffer, offset);
+			pw.BlockCopy(SteamPacket.Prefix);
+			pw.WriteByte((byte)packetType);
+			pw.BlockCopy(reader.Data);
 		}
 
 		public int Length {
