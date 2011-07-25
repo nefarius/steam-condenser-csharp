@@ -78,21 +78,21 @@ namespace SteamCondenser.Steam.Packets
 		{
 			ServerInfo = new ServerInfo();
 
-			ServerInfo.ProtocolVersion  = byteReader.ReadByte();
-			ServerInfo.ServerName       = ReadString();
-			ServerInfo.MapName          = ReadString();
-			ServerInfo.GameDirectory    = ReadString();
-			ServerInfo.GameDescription  = ReadString();
-			ServerInfo.ApplicationID    = byteReader.ReadInt16();
-			ServerInfo.Players          = byteReader.ReadByte();
-			ServerInfo.MaxPlayers       = byteReader.ReadByte();
-			ServerInfo.BotsCount        = byteReader.ReadByte();
-			ServerInfo.PasswordRequired = byteReader.ReadBoolean();
-			ServerInfo.IsSecure         = byteReader.ReadBoolean();
-			ServerInfo.GameVersion      = ReadString();
+			ServerInfo.ProtocolVersion  = reader.ReadByte();
+			ServerInfo.ServerName       = reader.ReadString();
+			ServerInfo.MapName          = reader.ReadString();
+			ServerInfo.GameDirectory    = reader.ReadString();
+			ServerInfo.GameDescription  = reader.ReadString();
+			ServerInfo.ApplicationID    = reader.ReadShort();
+			ServerInfo.Players          = reader.ReadByte();
+			ServerInfo.MaxPlayers       = reader.ReadByte();
+			ServerInfo.BotsCount        = reader.ReadByte();
+			ServerInfo.PasswordRequired = reader.ReadBoolean();
+			ServerInfo.IsSecure         = reader.ReadBoolean();
+			ServerInfo.GameVersion      = reader.ReadString();
 
-			char serverType = byteReader.ReadChar();
-			char osType     = byteReader.ReadChar();
+			char serverType = reader.ReadChar();
+			char osType     = reader.ReadChar();
 			
 			switch (serverType) {
 			case 'l':
@@ -131,20 +131,20 @@ namespace SteamCondenser.Steam.Packets
 			ServerInfo.SpectatorServerName = "";
 			ServerInfo.Tags = new string[] { };
 
-			if (byteReader.BaseStream.Position < byteReader.BaseStream.Length) {
-				byte edf = byteReader.ReadByte();
+			if (!reader.EndOfData) {
+				byte edf = reader.ReadByte();
 
 				if ((edf & 0x80) == 0x80) {
-					ServerInfo.Port = byteReader.ReadInt16();
+					ServerInfo.Port = reader.ReadShort();
 				}
 
 				if ((edf & 0x40) == 0x40) {
-					ServerInfo.SpectatorPort = byteReader.ReadInt16();
-					ServerInfo.SpectatorServerName = ReadString();
+					ServerInfo.SpectatorPort       = reader.ReadShort();
+					ServerInfo.SpectatorServerName = reader.ReadString();
 				}
 
 				if ((edf & 0x20) == 0x20) {
-					ServerInfo.Tags = ReadString().Split(',');
+					ServerInfo.Tags = reader.ReadString().Split(',');
 				}
 			}
 		}

@@ -71,6 +71,7 @@
     <Compile Include="Steam\Community\GameStats\DefenseGrid.cs" />
     <Compile Include="Steam\Community\GameStats\DayOfDefeatSource.cs" />
     <Compile Include="Steam\Community\GameStats\AlienSwarm.cs" />
+    <Compile Include="Steam\Packets\PacketReader.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

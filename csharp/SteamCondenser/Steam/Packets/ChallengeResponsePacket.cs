@@ -12,7 +12,7 @@ namespace SteamCondenser.Steam.Packets
 		public ChallengeResponsePacket(byte[] data)
 			: base(SteamPacketTypes.S2C_CHALLENGE, data)
 		{
-			ChallengeID = this.byteReader.ReadInt32();
+			ChallengeID = reader.ReadInt();
 		}
 	}
 }

@@ -10,13 +10,12 @@ namespace SteamCondenser.Steam.Packets
 {
 	public class SteamPacket
 	{
+		public static readonly byte[] Prefix = new byte[] { 0xFF, 0xFF, 0xFF, 0xFF };
 		public const int PACKET_SIZE = 1400;
 		public const int PACKET_SPLIT_MARKER = -2;
 
 		protected SteamPacketTypes packetType;
-		protected byte[] data;
-		protected MemoryStream dataStream;
-		protected BinaryReader byteReader;
+		protected PacketReader reader;
 
 		public SteamPacket(SteamPacketTypes packetType)
 			: this(packetType, new byte[] { })
@@ -24,21 +23,35 @@ namespace SteamCondenser.Steam.Packets
 		}
 
 		public SteamPacket(SteamPacketTypes packetType, byte[] data)
+			: this(packetType, data, 0)
+		{
+		}
+
+		public SteamPacket(SteamPacketTypes packetType, byte[] data, int offset)
 		{
 			this.packetType = packetType;
-			this.data = data;
-			this.dataStream = new MemoryStream(data);
-			this.byteReader = new BinaryReader(this.dataStream);
+			reader = new PacketReader(data);
 		}
 
 		public virtual byte[] GetBytes()
 		{
-			MemoryStream byteStream = new MemoryStream(5 + this.data.Length);
+			byte[] packet = new byte[Length];
+			CopyTo(packet);
+			return packet;
+		}
 
-			byteStream.Write(new byte[] { 0xFF, 0xFF, 0xFF, 0xFF, (byte)packetType }, 0, 5);
-			byteStream.Write(this.data, 0, this.data.Length);
+		public virtual void CopyTo(byte[] buffer)
+		{
+			int length = SteamPacket.Prefix.Length;
+			Buffer.BlockCopy(SteamPacket.Prefix, 0, buffer, 0, length);
+			buffer[length] = (byte)packetType;
+			Buffer.BlockCopy(reader.Data, 0, buffer, length + 1, reader.Data.Length);
+		}
 
-			return byteStream.ToArray();
+		public int Length {
+			get {
+				return SteamPacket.Prefix.Length + 1 + Data.Length;
+			}
 		}
 
 		public SteamPacketTypes PacketType {
@@ -49,7 +62,7 @@ namespace SteamCondenser.Steam.Packets
 
 		public byte[] Data {
 			get {
-				return this.data;
+				return reader.Data;
 			}
 		}
 
@@ -135,18 +148,6 @@ namespace SteamCondenser.Steam.Packets
 			}
 
 			return packet;
-		}
-
-		protected string ReadString()
-		{
-			char currentChar = byteReader.ReadChar();
-			StringBuilder str = new StringBuilder();
-
-			while (currentChar != '\0') {
-				str.Append(currentChar);
-				currentChar = byteReader.ReadChar();
-			}
-			return str.ToString();
 		}
 	}
 }

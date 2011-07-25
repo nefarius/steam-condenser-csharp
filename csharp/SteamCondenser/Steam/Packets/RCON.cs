@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.IO;
+using System.Text;
 
 namespace SteamCondenser.Steam.Packets.RCON
 {
@@ -24,26 +25,25 @@ namespace SteamCondenser.Steam.Packets.RCON
 		
 		public new byte[] GetBytes()
 		{
-			MemoryStream byteStream = new MemoryStream(12 + this.data.Length);
+			MemoryStream byteStream = new MemoryStream(12 + reader.Length);
 			BinaryWriter sw = new BinaryWriter(byteStream);
 			sw.Write(byteStream.Length - 4);
 			sw.Write(RequestId);
 			sw.Write(Header);
-			sw.Write(this.data);
+			sw.Write(reader.Data);
 			sw.Flush();
 			return byteStream.ToArray();
 		}
 		
-		public new static RCONPacket CreatePacket(byte[] rawData)
+		public static RCONPacket CreatePacket(byte[] rawData, int offset)
 		{
 			MemoryStream byteStream = new MemoryStream(rawData);
 			StreamReader sr = new StreamReader(byteStream);
-			int requestId = sr.Read();
-			int header = sr.Read();
-			string data = sr.ReadToEnd();
+			int    requestId = sr.Read();
+			int    header    = sr.Read();
+			string data      = sr.ReadToEnd();
 			
-			switch (header)
-			{
+			switch (header) {
 			case RCONPacket.SERVERDATA_AUTH_RESPONSE:
 				return new RCONAuthResponsePacket(requestId);
 			case RCONPacket.SERVERDATA_RESPONSE_VALUE:
@@ -65,9 +65,9 @@ namespace SteamCondenser.Steam.Packets.RCON
 		
 		public override byte[] GetBytes()
 		{
-			MemoryStream byteStream = new MemoryStream(this.data.Length + 4);
+			MemoryStream byteStream = new MemoryStream(reader.Length + 4);
 			byteStream.Write(new byte[] { 0xFF, 0xFF, 0xFF, 0xFF }, 0, 4);
-			byteStream.Write(this.data, 0, this.data.Length);
+			byteStream.Write(reader.Data, 0, reader.Length);
 			return byteStream.ToArray();
 		}
 	}
@@ -81,7 +81,7 @@ namespace SteamCondenser.Steam.Packets.RCON
 		
 		public string Response	{
 			get {
-				return System.Text.Encoding.ASCII.GetString(data, 0, data.Length - 2);
+				return System.Text.Encoding.ASCII.GetString(reader.Data, 0, reader.Length - 2);
 			}
 		}	
 	}
@@ -104,7 +104,7 @@ namespace SteamCondenser.Steam.Packets.RCON
 		
 		public string GetResponse()
 		{
-			return System.Text.Encoding.ASCII.GetString(data, 0, data.Length - 2);
+			return System.Text.Encoding.ASCII.GetString(reader.Data, 0, reader.Length - 2);
 		}
 	}
 	#endregion

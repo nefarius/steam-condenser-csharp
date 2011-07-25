@@ -65,7 +65,7 @@ namespace SteamCondenser.Steam.Packets
 		public MasterServerResponseBatchPacket(byte[] data)
 			: base(SteamPacketTypes.M2A_SERVER_BATCH, data)
 		{
-			if (this.byteReader.ReadByte() != 0x0A) {
+			if (reader.ReadByte() != 0x0A) {
 				throw new PacketFormatException("Master query response is missing additional 0x0A byte.");
 			}
 			
@@ -75,17 +75,17 @@ namespace SteamCondenser.Steam.Packets
 	
 			try {
 				do {
-					octets[0] = this.byteReader.ReadByte();
-					octets[1] = this.byteReader.ReadByte();
-					octets[2] = this.byteReader.ReadByte();
-					octets[3] = this.byteReader.ReadByte();
+					octets[0] = reader.ReadByte();
+					octets[1] = reader.ReadByte();
+					octets[2] = reader.ReadByte();
+					octets[3] = reader.ReadByte();
 					// this is network ordered, which is unlike every other Stream protocol
-					portNumber = this.byteReader.ReadUInt16().ReverseBytes();
+					portNumber = reader.ReadUShort().ReverseBytes();
 					
 					IPEndPoint endpoint = new IPEndPoint(new IPAddress(octets), portNumber);
 					servers.Add(endpoint);
 					
-				} while (this.byteReader.BaseStream.Length - this.byteReader.BaseStream.Position > 0); // there is something to read
+				} while (!reader.EndOfData); // there is something to read
 			}
 			catch { }
 		}
