@@ -11,10 +11,15 @@ namespace SteamCondenser
 		BinaryReader br = null;
 
 		public PacketReader(byte[] data)
+			: this(data, 0)
+		{
+		}
+
+		public PacketReader(byte[] data, int offset)
 		{
 			this.data = data;
 			ms = new MemoryStream(data);
-			ms.Position = 0;
+			ms.Position = offset;
 			br = new BinaryReader(ms);
 
 			Encoding = Encoding.Default;

@@ -30,7 +30,7 @@ namespace SteamCondenser.Steam.Packets
 		public SteamPacket(SteamPacketTypes packetType, byte[] data, int offset)
 		{
 			this.packetType = packetType;
-			reader = new PacketReader(data);
+			reader = new PacketReader(data, offset);
 		}
 
 		public virtual byte[] GetBytes()
