@@ -44,7 +44,9 @@ namespace SteamCondenser.Steam.Sockets
 					packetNumber = (packetNumberAndCount & 0xF0) >> 4;
 					
 					// read preamble only in the first packet, otherwise we cut off stuff
-					if (packetNumber == 0) this.bufferReader.ReadInt32();
+					if (packetNumber == 0) {
+						this.bufferReader.ReadInt32();
+					}
 					
 					splitData = this.bufferReader.ReadBytes((int)(this.bufferReader.BaseStream.Length - this.bufferReader.BaseStream.Position));
 					

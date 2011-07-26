@@ -12,18 +12,37 @@ namespace SteamCondenser.Steam.Packets.RCON
 		public const byte SERVERDATA_EXECCOMMANDO = 2;
 		public const byte SERVERDATA_RESPONSE_VALUE = 0;
 		
-		protected int Header { get; set; }
+		public int Header { get; protected set; }
 		public int RequestId { get; protected set; }
-		protected int requestId;
+		public string RconData { get; protected set; }
 
 		protected RCONPacket(int requestId, int rconHeader, string rconData)
-			: base((SteamPacketTypes)0, System.Text.Encoding.ASCII.GetBytes(rconData))
+			: base((SteamPacketTypes)0)
 		{
-			Header = rconHeader;
+			Header    = rconHeader;
 			RequestId = requestId;
+			RconData  = rconData;
 		}
-		
-		public new byte[] GetBytes()
+
+		public override void Serialize(PacketWriter writer, bool prefix)
+		{
+			PacketWriter pw = new PacketWriter();
+
+			base.Serialize(pw, prefix);
+
+			int lengthPosition = pw.Position;
+			pw.WriteInt(0); // length
+
+			pw.WriteInt(RequestId);
+			pw.WriteInt(Header);
+			pw.WriteStringNoZero(RconData);
+
+			pw.Position = lengthPosition;
+
+			pw.WriteInt(pw.Length);
+		}
+
+		public new byte[] GetBytes(bool prefix)
 		{
 			MemoryStream byteStream = new MemoryStream(12 + reader.Length);
 			BinaryWriter sw = new BinaryWriter(byteStream);
@@ -63,13 +82,14 @@ namespace SteamCondenser.Steam.Packets.RCON
 			: base((SteamPacketTypes)0, System.Text.Encoding.ASCII.GetBytes(request))
 		{
 		}
+
+		public string Request { get; protected set; }
 		
-		public override byte[] GetBytes()
+		public override void Serialize(PacketWriter writer, bool prefix)
 		{
-			PacketWriter wr = new PacketWriter();
-			wr.WriteBytes(SteamPacket.Prefix);
-			wr.WriteBytes(reader.Data);
-			return wr.Data;
+			base.Serialize(writer, prefix);
+
+			writer.WriteString(Request);
 		}
 	}
 	

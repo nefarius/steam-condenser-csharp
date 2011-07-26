@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Xml;
+using System.Text;
 using System.Collections.Generic;
 
 namespace SteamCondenser
@@ -61,7 +62,75 @@ namespace SteamCondenser
 		}
 		
 		#endregion
-		
+
+		#region Join
+
+		public static string Join(this object[] objectArray)
+		{
+			return objectArray.Join("");
+		}
+
+		public static string Join(this object[] objectArray, char c)
+		{
+			return objectArray.Join(new string(new char[] { c }));
+		}
+
+		public static string Join(this object[] objectArray, string delimeter)
+		{
+			return objectArray.Join(0, delimeter);
+		}
+
+		public static string Join(this object[] objectArray, int startIndex)
+		{
+			return objectArray.Join(startIndex, "");
+		}
+
+		public static string Join(this object[] objectArray, int startIndex, char c)
+		{
+			return objectArray.Join(startIndex, new string(new char[] { c }));
+		}
+
+		public static string Join(this object[] objectArray, int startIndex, int endIndex)
+		{
+			return objectArray.Join(startIndex, endIndex, "");
+		}
+
+		public static string Join(this object[] objectArray, int startIndex, int endIndex, char c)
+		{
+			return objectArray.Join(startIndex, endIndex, new string(new char[] { c }));
+		}
+
+		public static string Join(this object[] objectArray, int startIndex, string delimeter)
+		{
+			return objectArray.Join(startIndex, objectArray.Length, delimeter);
+		}
+
+		public static string Join(this object[] objectArray, int startIndex, int endIndex, string delimeter)
+		{
+			int length = objectArray.Length;
+
+			if ((length == 0) || (objectArray.Length < startIndex)) {
+				return string.Empty;
+			}
+
+			if (endIndex > length) {
+				endIndex = length;
+			}
+
+			StringBuilder sb = new StringBuilder();
+
+			for (int i = startIndex; i < endIndex; i++) {
+				if (i > startIndex) {
+					sb.Append(delimeter);
+				}
+				sb.Append(objectArray[i]);
+			}
+
+			return sb.ToString();
+		}
+
+		#endregion
+
 		public static string GetInnerText(this XmlDocument doc, string tag)
 		{
 			return doc.GetElementsByTagName(tag).Item(0).InnerText;

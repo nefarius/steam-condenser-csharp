@@ -19,6 +19,9 @@ namespace SteamCondenser
 		{
 			ms = new MemoryStream();
 			ms.Position = startPosition;
+			bw = new BinaryWriter(ms);
+
+			Encoding = Encoding.Default;
 		}
 
 		public PacketWriter(byte[] data)
@@ -42,6 +45,9 @@ namespace SteamCondenser
 			get {
 				return (int)ms.Position;
 			}
+			set {
+				ms.Position = value;
+			}
 		}
 
 		public int Length {
@@ -54,6 +60,11 @@ namespace SteamCondenser
 			get {
 				return data ?? ms.ToArray();
 			}
+		}
+
+		public void WriteBool(bool value)
+		{
+			bw.Write((bool)value);
 		}
 
 		public void WriteByte(byte value)
@@ -71,6 +82,16 @@ namespace SteamCondenser
 			bw.Write(value);
 		}
 
+		public void WriteFloat(float value)
+		{
+			bw.Write(value);
+		}
+
+		public void WriteChar(char value)
+		{
+			bw.Write(value);
+		}
+
 		public void WriteInt(int integer)
 		{
 			bw.Write(integer);
@@ -79,6 +100,11 @@ namespace SteamCondenser
 		public void WriteUInt(uint integer)
 		{
 			bw.Write(integer);
+		}
+
+		public void WriteLong(long value)
+		{
+			bw.Write(value);
 		}
 
 		public void WriteBytes(byte[] data)
@@ -103,8 +129,18 @@ namespace SteamCondenser
 
 		public void WriteString(string str, Encoding encoding)
 		{
-			bw.Write(encoding.GetBytes(str));
+			WriteStringNoZero(str, encoding);
 			WriteByte(0);
+		}
+
+		public void WriteStringNoZero(string str)
+		{
+			WriteStringNoZero(str, Encoding);
+		}
+
+		public void WriteStringNoZero(string str, Encoding encoding)
+		{
+			bw.Write(encoding.GetBytes(str));
 		}
 
 		public void BlockCopy(byte[] src)

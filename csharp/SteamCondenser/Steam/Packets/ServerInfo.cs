@@ -25,6 +25,7 @@ namespace SteamCondenser.Steam.Packets
 		public string  GameDescription { get; set; }
 		public string  MapName         { get; set; }
 		public string  ServerName      { get; set; }
+		public long    SteamID         { get; set; }
 
 		public ServerTypes ServerType { get; set; }
 		
@@ -54,7 +55,6 @@ namespace SteamCondenser.Steam.Packets
 	
 	public class S2A_INFO2_Packet : ServerInfoBasePacket
 	{
-
 		public S2A_INFO2_Packet(byte[] dataBytes)
 			: base(SteamPacketTypes.S2A_INFO2, dataBytes)
 		{
@@ -71,7 +71,118 @@ namespace SteamCondenser.Steam.Packets
 	
 	public class SourceServerInfoResponsePacket : ServerInfoBasePacket
 	{
-		public ServerInfo ServerInfo { get; set; }
+		public ServerInfo ServerInfo { get; protected set; }
+
+		public override void Serialize(PacketWriter writer, bool prefix)
+		{
+			writer.WriteByte  (ServerInfo.ProtocolVersion);
+			writer.WriteString(ServerInfo.ServerName);
+			writer.WriteString(ServerInfo.MapName);
+			writer.WriteString(ServerInfo.GameDirectory);
+			writer.WriteString(ServerInfo.GameDescription);
+			writer.WriteShort (ServerInfo.ApplicationID);
+			writer.WriteByte  (ServerInfo.Players);
+			writer.WriteByte  (ServerInfo.MaxPlayers);
+
+			writer.WriteChar(GetOSType(ServerInfo.OSType));
+			writer.WriteChar(GetServerType(ServerInfo.ServerType));
+
+			writer.WriteByte  (ServerInfo.BotsCount);
+			writer.WriteBool  (ServerInfo.PasswordRequired);
+			writer.WriteBool  (ServerInfo.IsSecure);
+			writer.WriteString(ServerInfo.GameVersion);
+
+			byte edf = 0;
+
+			if (ServerInfo.Port != 0) {
+				edf |= 0x80;
+			}
+
+			if (ServerInfo.SteamID != 0) {
+				edf |= 0x10;
+			}
+
+			if (ServerInfo.SpectatorPort != 0 && ServerInfo.SpectatorServerName != null) {
+				edf |= 0x40;
+			}
+
+			if (ServerInfo.Tags != null || ServerInfo.Tags.Length != 0) {
+				edf |= 0x20;
+			}
+
+			if (edf > 0) {
+				writer.WriteByte(edf);
+
+				if ((edf & 0x80) > 0) {
+					writer.WriteShort(ServerInfo.Port);
+				}
+
+				if ((edf & 0x10) > 0) {
+					writer.WriteLong(ServerInfo.SteamID);
+				}
+
+				if ((edf & 0x40) > 0) {
+					writer.WriteShort(ServerInfo.SpectatorPort);
+					writer.WriteString(ServerInfo.SpectatorServerName);
+				}
+
+				if ((edf & 0x20) == 0x20) {
+					writer.WriteString(ServerInfo.Tags.Join(' '));
+				}
+			}
+
+		}
+
+		public ServerTypes GetServerType(char serverType)
+		{
+			switch (serverType) {
+			case 'l':
+				return ServerTypes.Listen;
+			case 'd':
+				return ServerTypes.Dedicated;
+			case 'p':
+				return ServerTypes.Proxy;
+			default:
+				return ServerTypes.Unknown;
+			}
+		}
+		public char GetServerType(ServerTypes serverType)
+		{
+			switch (serverType) {
+			case ServerTypes.Listen:
+				return 'l';
+			case ServerTypes.Dedicated:
+				return 'd';
+			case ServerTypes.Proxy:
+				return 'p';
+			default:
+				return ' ';
+			}
+		}
+
+		public char GetOSType(OSTypes osType)
+		{
+			switch (osType) {
+			case OSTypes.Linux:
+				return 'l';
+			case OSTypes.Windows:
+				return 'w';
+			default:
+				return ' ';
+			}
+		}
+
+		public OSTypes GetOSType(char osType)
+		{
+			switch (osType) {
+			case 'l':
+				return OSTypes.Linux;
+			case 'w':
+				return OSTypes.Windows;
+			default:
+				return OSTypes.Unknown;
+			}
+		}
 
 		public SourceServerInfoResponsePacket(byte[] data)
 			: base(SteamPacketTypes.S2A_INFO2, data)
@@ -87,44 +198,14 @@ namespace SteamCondenser.Steam.Packets
 			ServerInfo.Players          = reader.ReadByte();
 			ServerInfo.MaxPlayers       = reader.ReadByte();
 			ServerInfo.BotsCount        = reader.ReadByte();
-			ServerInfo.PasswordRequired = reader.ReadBoolean();
-			ServerInfo.IsSecure         = reader.ReadBoolean();
+
+			ServerInfo.ServerType = GetServerType(reader.ReadChar());
+			ServerInfo.OSType     = GetOSType    (reader.ReadChar());
+
+			ServerInfo.PasswordRequired = reader.ReadBool();
+			ServerInfo.IsSecure         = reader.ReadBool();
 			ServerInfo.GameVersion      = reader.ReadString();
 
-			char serverType = reader.ReadChar();
-			char osType     = reader.ReadChar();
-			
-			switch (serverType) {
-			case 'l':
-				ServerInfo.ServerType = ServerTypes.Listen;
-				break;
-
-			case 'd':
-				ServerInfo.ServerType = ServerTypes.Dedicated;
-				break;
-
-			case 'p':
-				ServerInfo.ServerType = ServerTypes.Proxy;
-				break;
-
-			default:
-				ServerInfo.ServerType = ServerTypes.Unknown;
-				break;
-			}
-
-			switch(osType) {
-			case 'l':
-				ServerInfo.OSType = OSTypes.Linux;
-				break;
-
-			case 'w':
-				ServerInfo.OSType = OSTypes.Windows;
-				break;
-
-			default:
-				ServerInfo.OSType = OSTypes.Unknown;
-				break;
-			}
 
 			ServerInfo.Port = 0;
 			ServerInfo.SpectatorPort = 0;
@@ -134,16 +215,20 @@ namespace SteamCondenser.Steam.Packets
 			if (!reader.EndOfData) {
 				byte edf = reader.ReadByte();
 
-				if ((edf & 0x80) == 0x80) {
+				if ((edf & 0x80) > 0) {
 					ServerInfo.Port = reader.ReadShort();
 				}
 
-				if ((edf & 0x40) == 0x40) {
+				if ((edf & 0x10) > 0) {
+					ServerInfo.SteamID = reader.ReadLong();
+				}
+
+				if ((edf & 0x40) > 0) {
 					ServerInfo.SpectatorPort       = reader.ReadShort();
 					ServerInfo.SpectatorServerName = reader.ReadString();
 				}
 
-				if ((edf & 0x20) == 0x20) {
+				if ((edf & 0x20) > 0) {
 					ServerInfo.Tags = reader.ReadString().Split(',');
 				}
 			}

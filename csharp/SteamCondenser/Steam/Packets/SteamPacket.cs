@@ -17,8 +17,8 @@ namespace SteamCondenser.Steam.Packets
 		protected PacketReader reader;
 
 		public SteamPacket(SteamPacketTypes packetType)
-			: this(packetType, new byte[] { })
 		{
+			PacketType = packetType;
 		}
 
 		public SteamPacket(SteamPacketTypes packetType, byte[] data)
@@ -32,39 +32,23 @@ namespace SteamCondenser.Steam.Packets
 			reader = new PacketReader(data, offset);
 		}
 
-		public virtual byte[] GetBytes()
+		public virtual void Serialize(PacketWriter writer, bool prefix)
 		{
-			byte[] packet = new byte[Length];
-			CopyTo(packet);
-			return packet;
-		}
-
-		public virtual void CopyTo(byte[] buffer)
-		{
-			CopyTo(buffer, 0);
-		}
-
-		public virtual void CopyTo(byte[] buffer, int offset)
-		{
-			PacketWriter pw = new PacketWriter(buffer, offset);
-			pw.BlockCopy(SteamPacket.Prefix);
-			pw.WriteByte((byte)PacketType);
-			pw.BlockCopy(reader.Data);
-		}
-
-		public int Length {
-			get {
-				return SteamPacket.Prefix.Length + 1 + Data.Length;
+			if (prefix) {
+				writer.BlockCopy(SteamPacket.Prefix);
 			}
+
+			writer.WriteByte((byte)PacketType);
+		}
+
+		public byte[] GetBytes(bool prefix)
+		{
+			PacketWriter pw = new PacketWriter();
+			Serialize(pw, prefix);
+			return pw.Data;
 		}
 
 		public SteamPacketTypes PacketType { get; private set; }
-
-		public byte[] Data {
-			get {
-				return reader.Data;
-			}
-		}
 
 		public static SteamPacket ReassemblePacket(List<byte[]> splitPackets)
 		{
@@ -105,8 +89,7 @@ namespace SteamCondenser.Steam.Packets
 			MemoryStream byteStream = new MemoryStream(rawData.Length - 1);
 			byteStream.Write(rawData, 1, rawData.Length - 1);
 
-			switch (packetType)
-			{
+			switch (packetType) {
 			case SteamPacketTypes.S2C_CHALLENGE:
 				packet = new ChallengeResponsePacket(byteStream.ToArray());
 				break;

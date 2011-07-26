@@ -16,7 +16,7 @@ namespace SteamCondenser.Steam.Sockets
 		
 		public void Send(RCONPacket dataPacket)
 		{
-			byte[] byteData = dataPacket.GetBytes();
+			byte[] byteData = dataPacket.GetBytes(true);
 			
 			this.client.Send(byteData, byteData.Length);
 		}	

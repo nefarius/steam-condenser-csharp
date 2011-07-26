@@ -18,8 +18,8 @@ namespace SteamCondenser.Steam.Servers
 		protected uint challengeNumber = 0xFFFFFFFF;
 		protected int ping;
 		protected ServerQuerySocket querySocket;
-		protected List<SteamPlayer> playerList;
-		protected List<ServerRule> serverRules = new List<ServerRule>();
+		protected SteamPlayer[] playerList;
+		protected ServerRule[] serverRules = null;
 		protected ServerInfo serverInfo = null;
 		
 		protected GameServer(int portNumber)
@@ -38,23 +38,29 @@ namespace SteamCondenser.Steam.Servers
 		}
 		
 
-		public IList<SteamPlayer> PlayerList {
+		public SteamPlayer[] PlayerList {
 			get {
-				if (playerList == null) UpdatePlayerInfo();
-				return playerList.AsReadOnly(); 
+				if (playerList == null) {
+					UpdatePlayerInfo();
+				}
+				return playerList;
 			}
 		}
 		
-		public IList<ServerRule> ServerRules {
+		public ServerRule[] ServerRules {
 			get {
-				if (this.serverRules == null) UpdateRulesInfo();
-				return serverRules.AsReadOnly();
+				if (this.serverRules == null) {
+					UpdateRulesInfo();
+				}
+				return serverRules;
 			}
 		}
 		
 		public ServerInfo ServerInfo {
 			get { 
-				if (this.serverInfo == null) this.UpdateServerInfo();
+				if (this.serverInfo == null) {
+					UpdateServerInfo();
+				}
 				return serverInfo; 
 			}
 		}
@@ -115,8 +121,7 @@ namespace SteamCondenser.Steam.Servers
 			bool success = false;
 			SteamPacketTypes expectedResponse;
 			SteamPacket requestPacket = null;
-			switch (requestType) 
-			{
+			switch (requestType) {
 			case GameServer.REQUEST_CHALLENGE:
 				expectedResponse = SteamPacketTypes.S2C_CHALLENGE;
 				requestPacket = new SteamPacket(SteamPacketTypes.A2S_SERVERQUERY_GETCHALLENGE);
@@ -139,9 +144,7 @@ namespace SteamCondenser.Steam.Servers
 			
 			this.SendRequest(requestPacket);
 			
-			success = false;
-			do
-			{
+			do {
 				SteamPacket responsePacket = this.GetReply();
 				success = (responsePacket.PacketType == expectedResponse);
 				

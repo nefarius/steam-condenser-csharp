@@ -14,7 +14,7 @@ namespace SteamCondenser.Steam.Sockets
 			: this(new IPEndPoint(ipAddress, port))
 		{
 		}
-			
+
 		public ServerQuerySocket(IPEndPoint endpoint)
 			: base(endpoint)
 		{
@@ -33,14 +33,13 @@ namespace SteamCondenser.Steam.Sockets
 		{
 			return this.ReceivePacket(0);
 		}
-		
+
 		public void Send(SteamPacket dataPacket)
 		{
-			byte[] byteData = dataPacket.GetBytes();
-			
+			byte[] byteData = dataPacket.GetBytes(true);
 			this.client.Send(byteData, byteData.Length);
 		}
-		
+
 		public void Dispose()
 		{
 			this.client.Close();

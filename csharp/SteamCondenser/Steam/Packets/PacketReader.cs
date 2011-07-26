@@ -41,7 +41,10 @@ namespace SteamCondenser
 
 		public int Position {
 			get {
-				return (int)ms.Length;
+				return (int)ms.Position;
+			}
+			set {
+				ms.Position = value;
 			}
 		}
 
@@ -71,7 +74,9 @@ namespace SteamCondenser
 
 		public string ReadString(Encoding encoding)
 		{
-			return encoding.GetString(data, Position, GetRestLength());
+			string ret = encoding.GetString(data, Position, GetRestLength());
+			Position += ret.Length + 1;
+			return ret;
 		}
 
 		#endregion
@@ -106,9 +111,14 @@ namespace SteamCondenser
 			return br.ReadChar();
 		}
 
-		public bool ReadBoolean()
+		public bool ReadBool()
 		{
 			return br.ReadBoolean();
+		}
+
+		public long ReadLong()
+		{
+			return br.ReadInt64();
 		}
 
 		public byte[] Data {

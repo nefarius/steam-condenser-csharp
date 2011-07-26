@@ -46,16 +46,16 @@ namespace SteamCondenser.Steam.Packets
 
 		public string StartIP { get; protected set; }
 		
-		public override byte[] GetBytes()
+		public override void Serialize(PacketWriter writer, bool prefix)
 		{
 			PacketWriter pw = new PacketWriter();
+
+			base.Serialize(pw, prefix);
 
 			pw.WriteByte((byte)PacketType);
 			pw.WriteByte((byte)Region);
 			pw.WriteString(StartIP);
 			pw.WriteString(Filter);
-
-			return pw.Data;
 		}
 	}
 	

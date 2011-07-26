@@ -70,14 +70,15 @@ namespace SteamCondenser.Steam.Servers
 			try {
 				while (true) {
 					responsePacket = (RCONPacket)this.rconSocket.GetReply();
-					if (responsePacket is RCONAuthResponsePacket)
-					{
+					if (responsePacket is RCONAuthResponsePacket) {
 						throw new RCONNoAuthException();
 					}
 					responsePackets.Add((RCONExecResponsePacket)responsePacket);
 				}
 			} catch {
-				if (responsePackets.Count == 0) throw new Exception();
+				if (responsePackets.Count == 0) {
+					throw new Exception();
+				}
 			}
 			
 			string response = "";
