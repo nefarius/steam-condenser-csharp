@@ -117,10 +117,12 @@ namespace SteamCondenser.Steam.Sockets
 		{
 			this.RconSend("challenge rcon");
 			SteamPacket steamPacket = this.GetReply();
+
 			RCONGoldSrcResponsePacket responsePacket = steamPacket as RCONGoldSrcResponsePacket;
 			
-			if (responsePacket == null)
+			if (responsePacket == null) {
 				throw new PacketFormatException();
+			}
 			string response = responsePacket.Response;
 
 			if (response.Equals("You have been banned from this server.")) {
