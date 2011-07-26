@@ -31,7 +31,9 @@ namespace SteamCondenser.Steam.Servers
 		
 		public int Ping  { 
 			get {
-				if (ping == 0) UpdatePing();
+				if (ping == 0) {
+					UpdatePing();
+				}
 				return ping;
 			}
 			protected set { ping = value; }
