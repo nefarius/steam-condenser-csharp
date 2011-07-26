@@ -9,8 +9,6 @@ namespace SteamCondenser.Steam.Sockets
 {
 	public class GoldSrcSocket : ServerQuerySocket
 	{
-		
-		private bool isHLTV;
 		private long rconChallenge = -1;
 		
 		public GoldSrcSocket(IPAddress ipAddress, int portNumber)
@@ -21,9 +19,11 @@ namespace SteamCondenser.Steam.Sockets
 		public GoldSrcSocket(IPAddress ipAddress, int portNumber, bool isHLTV)
 			: base(ipAddress, portNumber)
 		{
-			this.isHLTV = isHLTV;
+			IsHLTV = isHLTV;
 		}
-		
+
+		public bool IsHLTV { get; protected set; }
+
 		public override SteamPacket GetReply()
 		{
 			int bytesRead;
@@ -76,13 +76,13 @@ namespace SteamCondenser.Steam.Sockets
 		
 		public string RconExec(string password, string command)
 		{
-			if (this.rconChallenge == -1 || this.isHLTV) {
+			if (this.rconChallenge == -1 || IsHLTV) {
 				this.RconGetChallenge();
 			}
 			
 			RconSend("rcon " + rconChallenge +  " " + password + " " + command);
 			string response;
-			if (this.isHLTV) {
+			if (IsHLTV) {
 				try { 
 					SteamPacket packet = this.GetReply();
 					if (packet == null)
