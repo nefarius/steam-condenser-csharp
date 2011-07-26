@@ -79,32 +79,45 @@ namespace SteamCondenser.Steam.Packets.RCON
 	public class RCONGoldSrcRequestPacket : SteamPacket
 	{
 		public RCONGoldSrcRequestPacket(string request)
-			: base((SteamPacketTypes)0, System.Text.Encoding.ASCII.GetBytes(request))
+			: base((SteamPacketTypes)0)
 		{
+			Request = request;
 		}
 
 		public string Request { get; protected set; }
 		
 		public override void Serialize(PacketWriter writer, bool prefix)
 		{
-			base.Serialize(writer, prefix);
+			if (prefix) {
+				writer.BlockCopy(SteamPacket.Prefix);
+			}
 
-			writer.WriteString(Request);
+			writer.WriteStringNoZero(Request);
 		}
 	}
 	
 	public class RCONGoldSrcResponsePacket : SteamPacket
 	{
-		public RCONGoldSrcResponsePacket(byte[] commandResponse)
-			: base(SteamPacketTypes.RCON_GOLDSRC_CHALLENGE_HEADER, commandResponse)
+		public RCONGoldSrcResponsePacket(string response)
+			: base(SteamPacketTypes.RCON_GOLDSRC_CHALLENGE_HEADER)
 		{
+			Response = response;
+		}
+
+		public RCONGoldSrcResponsePacket(byte[] response)
+			: base(SteamPacketTypes.RCON_GOLDSRC_CHALLENGE_HEADER, response)
+		{
+			Response = reader.ReadString();
 		}
 		
-		public string Response	{
-			get {
-				return System.Text.Encoding.ASCII.GetString(reader.Data, 0, reader.Length - 2);
-			}
-		}	
+		public string Response { get; protected set; }
+
+		public override void Serialize(PacketWriter writer, bool prefix)
+		{
+			base.Serialize(writer, prefix);
+
+			writer.WriteStringNoZero(Response);
+		}
 	}
 	#endregion
 	
