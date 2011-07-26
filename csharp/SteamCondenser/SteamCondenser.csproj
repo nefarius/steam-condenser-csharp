@@ -60,7 +60,6 @@
     <Compile Include="Exceptions.cs" />
     <Compile Include="Steam\Packets\ServerInfo.cs" />
     <Compile Include="Steam\Packets\RCON.cs" />
-    <Compile Include="Steam\MasterServer.cs" />
     <Compile Include="Steam\Servers\SourceServer.cs" />
     <Compile Include="Steam\Community\Base.cs" />
     <Compile Include="Steam\Community\SteamID.cs" />
@@ -73,6 +72,9 @@
     <Compile Include="Steam\Community\GameStats\AlienSwarm.cs" />
     <Compile Include="Steam\Packets\PacketReader.cs" />
     <Compile Include="Steam\Packets\PacketWriter.cs" />
+    <Compile Include="Steam\Packets\MasterServer.cs" />
+    <Compile Include="Steam\Sockets\MasterServerSocket.cs" />
+    <Compile Include="Steam\Servers\MasterServer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -85,5 +87,6 @@
   <ItemGroup>
     <Folder Include="Steam\Community\" />
     <Folder Include="Steam\Community\GameStats\" />
+    <Folder Include="Steam\" />
   </ItemGroup>
 </Project>
