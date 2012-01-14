@@ -27,10 +27,8 @@ namespace SteamCondenser.Steam.Packets
 
 		public string StartIP { get; protected set; }
 
-		public override void Serialize(PacketWriter writer, bool prefix)
+		public override void Serialize(PacketWriter pw, bool prefix)
 		{
-			PacketWriter pw = new PacketWriter();
-
 			base.Serialize(pw, prefix);
 
 			pw.WriteByte((byte)PacketType);
