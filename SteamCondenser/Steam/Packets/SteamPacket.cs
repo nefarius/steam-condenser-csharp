@@ -82,12 +82,18 @@ namespace SteamCondenser.Steam.Packets
 
 		public static SteamPacket CreatePacket(byte[] rawData)
 		{
+			return CreatePacket(rawData, true);
+		}
+
+		public static SteamPacket CreatePacket(byte[] rawData, bool prefix)
+		{
+			int start = (prefix ? 4 : 0);
 
 			SteamPacket packet;
-			SteamPacketTypes packetType = (SteamPacketTypes)rawData[0];
+			SteamPacketTypes packetType = (SteamPacketTypes)rawData[start];
 
 			MemoryStream byteStream = new MemoryStream(rawData.Length - 1);
-			byteStream.Write(rawData, 1, rawData.Length - 1);
+			byteStream.Write(rawData, start + 1, rawData.Length - 1 - start);
 
 			switch (packetType) {
 			case SteamPacketTypes.S2C_CHALLENGE:
