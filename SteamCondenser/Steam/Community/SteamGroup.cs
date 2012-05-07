@@ -109,7 +109,7 @@ namespace SteamCondenser.Steam.Community
 		public string GroupUrl { get { return GetPage(CustomUrl); } }
 		public string GroupIDUrl { get { return GetPage(GroupID64); } }
 		
-		public string BaseUrl { 
+		public string BaseUrl {
 			get {
 				if (CustomUrl == null) return GroupIDUrl;
 				else return GroupUrl;
@@ -175,7 +175,7 @@ namespace SteamCondenser.Steam.Community
 					}
 			
 				} while (page < totalPages);
-			} catch (XmlException) { 
+			} catch (XmlException) {
 				return false;
 			} catch (Exception e) {
 				throw e;
@@ -193,7 +193,7 @@ namespace SteamCondenser.Steam.Community
 					XmlDocument doc = new XmlDocument();
 					doc.LoadUrl(BaseUrl + "/memberslistxml");
 					return int.Parse(doc.GetInnerText("memberCount"));
-				} else { 
+				} else {
 					return members.Length;
 				}
 			}

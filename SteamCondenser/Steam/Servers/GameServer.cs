@@ -29,7 +29,7 @@ namespace SteamCondenser.Steam.Servers
 			}
 		}
 		
-		public int Ping  { 
+		public int Ping  {
 			get {
 				if (ping == 0) {
 					UpdatePing();
@@ -59,11 +59,11 @@ namespace SteamCondenser.Steam.Servers
 		}
 		
 		public ServerInfo ServerInfo {
-			get { 
+			get {
 				if (this.serverInfo == null) {
 					UpdateServerInfo();
 				}
-				return serverInfo; 
+				return serverInfo;
 			}
 		}
 		

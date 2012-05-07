@@ -8,7 +8,7 @@ namespace SteamCondenser.Steam.Servers
 	{
 		private string rconPassword;
 		
-		public GoldSrcSocket Socket { 
+		public GoldSrcSocket Socket {
 			get {
 				return this.querySocket as GoldSrcSocket;
 			}

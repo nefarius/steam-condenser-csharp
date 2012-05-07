@@ -37,7 +37,7 @@ namespace SteamCondenser.Steam.Sockets
 				byte packetNumberAndCount;
 				List<byte[]> splitPackets = new List<byte[]>();
 				
-				do { 
+				do {
 					requestId = this.bufferReader.ReadInt32().ReverseBytes();
 					packetNumberAndCount = this.bufferReader.ReadByte();
 					packetCount = packetNumberAndCount & 0xF;
@@ -83,7 +83,7 @@ namespace SteamCondenser.Steam.Sockets
 			RconSend("rcon " + rconChallenge +  " " + password + " " + command);
 			string response;
 			if (IsHLTV) {
-				try { 
+				try {
 					SteamPacket packet = this.GetReply();
 					if (packet == null)
 					{
@@ -100,8 +100,8 @@ namespace SteamCondenser.Steam.Sockets
 				throw new RCONNoAuthException(response);
 			}
 			
-			try { 
-				do { 
+			try {
+				do {
 					RCONGoldSrcResponsePacket packet = this.GetReply() as RCONGoldSrcResponsePacket;
 					if (packet == null) {
 						throw new PacketFormatException();

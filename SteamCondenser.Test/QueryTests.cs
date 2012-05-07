@@ -52,7 +52,7 @@ namespace SteamCondenser.Test
 		
 		
 		/// <summary>
-		/// This test gets a random Source server from the master server and 
+		/// This test gets a random Source server from the master server and
 		/// does a full query on it.
 		/// </summary>
 		[Test]

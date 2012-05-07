@@ -43,14 +43,14 @@ namespace SteamCondenser.Steam.Community
 		}
 	}
 	
-	public abstract class GameWeapon 
+	public abstract class GameWeapon
 	{
 		public string ID    { get; protected set; }
 		public int    Kills { get; protected set; }
 		public int    Shots { get; protected set; }
 		
 		public float AverageShotsPerKill {
-			get { 
+			get {
 				if (Kills == 0) return 0.0f;
 				return (float)Shots / Kills;
 			}

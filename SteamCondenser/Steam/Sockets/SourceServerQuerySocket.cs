@@ -54,7 +54,7 @@ namespace SteamCondenser.Steam.Sockets
 						packetChecksum = ReverseBytes(this.bufferReader.ReadInt32());
 					}
 
-					// Omit additional header on the first packet 
+					// Omit additional header on the first packet
 					if (packetNumber == 1) {
 						this.bufferReader.ReadInt32();
 					}

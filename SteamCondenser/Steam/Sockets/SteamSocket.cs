@@ -37,7 +37,7 @@ namespace SteamCondenser.Steam.Sockets
 			bufferReader = new BinaryReader(new MemoryStream(this.buffer));
 		}
 
-		public int Timeout { 
+		public int Timeout {
 			get {
 				return client.Client.ReceiveTimeout;
 			}

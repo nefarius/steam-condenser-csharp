@@ -155,7 +155,7 @@ namespace SteamCondenser.Steam.Community
 		}
 	}
 	
-	public class AlienSwarmFavorites 
+	public class AlienSwarmFavorites
 	{
 		public string Class           { get; set; }
 		public string ClassImage      { get; set; }
@@ -220,13 +220,13 @@ namespace SteamCondenser.Steam.Community
 	{
 		public const string AppName = "alienswarm";
 		
-		private static string[] weapons = { 
-			"Autogun", "Cannon_Sentry", "Chainsaw", "Flamer", 
+		private static string[] weapons = {
+			"Autogun", "Cannon_Sentry", "Chainsaw", "Flamer",
 			"Grenade_Launcher", "Hand_Grenades", "Hornet_Barrage",
 			"Incendiary_Sentry", "Laser_Mines", "Marskman_Rifle", "Minigun",
 			"Mining_Laser", "PDW", "Pistol", "Prototype_Rifle", "Rail_Rifle",
 			"Rifle", "Rifle_Grenade", "Sentry_Gun", "Shotgun", "Tesla_Cannon",
-			"Vindicator", "Vindicator_Grenade" 
+			"Vindicator", "Vindicator_Grenade"
 		};
 		
 		public AlienSwarmWeaponStats  WeaponStats  { get; protected set; }

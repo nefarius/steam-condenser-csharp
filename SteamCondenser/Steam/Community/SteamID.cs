@@ -65,7 +65,7 @@ namespace SteamCondenser.Steam.Community
 		#region CommunityID and SteamID
 		
 		/// <summary>
-		/// Converts the 64bit SteamID as used and reported by the Steam Community to a SteamID 
+		/// Converts the 64bit SteamID as used and reported by the Steam Community to a SteamID
 		/// reported by game servers
 		/// </summary>
 		/// <param name="communityId">
@@ -363,8 +363,8 @@ namespace SteamCondenser.Steam.Community
 			}
 		}
 		
-		public L4D2Stats L4D2Stats { 
-			get { 
+		public L4D2Stats L4D2Stats {
+			get {
 				if (CustomUrl != null)
 					return new Steam.Community.L4D2Stats(CustomUrl);
 				else

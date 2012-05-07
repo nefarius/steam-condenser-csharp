@@ -12,11 +12,11 @@ using SteamCondenser.Steam.Community;
 
 namespace SteamCondenser.Steam.Community
 {
-	public class DefenseGridAlien 
+	public class DefenseGridAlien
 	{
-		private static string[] alienClasses = new string[] { 
+		private static string[] alienClasses = new string[] {
 			"bulwark", "crasher", "dart", "decoy", "drone", "grunt", "juggernaut", "manta",
-			"racer", "rumbler", "seeker", "spire", "stealth", "swarmer", "turtle", "walker" 
+			"racer", "rumbler", "seeker", "spire", "stealth", "swarmer", "turtle", "walker"
 		};
 		
 		public static string[] AlienClasses { get { return alienClasses; }}
@@ -43,9 +43,9 @@ namespace SteamCondenser.Steam.Community
 		}
 	}
 	
-	public class DefenseGridTower 
+	public class DefenseGridTower
 	{
-		private static string[] towerClasses = 
+		private static string[] towerClasses =
 			new string[] { "cannon", "flak", "gun", "inferno", "laser", "meteor", "missile", "tesla" };
 		
 		public static string[] TowerClasses { get { return towerClasses; } }

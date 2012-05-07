@@ -31,7 +31,7 @@ namespace SteamCondenser.Steam.Community
 		}
 		
 		public float AverageHitsPerKill {
-			get { 
+			get {
 				if (Hits == 0) return 0.0f;
 				return (float)Hits / Kills;
 			}

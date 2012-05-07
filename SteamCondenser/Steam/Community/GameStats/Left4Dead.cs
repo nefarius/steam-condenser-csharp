@@ -84,7 +84,7 @@ namespace SteamCondenser.Steam.Community
 		public string MostProtectedDifficulty { get; protected set; }
 		public float  AverageProtected        { get; protected set; }
 		public float  AverageWasProtected     { get; protected set; }
-		public int    FriendlyFireDamage      { get; protected set; } 
+		public int    FriendlyFireDamage      { get; protected set; }
 		// TODO: rename this long name
 		public string MostFriendlyFireDamageDifficulty { get; protected set; }
 		public float  AverageFriendlyFireDamage { get; protected set; }
@@ -130,7 +130,7 @@ namespace SteamCondenser.Steam.Community
 			GamesWon = int.Parse(data.GetInnerText("gameswon"));
 			GamesLost = int.Parse(data.GetInnerText("gameslost"));
 			HighestSurvivorScore = int.Parse(data.GetInnerText("survivorscore"));
-			                     
+			
 		}
 	}
 	
@@ -181,7 +181,7 @@ namespace SteamCondenser.Steam.Community
 				
 				if (mostRecentGame.InnerText != string.Empty)
 					MostRecentGame = new L4DMostRecentGame(mostRecentGame);
-				else 
+				else
 					mostRecentGame = null;
 				
 				Favourite        = new      L4DFavourite(stats.GetXmlElement("favorites"));
@@ -256,7 +256,7 @@ namespace SteamCondenser.Steam.Community
 		{
 			return (Medals)medal;
 		}
-		 
+		
 		public float  BestTime    { get; protected set; }
 		public string ID          { get; protected set; }
 		public Medals Medal       { get; protected set; }
@@ -511,7 +511,7 @@ namespace SteamCondenser.Steam.Community
 	}
 	
 	public class L4D2Weapon : AbstractL4DWeapon
-	{ 
+	{
 		public string Damage      { get; protected set; }
 		public string WeaponGroup { get; protected set; }
 		
