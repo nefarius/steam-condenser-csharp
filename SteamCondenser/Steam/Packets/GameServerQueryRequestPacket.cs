@@ -9,7 +9,7 @@ namespace SteamCondenser.Steam.Packets
 		public GameServerQueryRequestPacket(SteamPacketTypes requestType)
 			: base(requestType)
 		{
-			
+
 		}
 
 		public GameServerQueryRequestPacket(SteamPacketTypes requestType, byte[] data)

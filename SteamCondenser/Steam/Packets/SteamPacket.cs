@@ -60,7 +60,7 @@ namespace SteamCondenser.Steam.Packets
 			byte[] packetData;
 			packetData = new byte[0];
 			MemoryStream memStream = new MemoryStream();
-			
+
 			foreach (byte[] splitPacket in splitPackets) {
 				memStream.Write(splitPacket, 0, splitPacket.Length);
 			}
@@ -82,7 +82,7 @@ namespace SteamCondenser.Steam.Packets
 
 		public static SteamPacket CreatePacket(byte[] rawData)
 		{
-			
+
 			SteamPacket packet;
 			SteamPacketTypes packetType = (SteamPacketTypes)rawData[0];
 
@@ -106,7 +106,7 @@ namespace SteamCondenser.Steam.Packets
 			case SteamPacketTypes.S2A_INFO_DETAILED:
 				packet = new S2A_INFO_DETAILED_Packet(byteStream.ToArray());
 				break;
-			
+
 			case SteamPacketTypes.S2A_RULES:
 				packet = new ServerRulesResponsePacket(byteStream.ToArray());
 				break;
@@ -114,17 +114,17 @@ namespace SteamCondenser.Steam.Packets
 			case SteamPacketTypes.S2A_PLAYER:
 				packet = new PlayersResponsePacket(byteStream.ToArray());
 				break;
-			
+
 			case SteamPacketTypes.RCON_GOLDSRC_CHALLENGE_HEADER:
 			case SteamPacketTypes.RCON_GOLDSRC_NO_CHALLENGE_HEADER:
 			case SteamPacketTypes.RCON_GOLDSRC_RESPONSE_HEADER:
 				packet = new RCONGoldSrcResponsePacket(byteStream.ToArray());
 				break;
-			
+
 			case SteamPacketTypes.M2A_SERVER_BATCH:
 			 	packet = new MasterServerResponseBatchPacket(byteStream.ToArray());
 				break;
-			
+
 			default:
 				packet = new SteamPacket(packetType, byteStream.ToArray());
 				break;

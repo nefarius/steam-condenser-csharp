@@ -27,7 +27,7 @@ namespace SteamCondenser.Steam.Packets
 			for (short i = 0; i < numRules; i++) {
 				string cvar  = reader.ReadString();
 				string value = reader.ReadString();
-				
+
 				ServerRules[i] = new ServerRule(cvar, value);
 			}
 		}

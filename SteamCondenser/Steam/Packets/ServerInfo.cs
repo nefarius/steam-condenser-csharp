@@ -10,10 +10,10 @@ namespace SteamCondenser.Steam.Packets
 		public short    SpectatorPort       { get; set; }
 		public string   SpectatorServerName { get; set; }
 		public string[] Tags                { get; set; }
-		
+
 		public OSTypes OSType           { get; set; }
 		public bool    PasswordRequired { get; set; }
-		
+
 		public bool    IsSecure        { get; set; }
 		public string  GameVersion     { get; set; }
 		public byte    BotsCount       { get; set; }
@@ -28,7 +28,7 @@ namespace SteamCondenser.Steam.Packets
 		public long    SteamID         { get; set; }
 
 		public ServerTypes ServerType { get; set; }
-		
+
 		public override string ToString()
 		{
 			return string.Format("[ServerInfo: Port={0}, SpectatorPort={1}, SpectatorServerName={2}, Tags={3}, ServerType={4}, OSType={5}, PasswordRequired={6}, IsSecure={7}, GameVersion={8}, BotsCount={9}, Players={10}, MaxPlayers={11}, ApplicationID={12}, ProtocolVersion={13}, GameDirectory={14}, GameDescription={15}, MapName={16}, ServerName={17}]",
@@ -36,7 +36,7 @@ namespace SteamCondenser.Steam.Packets
 		}
 
 	}
-	
+
 	public class ServerInfoBasePacket : SteamPacket
 	{
 		public ServerInfoBasePacket(SteamPacketTypes packetType, byte[] dataBytes)
@@ -44,7 +44,7 @@ namespace SteamCondenser.Steam.Packets
 		{
 		}
 	}
-	
+
 	public class S2A_INFO_Packet : ServerInfoBasePacket
 	{
 		public S2A_INFO_Packet(byte[] dataBytes)
@@ -52,7 +52,7 @@ namespace SteamCondenser.Steam.Packets
 		{
 		}
 	}
-	
+
 	public class S2A_INFO2_Packet : ServerInfoBasePacket
 	{
 		public S2A_INFO2_Packet(byte[] dataBytes)
@@ -60,7 +60,7 @@ namespace SteamCondenser.Steam.Packets
 		{
 		}
 	}
-	
+
 	public class S2A_INFO_DETAILED_Packet : ServerInfoBasePacket
 	{
 		public S2A_INFO_DETAILED_Packet(byte[] dataBytes)
@@ -68,7 +68,7 @@ namespace SteamCondenser.Steam.Packets
 		{
 		}
 	}
-	
+
 	public class SourceServerInfoResponsePacket : ServerInfoBasePacket
 	{
 		public ServerInfo ServerInfo { get; protected set; }

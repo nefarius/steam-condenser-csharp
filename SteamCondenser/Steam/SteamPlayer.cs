@@ -10,7 +10,7 @@ namespace SteamCondenser.Steam
 		public String Name  { get; protected set; }
 		public int    Score { get; protected set; }
 		public bool   IsBot { get; protected set; }
-		
+
 		public TimeSpan ConnectTime { get; protected set; }
 
 		public SteamPlayer(int id, string name, int score)

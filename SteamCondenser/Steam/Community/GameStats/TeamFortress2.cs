@@ -12,7 +12,7 @@ using System.Collections.Generic;
 namespace SteamCondenser.Steam.Community
 {
 	#region Character Class classes
-	
+
 	public class TF2Class : GameClass
 	{
 		public int MaxBuildingsDestroyed { get; protected set; }
@@ -25,7 +25,7 @@ namespace SteamCondenser.Steam.Community
 		public int MaxRevenges           { get; protected set; }
 		public int MaxScore              { get; protected set; }
 		public int MaxTimeAlive          { get; protected set; }
-			
+
 		public TF2Class(XmlElement data)
 			: base(data)
 		{
@@ -39,9 +39,9 @@ namespace SteamCondenser.Steam.Community
 			MaxRevenges           = int.Parse(data.GetInnerText("irevenge"));
 			MaxScore              = int.Parse(data.GetInnerText("ipointsscored"));
 			MaxTimeAlive          = int.Parse(data.GetInnerText("iplaytime"));
-			
+
 		}
-		
+
 		/// <summary>
 		/// Factory method
 		/// </summary>
@@ -62,13 +62,13 @@ namespace SteamCondenser.Steam.Community
 			}
 		}
 	}
-	
+
 	public class TF2Engineer : TF2Class
 	{
 		public int MaxBuildingsBuild { get; protected set; }
 		public int MaxSentryKills    { get; protected set; }
 		public int MaxTeleports      { get; protected set; }
-		
+
 		public TF2Engineer(XmlElement data)
 			: base(data)
 		{
@@ -77,12 +77,12 @@ namespace SteamCondenser.Steam.Community
 			MaxTeleports      = int.Parse(data.GetInnerText("inumteleports"));
 		}
 	}
-	
+
 	public class TF2Medic : TF2Class
 	{
 		public int MaxHealthHealed { get; protected set; }
 		public int MaxUeberCharges { get; protected set; }
-		
+
 		public TF2Medic(XmlElement data)
 			: base(data)
 		{
@@ -90,23 +90,23 @@ namespace SteamCondenser.Steam.Community
 			MaxUeberCharges = int.Parse(data.GetInnerText("inuminvulnerable"));
 		}
 	}
-	
+
 	public class TF2Sniper : TF2Class
 	{
 		public int MaxHeadShots { get; protected set; }
-		
+
 		public TF2Sniper(XmlElement data)
 			: base(data)
 		{
 			MaxHeadShots = int.Parse(data.GetInnerText("iheadshots"));
 		}
 	}
-	
+
 	public class TF2Spy : TF2Class
 	{
 		public int MaxBackstabs     { get; protected set; }
 		public int MaxHealthLeeched { get; protected set; }
-		
+
 		public TF2Spy(XmlElement data)
 			: base(data)
 		{
@@ -114,37 +114,37 @@ namespace SteamCondenser.Steam.Community
 			MaxHealthLeeched = int.Parse(data.GetInnerText("ihealthpointsleached"));
 		}
 	}
-	
+
 	#endregion
-	
+
 	public class TF2Stats : GameStats
 	{
 		public const string AppName = "tf2";
-		
+
 		public TF2Class[] ClassStats { get; protected set; }
-		
+
 		public TF2Stats(string steamid)
 			: base(steamid, AppName)
 		{
 			FetchData();
 		}
-		
+
 		public TF2Stats(long steamid)
 			: base(steamid, AppName)
 		{
 			FetchData();
 		}
-		
+
 		protected new void FetchData()
 		{
 			var classes = (doc.GetElementsByTagName("stats").Item(0) as XmlElement).GetElementsByTagName("classData");
-		
+
 			List<TF2Class> list = new List<TF2Class>();
 			foreach (XmlElement klass in classes) {
 				list.Add(TF2Class.Create(klass));
 			}
 			ClassStats = list.ToArray();
-			
+
 		}
 	}
 }

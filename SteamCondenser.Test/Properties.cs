@@ -16,14 +16,14 @@ namespace SteamCondenser.Test
 		public Properties()
 		{
 		}
-		
+
 		static Regex optionRegex = new Regex(@"#(.+)[ \t]+=[ \t]+(.+)", RegexOptions.Compiled);
 		public bool Load(Stream stream)
 		{
 			try {
 				if ((stream == null) || !stream.CanRead) return false;
 				StreamReader sr = new StreamReader(stream);
-				
+
 				while (!sr.EndOfStream) {
 					Match match = optionRegex.Match(sr.ReadLine());
 					this.Add(match.Groups[1].Value, match.Groups[2].Value);
@@ -32,7 +32,7 @@ namespace SteamCondenser.Test
 				return true;
 			}
 			catch { return false; }
-			
+
 		}
 	}
 }

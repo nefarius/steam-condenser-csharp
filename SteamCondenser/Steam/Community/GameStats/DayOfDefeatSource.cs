@@ -14,42 +14,42 @@ namespace SteamCondenser.Steam.Community
 	public class DoDSWeapon : GameWeapon
 	{
 		public string Name { get; protected set; }
-		
+
 		public int Headshots { get; protected set; }
 		public int Hits      { get; protected set; }
-		
+
 		public DoDSWeapon(XmlElement data)
 			: base(data)
 		{
 			ID = data.GetAttribute("key");
-			
+
 			Name      =           data.GetInnerText("name");
 			Headshots = int.Parse(data.GetInnerText("headshots"));
 			Shots     = int.Parse(data.GetInnerText("shotsfired"));
 			Hits      = int.Parse(data.GetInnerText("shotshit"));
-			
+
 		}
-		
+
 		public float AverageHitsPerKill {
 			get {
 				if (Hits == 0) return 0.0f;
 				return (float)Hits / Kills;
 			}
 		}
-		
+
 		public float HeadshotPercentage {
 			get {
 				if (Hits == 0) return 0.0f;
 				return (float)Headshots/Hits;
 			}
 		}
-		
+
 	}
-	
+
 	public class DoDSClass : GameClass
 	{
 		public string Key { get; protected set; }
-		
+
 		public int Blocks       { get; protected set; }
 		public int BombsDefused { get; protected set; }
 		public int BombsPlanted { get; protected set; }
@@ -60,13 +60,13 @@ namespace SteamCondenser.Steam.Community
 		public int RoundsLost   { get; protected set; }
 		public int RoundsWon    { get; protected set; }
 		public int Revenges     { get; protected set; }
-		
+
 		public DoDSClass(XmlElement data)
 		{
 			Key = data.GetAttribute("key");
-			
+
 			Name = data.GetInnerText("name");
-			
+
 			Blocks       = int.Parse(data.GetInnerText("blocks"));
 			BombsDefused = int.Parse(data.GetInnerText("bombsdefused"));
 			BombsPlanted = int.Parse(data.GetInnerText("bombsplanted"));
@@ -78,17 +78,17 @@ namespace SteamCondenser.Steam.Community
 			RoundsWon    = int.Parse(data.GetInnerText("roundswon"));
 			RoundsLost   = int.Parse(data.GetInnerText("roundslost"));
 			Revenges     = int.Parse(data.GetInnerText("revenges"));
-			
+
 			PlayTime = int.Parse(data.GetInnerText("playtime"));
 		}
-		
+
 	}
-	
+
 	public class DoDSStats : GameStats
 	{
 		public DoDSClass[]  ClassStats { get; protected set; }
 		public DoDSWeapon[] WeaponStats { get; protected set; }
-			
+
 		public DoDSStats(long steamid)
 			: base(steamid, "dod:s")
 		{
@@ -100,7 +100,7 @@ namespace SteamCondenser.Steam.Community
 		{
 			FetchData();
 		}
-		
+
 		protected new void FetchData()
 		{
 			if (IsPublic)
@@ -110,7 +110,7 @@ namespace SteamCondenser.Steam.Community
 					classList.Add(new DoDSClass(klass));
 				}
 				ClassStats = classList.ToArray();
-				
+
 				List<DoDSWeapon> weaponList = new List<DoDSWeapon>();
 				foreach (XmlElement weapon in doc.GetXmlElement("weapons")) {
 					weaponList.Add(new DoDSWeapon(weapon));

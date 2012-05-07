@@ -7,9 +7,9 @@ namespace SteamCondenser.Test
 	[TestFixture]
 	public class QueryTests
 	{
-		
+
 		#region Invalid Server
-		
+
 		/// <summary>
 		/// This test tries to initialize an invalid GoldSrc server
 		/// </summary>
@@ -20,7 +20,7 @@ namespace SteamCondenser.Test
 			GoldSrcServer server = new GoldSrcServer("10.0.0.1");
 			Assert.AreEqual(server.Ping, -1, "Exception should have been thrown");
 		}
-		
+
 		/// <summary>
 		/// This test tries to initialize an invalid SourceServer server
 		/// </summary>
@@ -31,11 +31,11 @@ namespace SteamCondenser.Test
 			SourceServer server = new SourceServer("10.0.0.1");
 			Assert.AreEqual(server.Ping, -1, "Exception should have been thrown");
 		}
-		
+
 		#endregion
-		
+
 		#region Random Server
-		
+
 		/// <summary>
 		/// This test gets a random GoldSrc server from the master server and
 		/// does a full query on it
@@ -46,11 +46,11 @@ namespace SteamCondenser.Test
 			MasterServer masterServer = new MasterServer(MasterServer.GoldSrcMasterServer);
 			masterServer.Timeout = 30000;
 			var servers = masterServer.GetServers(Regions.All, "\\type\\d\\empty\\1\\full\\1\\gamedir\\valve");
-			
+
 			Assert.Greater(servers.Count, 0);
 		}
-		
-		
+
+
 		/// <summary>
 		/// This test gets a random Source server from the master server and
 		/// does a full query on it.
@@ -58,13 +58,13 @@ namespace SteamCondenser.Test
 		[Test]
 		public void SourceServerList()
 		{
-			MasterServer masterServer = new MasterServer(MasterServer.SourceMasterServer);			
+			MasterServer masterServer = new MasterServer(MasterServer.SourceMasterServer);
 			masterServer.Timeout = 30000;
 			var servers = masterServer.GetServers(Regions.All,"\\type\\d\\empty\\1\\full\\1\\gamedir\\tf");
-			
+
 			Assert.Greater(servers.Count, 0);
 		}
-		
+
 		#endregion
 	}
 }

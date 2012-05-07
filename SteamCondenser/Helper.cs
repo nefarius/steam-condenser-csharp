@@ -12,28 +12,28 @@ namespace SteamCondenser
 		{
 			return System.Text.Encoding.ASCII.GetString(value);
 		}
-		
+
 		#region GetBytes
-		
+
 		public static byte[] GetBytes(this string value)
 		{
 			return System.Text.Encoding.ASCII.GetBytes(value);
 		}
-		
+
 		public static byte[] GetBytes(this uint value)
 		{
 			return System.BitConverter.GetBytes(value);
 		}
-		
+
 		public static byte[] GetBytes(this int value)
 		{
 			return System.BitConverter.GetBytes(value);
 		}
-		
+
 		#endregion
-		
+
 		#region RevereseBytes
-		
+
 		public static uint ReverseBytes(this uint value)
 		{
 			byte[] bytes = BitConverter.GetBytes(value);
@@ -42,7 +42,7 @@ namespace SteamCondenser
 			}
 			return BitConverter.ToUInt32(bytes, 0);
 		}
-		
+
 		public static int ReverseBytes(this int value)
 		{
 			byte[] bytes = BitConverter.GetBytes(value);
@@ -51,7 +51,7 @@ namespace SteamCondenser
 			}
 			return BitConverter.ToInt32(bytes, 0);
 		}
-		
+
 		public static ushort ReverseBytes(this ushort value)
 		{
 			byte[] bytes = BitConverter.GetBytes(value);
@@ -60,7 +60,7 @@ namespace SteamCondenser
 			}
 			return BitConverter.ToUInt16(bytes, 0);
 		}
-		
+
 		#endregion
 
 		#region Join
@@ -135,28 +135,28 @@ namespace SteamCondenser
 		{
 			return doc.GetElementsByTagName(tag).Item(0).InnerText;
 		}
-		
+
 		public static string GetInnerText(this XmlElement element, string tag)
 		{
 			return element.GetElementsByTagName(tag).Item(0).InnerText;
 		}
-		
+
 		public static void LoadUrl(this XmlDocument xmldoc, string url)
 		{
 			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
 			xmldoc.Load(request.GetResponse().GetResponseStream());
 		}
-		
+
 		public static XmlElement GetXmlElement(this XmlDocument xmldoc, string name)
 		{
 			return xmldoc.GetElementsByTagName(name).Item(0) as XmlElement;
 		}
-		
+
 		public static XmlElement GetXmlElement(this XmlNode xmlnode, string name)
 		{
 			return (xmlnode as XmlElement).GetElementsByTagName(name).Item(0) as XmlElement;
 		}
-		
+
 		public static string GetValueText(this XmlElement element, string name)
 		{
 			return element.GetXmlElement(name).GetInnerText("value");

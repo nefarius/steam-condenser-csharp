@@ -11,30 +11,30 @@ namespace SteamCondenser.Test
 		public void CustomUrl()
 		{
 			L4DStats stats = new L4DStats("toxedvirus");
-			
+
 			Assert.AreNotEqual(stats.AppID, 0);
 			Assert.Greater(stats.AppID, 0);
-						
+
 			Assert.Greater(stats.Achievments.Length, 0);
-			
+
 			stats = (SteamID.Create("toxedvirus")).L4DStats;
-			
+
 			Assert.AreNotEqual(stats.AppID, 0);
 			Assert.Greater(stats.AppID, 0);
 			Assert.Greater(stats.Achievments.Length, 0);
 		}
-		
+
 		[Test]
 		public void SteamID64()
 		{
 			L4DStats stats = new L4DStats(76561197989711328);
-			
+
 			Assert.AreNotEqual(stats.AppID, 0);
 			Assert.Greater(stats.AppID, 0);
 			Assert.Greater(stats.Achievments.Length, 0);
-			
+
 			stats = SteamID.Create(76561197989711328).L4DStats;
-			
+
 			Assert.AreNotEqual(stats.AppID, 0);
 			Assert.Greater(stats.AppID, 0);
 			Assert.Greater(stats.Achievments.Length, 0);

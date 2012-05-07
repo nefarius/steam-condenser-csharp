@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
-	
+
 namespace SteamCondenser.Steam.Community
 {
 	public class CSSMap
@@ -19,8 +19,8 @@ namespace SteamCondenser.Steam.Community
 		public int    RoundsLost   { get; protected set; }
 		public int    RoundsWon    { get; protected set; }
 		public float  RoundsWonPercentage { get; protected set; }
-		
-		
+
+
 		public CSSMap(string mapname, XmlElement data)
 		{
 			Name = mapname;
@@ -28,11 +28,11 @@ namespace SteamCondenser.Steam.Community
 			RoundsPlayed = int.Parse(data.GetInnerText(Name + "_rounds"));
 			RoundsWon = int.Parse(data.GetInnerText(Name + "_wins"));
 			RoundsLost = RoundsPlayed - RoundsWon;
-			
+
 			RoundsWonPercentage = (RoundsPlayed > 0) ? ((float)RoundsWon / RoundsPlayed) : 0;
 		}
 	}
-	
+
 	public class CSSWeapon
 	{
 		public string Name     { get; protected set; }
@@ -42,7 +42,7 @@ namespace SteamCondenser.Steam.Community
 		public int    Hits     { get; protected set; }
 		public int    Shots    { get; protected set; }
 		public int    Kills    { get; protected set; }
-		
+
 		public CSSWeapon(string weaponname, XmlElement data)
 		{
 			Name = weaponname;
@@ -52,7 +52,7 @@ namespace SteamCondenser.Steam.Community
 				Favorite = data.GetInnerText("favorite").Equals(Name);
 				Kills = int.Parse(data.GetInnerText(Name + "_kills"));
 				Shots = int.Parse(data.GetInnerText(Name + "_shots"));
-				
+
 				if (Shots != 0)
 				{
 					Accuracy = Hits / Shots;
@@ -66,7 +66,7 @@ namespace SteamCondenser.Steam.Community
 			}
 		}
 	}
-	
+
 	public class CSSLastMatchStats
 	{
 		public float  CostPerKill    { get; protected set; }
@@ -82,9 +82,9 @@ namespace SteamCondenser.Steam.Community
 		public int    Stars          { get; protected set; }
 		public int    TWins          { get; protected set; }
 		public int    Wins           { get; protected set; }
-		
+
 		public float  KDRatio        { get; protected set; }
-		
+
 		public CSSLastMatchStats(XmlElement data)
 		{
 			CostPerKill    = float.Parse(data.GetInnerText("costkill"));
@@ -100,19 +100,19 @@ namespace SteamCondenser.Steam.Community
 			Stars          =   int.Parse(data.GetInnerText("stars"));
 			TWins          =   int.Parse(data.GetInnerText("t_wins"));
 			Wins           =   int.Parse(data.GetInnerText("wins"));
-			
+
 			if (Deaths == 0)
 				KDRatio = 0;
 			else
 				KDRatio = Kills / Deaths;
 		}
 	}
-	
-	
+
+
 	public class CSSStats : GameStats
 	{
 		public const string AppName = "cs:s";
-		
+
 		private static string[] maps = new string[] {
 			"cs_assault", "cs_compound", "cs_havana", "cs_italy", "cs_militia", "cs_office",
 			"de_aztec", "de_cbble", "de_chateau", "de_dust", "de_dust2", "de_inferno", "de_nuke",
@@ -122,9 +122,9 @@ namespace SteamCondenser.Steam.Community
 			"deagle", "usp", "glock", "p228", "elite", "fiveseven", "awp", "ak47", "m4a1", "aug",
 			"sg552", "sg550", "galil", "famas", "scout", "g3sg1", "p90", "mp5navy", "tmp", "mac10",
 			"ump45", "m3", "xm1014", "m249", "knife", "grenade" };
-		
+
 		public CSSLastMatchStats LastMatch  { get; protected set; }
-		
+
 		public int BlindKills          { get; protected set; }
 		public int BombsDefused        { get; protected set; }
 		public int BombsPlanted        { get; protected set; }
@@ -150,26 +150,26 @@ namespace SteamCondenser.Steam.Community
 		public int WeaponsDonated      { get; protected set; }
 		public int WindowsBroken       { get; protected set; }
 		public int ZoomedSniperKills   { get; protected set; }
-		
+
 		public float  Accuracy         { get; protected set; }
 		public float  KDRatio          { get; protected set; }
 		public int    RoundsLost       { get; protected set; }
-		
+
 		public CSSMap[]    MapStats    { get; protected set; }
 		public CSSWeapon[] WeaponStats { get; protected set; }
-		
+
 		public CSSStats(string steamid)
 			: base(steamid, AppName)
 		{
 			FetchData();
 		}
-		
+
 		public CSSStats(long steamid)
 			: base(steamid, AppName)
 		{
 			FetchData();
 		}
-		
+
 		protected new void FetchData()
 		{
 			var stats = doc.GetXmlElement("stats");
@@ -177,7 +177,7 @@ namespace SteamCondenser.Steam.Community
 
 			var lifeTimeStats = stats.GetXmlElement("lifetime");
 			var summaryStats  = stats.GetXmlElement("summary");
-			
+
 			BlindKills          = int.Parse(lifeTimeStats.GetInnerText("blindkills"));
 			BombsDefused        = int.Parse(lifeTimeStats.GetInnerText("bombsdefused"));
 			Damage              = int.Parse(lifeTimeStats.GetInnerText("dmg"));
@@ -201,30 +201,30 @@ namespace SteamCondenser.Steam.Community
 			WeaponsDonated      = int.Parse(lifeTimeStats.GetInnerText("wpndonated"));
 			WindowsBroken       = int.Parse(lifeTimeStats.GetInnerText("winbroken"));
 			ZoomedSniperKills   = int.Parse(lifeTimeStats.GetInnerText("zsniperkills"));
-			
+
 			if (Shots == 0)
 				Accuracy = 0;
 			else
 				Accuracy = (float)Hits/Shots;
-			
+
 			if (Deaths == 0)
 				KDRatio = (float)Kills/Deaths;
-			
+
 			RoundsLost = RoundsPlayed - RoundsWon;
-			
+
 			List<CSSMap> mapList = new List<CSSMap>();
 			var mapData = doc.GetXmlElement("stats").GetXmlElement("maps");
 			foreach (string map in maps) {
 				mapList.Add(new CSSMap(map, mapData));
 			}
 			MapStats = mapList.ToArray();
-			
+
 			List<CSSWeapon> weaponList = new List<CSSWeapon>();
 			var weaponData = doc.GetXmlElement("stats").GetXmlElement("weapons");
 			foreach (string weapon in weapons) {
 				weaponList.Add(new CSSWeapon(weapon, weaponData));
 			}
-			
+
 			WeaponStats = weaponList.ToArray();
 		}
 	}

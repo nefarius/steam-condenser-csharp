@@ -10,7 +10,7 @@ namespace SteamCondenser
 		Windows,
 		Linux,
 	}
-	
+
 	public enum ServerTypes
 	{
 		Unknown,

@@ -11,7 +11,7 @@ namespace SteamCondenser.Steam.Packets.RCON
 		public const byte SERVERDATA_AUTH_RESPONSE = 2;
 		public const byte SERVERDATA_EXECCOMMANDO = 2;
 		public const byte SERVERDATA_RESPONSE_VALUE = 0;
-		
+
 		public int Header { get; protected set; }
 		public int RequestId { get; protected set; }
 		public string RconData { get; protected set; }
@@ -53,7 +53,7 @@ namespace SteamCondenser.Steam.Packets.RCON
 			sw.Flush();
 			return byteStream.ToArray();
 		}
-		
+
 		public static RCONPacket CreatePacket(byte[] rawData, int offset)
 		{
 			MemoryStream byteStream = new MemoryStream(rawData);
@@ -62,7 +62,7 @@ namespace SteamCondenser.Steam.Packets.RCON
 			int    requestId = sr.Read();
 			int    header    = sr.Read();
 			string data      = sr.ReadToEnd();
-			
+
 			switch (header) {
 			case RCONPacket.SERVERDATA_AUTH_RESPONSE:
 				return new RCONAuthResponsePacket(requestId);
@@ -74,7 +74,7 @@ namespace SteamCondenser.Steam.Packets.RCON
 			}
 		}
 	}
-	
+
 	#region GoldSrc
 	public class RCONGoldSrcRequestPacket : SteamPacket
 	{
@@ -85,7 +85,7 @@ namespace SteamCondenser.Steam.Packets.RCON
 		}
 
 		public string Request { get; protected set; }
-		
+
 		public override void Serialize(PacketWriter writer, bool prefix)
 		{
 			if (prefix) {
@@ -95,7 +95,7 @@ namespace SteamCondenser.Steam.Packets.RCON
 			writer.WriteStringNoZero(Request);
 		}
 	}
-	
+
 	public class RCONGoldSrcResponsePacket : SteamPacket
 	{
 		public RCONGoldSrcResponsePacket(string response)
@@ -109,7 +109,7 @@ namespace SteamCondenser.Steam.Packets.RCON
 		{
 			Response = reader.ReadString();
 		}
-		
+
 		public string Response { get; protected set; }
 
 		public override void Serialize(PacketWriter writer, bool prefix)
@@ -120,7 +120,7 @@ namespace SteamCondenser.Steam.Packets.RCON
 		}
 	}
 	#endregion
-	
+
 	#region Exec
 	public class RCONExecRequestPacket : RCONPacket
 	{
@@ -135,14 +135,14 @@ namespace SteamCondenser.Steam.Packets.RCON
 			: base(requestId, RCONPacket.SERVERDATA_RESPONSE_VALUE, commandReturn)
 		{
 		}
-		
+
 		public string GetResponse()
 		{
 			return System.Text.Encoding.ASCII.GetString(reader.Data, 0, reader.Length - 2);
 		}
 	}
 	#endregion
-	
+
 	#region Auth
 	public class RCONAuthRequestPacket : RCONPacket
 	{
@@ -151,7 +151,7 @@ namespace SteamCondenser.Steam.Packets.RCON
 		{
 		}
 	}
-	
+
 	public class RCONAuthResponsePacket : RCONPacket
 	{
 		public RCONAuthResponsePacket(int requestId)

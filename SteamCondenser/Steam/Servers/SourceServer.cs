@@ -15,44 +15,44 @@ namespace SteamCondenser.Steam.Servers
 				return this.querySocket;
 			}
 		}
-		
+
 		public RCONSocket RconSocket {
 			get {
 				return this.rconSocket;
 			}
 		}
-		
+
 		protected RCONSocket rconSocket;
 		protected int rconRequestId;
-		
+
 		public SourceServer(string ipAddress)
 			: this(ipAddress, 27015)
 		{
 		}
-		
+
 		public SourceServer(string ipAddress, int portNumber)
 			: this(IPAddress.Parse(ipAddress), portNumber)
 		{
 		}
-		
+
 		public SourceServer(IPAddress ipAddress)
 			: this(ipAddress, 27015)
 		{
 		}
-		
+
 		public SourceServer(IPEndPoint endpoint)
 			: this(endpoint.Address, endpoint.Port)
 		{
 		}
-		
+
 		public SourceServer(IPAddress ipAddress, int portNumber)
 			: base(portNumber)
 		{
 			this.querySocket = new SourceServerQuerySocket(ipAddress, portNumber);
 			this.rconSocket = new RCONSocket(ipAddress, portNumber);
 		}
-		
-		
+
+
 		public bool RconAuth(string password)
 		{
 			this.rconRequestId = (new Random()).Next();
@@ -60,13 +60,13 @@ namespace SteamCondenser.Steam.Servers
 			RCONAuthResponsePacket reply = this.rconSocket.GetReply() as RCONAuthResponsePacket;
 			return (reply.RequestId == this.rconRequestId);
 		}
-		
+
 		public string RconExec(string command)
 		{
 			this.rconSocket.Send(new RCONExecRequestPacket(this.rconRequestId, command));
 			List<RCONExecResponsePacket> responsePackets=  new List<RCONExecResponsePacket>();
 			RCONPacket responsePacket;
-			
+
 			try {
 				while (true) {
 					responsePacket = (RCONPacket)this.rconSocket.GetReply();
@@ -80,10 +80,10 @@ namespace SteamCondenser.Steam.Servers
 					throw new Exception();
 				}
 			}
-			
+
 			string response = "";
 			return "";
 		}
-		
+
 	}
 }

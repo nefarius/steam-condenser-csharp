@@ -21,7 +21,7 @@ namespace SteamCondenser.Steam.Sockets
 			: this(new IPEndPoint(ipAddress, port))
 		{
 		}
-		
+
 		protected SteamSocket(IPEndPoint endpoint)
 		{
 			// UDP client
@@ -45,18 +45,18 @@ namespace SteamCondenser.Steam.Sockets
 				client.Client.ReceiveTimeout = value;
 			}
 		}
-		
+
 		protected SteamPacket CreatePacket()
 		{
 			byte[] packetData = this.bufferReader.ReadBytes(buffer.Length - (int)bufferReader.BaseStream.Position);
-			
+
 			//byte[] packetData = this.bufferReader.ReadBytes(SteamPacket.PACKET_SIZE);
-			
+
 			return SteamPacket.CreatePacket(packetData);
 		}
 
 		public abstract SteamPacket GetReply();
-		
+
 		protected int ReceivePacket(int bufferLength)
 		{
 			int bytesRead;

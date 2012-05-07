@@ -14,21 +14,21 @@ namespace SteamCondenser.Steam.Servers
 		private const int REQUEST_PLAYER = 2;
 		private const int REQUEST_RULES = 3;
 
-		
+
 		protected uint challengeNumber = 0xFFFFFFFF;
 		protected int ping;
 		protected ServerQuerySocket querySocket;
 		protected SteamPlayer[] playerList;
 		protected ServerRule[] serverRules = null;
 		protected ServerInfo serverInfo = null;
-		
+
 		protected GameServer(int portNumber)
 		{
 			if (portNumber < 0 || portNumber > 65535) {
 				throw new ArgumentException("The listening port of the server has to be a number greater than 0 and less than 65535.");
 			}
 		}
-		
+
 		public int Ping  {
 			get {
 				if (ping == 0) {
@@ -38,7 +38,7 @@ namespace SteamCondenser.Steam.Servers
 			}
 			protected set { ping = value; }
 		}
-		
+
 
 		public SteamPlayer[] PlayerList {
 			get {
@@ -48,7 +48,7 @@ namespace SteamCondenser.Steam.Servers
 				return playerList;
 			}
 		}
-		
+
 		public ServerRule[] ServerRules {
 			get {
 				if (this.serverRules == null) {
@@ -57,7 +57,7 @@ namespace SteamCondenser.Steam.Servers
 				return serverRules;
 			}
 		}
-		
+
 		public ServerInfo ServerInfo {
 			get {
 				if (this.serverInfo == null) {
@@ -66,7 +66,7 @@ namespace SteamCondenser.Steam.Servers
 				return serverInfo;
 			}
 		}
-		
+
 		private void SendRequest(SteamPacket requestData)
 		{
 			this.querySocket.Send(requestData);
@@ -75,8 +75,8 @@ namespace SteamCondenser.Steam.Servers
 		private SteamPacket GetReply()
 		{
 			return this.querySocket.GetReply();
-		}		
-		
+		}
+
 		public void UpdatePing()
 		{
 			this.SendRequest(new SteamPacket(SteamPacketTypes.A2A_PING));
@@ -84,17 +84,17 @@ namespace SteamCondenser.Steam.Servers
 			this.querySocket.GetReply();
 			ping = DateTime.Now.Subtract(pingStart).Milliseconds;
 		}
-		
+
 		public void UpdatePlayerInfo()
 		{
 			this.UpdatePlayerInfo(null);
 		}
-		
+
 		public void UpdatePlayerInfo(string rconPassword)
 		{
 			handleResponseForRequest(GameServer.REQUEST_PLAYER);
 		}
-		
+
 		public void UpdateRulesInfo()
 		{
 			this.UpdateRulesInfo(null);
@@ -103,7 +103,7 @@ namespace SteamCondenser.Steam.Servers
 		{
 			handleResponseForRequest(GameServer.REQUEST_INFO);
 		}
-		
+
 		public void UpdateRulesInfo(string rconPassword)
 		{
 			handleResponseForRequest(GameServer.REQUEST_RULES);
@@ -112,12 +112,12 @@ namespace SteamCondenser.Steam.Servers
 		{
 			this.handleResponseForRequest(GameServer.REQUEST_CHALLENGE);
 		}
-		
+
 		private void handleResponseForRequest(int requestType)
 		{
 			handleResponseForRequest(requestType, true);
 		}
-		
+
 		private void handleResponseForRequest(int requestType, bool repeatOnFailure)
 		{
 			bool success = false;
@@ -143,13 +143,13 @@ namespace SteamCondenser.Steam.Servers
 			default:
 				throw new SteamCondenserException("Called with wrong request type.");
 			}
-			
+
 			this.SendRequest(requestPacket);
-			
+
 			do {
 				SteamPacket responsePacket = this.GetReply();
 				success = (responsePacket.PacketType == expectedResponse);
-				
+
 				if (responsePacket is SourceServerInfoResponsePacket) {
 					success = true;
 					this.serverInfo = (responsePacket as SourceServerInfoResponsePacket).ServerInfo;
@@ -160,7 +160,7 @@ namespace SteamCondenser.Steam.Servers
 				} else if (responsePacket is ServerRulesResponsePacket) {
 					this.serverRules = (responsePacket as ServerRulesResponsePacket).ServerRules;
 				}
-				
+
 			} while (repeatOnFailure && !success);
 		}
 	}

@@ -2,7 +2,7 @@ using System;
 
 namespace SteamCondenser
 {
-	
+
 	[Serializable]
 	public class SteamCondenserException : Exception
 	{
@@ -12,7 +12,7 @@ namespace SteamCondenser
 		public SteamCondenserException ()
 		{
 		}
-		
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:SteamCondenserException"/> class
 		/// </summary>
@@ -20,7 +20,7 @@ namespace SteamCondenser
 		public SteamCondenserException (string message) : base (message)
 		{
 		}
-		
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:SteamCondenserException"/> class
 		/// </summary>
@@ -29,7 +29,7 @@ namespace SteamCondenser
 		public SteamCondenserException (string message, Exception inner) : base (message, inner)
 		{
 		}
-		
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:SteamCondenserException"/> class
 		/// </summary>
@@ -39,8 +39,8 @@ namespace SteamCondenser
 		{
 		}
 	}
-	
-	
+
+
 	[Serializable]
 	public class PacketFormatException : SteamCondenserException
 	{
@@ -50,7 +50,7 @@ namespace SteamCondenser
 		public PacketFormatException ()
 		{
 		}
-		
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:PacketFormatException"/> class
 		/// </summary>
@@ -58,7 +58,7 @@ namespace SteamCondenser
 		public PacketFormatException (string message) : base (message)
 		{
 		}
-		
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:PacketFormatException"/> class
 		/// </summary>
@@ -67,7 +67,7 @@ namespace SteamCondenser
 		public PacketFormatException (string message, Exception inner) : base (message, inner)
 		{
 		}
-		
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:PacketFormatException"/> class
 		/// </summary>
@@ -77,8 +77,8 @@ namespace SteamCondenser
 		{
 		}
 	}
-	
-	
+
+
 	[Serializable]
 	public class UncompletePacketException : Exception
 	{
@@ -88,7 +88,7 @@ namespace SteamCondenser
 		public UncompletePacketException ()
 		{
 		}
-		
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:UncompletePacketException"/> class
 		/// </summary>
@@ -96,7 +96,7 @@ namespace SteamCondenser
 		public UncompletePacketException (string message) : base (message)
 		{
 		}
-		
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:UncompletePacketException"/> class
 		/// </summary>
@@ -105,7 +105,7 @@ namespace SteamCondenser
 		public UncompletePacketException (string message, Exception inner) : base (message, inner)
 		{
 		}
-		
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:UncompletePacketException"/> class
 		/// </summary>
@@ -115,8 +115,8 @@ namespace SteamCondenser
 		{
 		}
 	}
-	
-	
+
+
 	[Serializable]
 	public class RCONNoAuthException : Exception
 	{
@@ -126,7 +126,7 @@ namespace SteamCondenser
 		public RCONNoAuthException ()
 		{
 		}
-		
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:RCONNoAuthException"/> class
 		/// </summary>
@@ -134,7 +134,7 @@ namespace SteamCondenser
 		public RCONNoAuthException (string message) : base (message)
 		{
 		}
-		
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:RCONNoAuthException"/> class
 		/// </summary>
@@ -143,7 +143,7 @@ namespace SteamCondenser
 		public RCONNoAuthException (string message, Exception inner) : base (message, inner)
 		{
 		}
-		
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:RCONNoAuthException"/> class
 		/// </summary>
@@ -153,8 +153,8 @@ namespace SteamCondenser
 		{
 		}
 	}
-	
-	
+
+
 	[Serializable]
 	public class RCONBanException : Exception
 	{
@@ -164,7 +164,7 @@ namespace SteamCondenser
 		public RCONBanException ()
 		{
 		}
-		
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:RconBanException"/> class
 		/// </summary>
@@ -172,7 +172,7 @@ namespace SteamCondenser
 		public RCONBanException (string message) : base (message)
 		{
 		}
-		
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:RconBanException"/> class
 		/// </summary>
@@ -181,7 +181,7 @@ namespace SteamCondenser
 		public RCONBanException (string message, Exception inner) : base (message, inner)
 		{
 		}
-		
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:RconBanException"/> class
 		/// </summary>
