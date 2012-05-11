@@ -50,6 +50,25 @@ namespace SteamCondenser.Steam.Packets
 
 		public SteamPacketTypes PacketType { get; private set; }
 
+		public static byte[] Reassemble(IEnumerable<byte[]> packets)
+		{
+			int size = 0;
+			foreach (var packet in packets) {
+				size += packet.Length - 8;
+			}
+
+			byte[] completePacket = new byte[size];
+
+			int pos = 0;
+			foreach (var packet in packets) {
+				int start = 9;
+				Array.Copy(packet, start, completePacket, pos, packet.Length - start);
+				pos += packet.Length - start;
+			}
+
+			return completePacket;
+		}
+
 		public static SteamPacket ReassemblePacket(List<byte[]> splitPackets)
 		{
 			return SteamPacket.ReassemblePacket(splitPackets, false, (short)0, 0);
