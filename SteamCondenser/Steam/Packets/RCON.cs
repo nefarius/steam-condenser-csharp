@@ -22,6 +22,7 @@ namespace SteamCondenser.Steam.Packets.RCON
 			Header    = rconHeader;
 			RequestId = requestId;
 			RconData  = rconData;
+            reader = new PacketReader(rconData.GetBytes());
 		}
 
 		public override void Serialize(PacketWriter writer, bool prefix)
